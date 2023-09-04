@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.auth{
+  background: #101010;
+  /* background: #008e8b; */
+  color: #fff
+}
+
+.app{
+  @apply bg-dark-1 text-light-1
+}
+
+.main {
+  @apply flex min-h-screen flex-1 flex-col items-center p-12
+}
+
+.navbar {
+  @apply fixed top-0 z-30 flex w-full items-center justify-between px-6 py-3 bg-dark-1;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #09090a;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #6a8181;
+  border-radius: 50px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #3228a2;
+}
+
+.leftsidebar {
+  @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-dark-4 bg-glassmorphism pb-5 pt-28 max-md:hidden;
+}
+
+.leftsidebar-link {
+  @apply relative flex justify-start gap-4 rounded-md p-4 text-light-1;
+}
+
+.leftsidebar-active-link{
+  @apply relative flex justify-start gap-4 rounded-md p-4 bg-[#3228a2] font-bold;
+}
+
+.leftsidebar-link:hover {
+  @apply bg-[#3228a2] bg-opacity-10;
+}
+
+.footer{
+  @apply fixed bottom-0 z-10 w-full rounded-t-3xl bg-glassmorphism p-4 backdrop-blur-md xs:px-7 md:hidden;
+}
+
+.footer-container{
+  @apply flex items-center justify-between gap-3 xs:gap-5;
+}
+
+.footer-link{
+  @apply relative flex flex-col items-center gap-2 rounded-md p-2 sm:flex-1 sm:px-2 sm:py-2.5 text-light-1;
+}
+
+.footer-active-link{
+  @apply relative flex flex-col items-center gap-2 rounded-md p-2 sm:flex-1 sm:px-2 sm:py-2.5 bg-[#3228a2] font-bold;
+}
+
+.footer-link:hover{
+  @apply bg-[#3228a2] bg-opacity-10;
+}
+
+.rightsidebar {
+  @apply sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-glassmorphism px-10 pb-6 pt-28 max-xl:hidden;
+}
