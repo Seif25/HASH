@@ -18,7 +18,7 @@
 }
 
 .navbar {
-  @apply fixed top-0 z-30 flex w-full items-center justify-between px-6 py-3 bg-dark-1;
+  @apply fixed top-0 z-30 flex w-full items-center justify-between px-10 py-5 bg-transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -37,7 +37,7 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #3228a2;
+  background: #00AE9C;
 }
 
 .leftsidebar {
@@ -45,15 +45,15 @@
 }
 
 .leftsidebar-link {
-  @apply relative flex justify-start gap-4 rounded-md p-4 text-light-1;
+  @apply relative flex justify-start gap-4 rounded-full p-4 text-light-1;
 }
 
 .leftsidebar-active-link{
-  @apply relative flex justify-start gap-4 rounded-md p-4 bg-[#3228a2] font-bold;
+  @apply relative flex justify-start gap-4 rounded-full p-4 bg-[#00AE9C] font-bold;
 }
 
 .leftsidebar-link:hover {
-  @apply bg-[#3228a2] bg-opacity-10;
+  @apply bg-[#00AE9C] bg-opacity-10;
 }
 
 .footer{
@@ -65,17 +65,24 @@
 }
 
 .footer-link{
-  @apply relative flex flex-col items-center gap-2 rounded-md p-2 sm:flex-1 sm:px-2 sm:py-2.5 text-light-1;
+  @apply relative flex flex-col items-center gap-2 rounded-full p-2 sm:flex-1 sm:px-2 sm:py-2.5 text-light-1;
 }
 
 .footer-active-link{
-  @apply relative flex flex-col items-center gap-2 rounded-md p-2 sm:flex-1 sm:px-2 sm:py-2.5 bg-[#3228a2] font-bold;
+  @apply relative flex flex-col items-center gap-2 rounded-full p-2 sm:flex-1 sm:px-2 sm:py-2.5 bg-[#00AE9C] font-bold;
 }
 
 .footer-link:hover{
-  @apply bg-[#3228a2] bg-opacity-10;
+  @apply bg-[#00AE9C] bg-opacity-10;
 }
 
 .rightsidebar {
   @apply sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-glassmorphism px-10 pb-6 pt-28 max-xl:hidden;
+}
+
+.banner{
+  background-image: url("/assets/utopia-banner.png");
+  background-size: cover;
+  width: "100%";
+  height: auto;
 }
