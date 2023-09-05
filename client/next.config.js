@@ -27,6 +27,18 @@ const nextConfig = {
         protocol: "https",
         hostname: "placehold.co",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.memes.com"
+      },
+      {
+        protocol: "https",
+        hostname: "media2.giphy.com"
+      },
+      {
+        protocol: "https",
+        hostname: "media.giphy.com"
+      }
     ],
   },
 };

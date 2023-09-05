@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/actions/user.actions";
-import PostHash from "@/components/forms/PostHash";
+import CreateNewHash from "@/components/forms/CreateHash";
 
 const CreateHash: NextPage = async () => {
     const user = await currentUser();
@@ -17,7 +17,7 @@ const CreateHash: NextPage = async () => {
 
     return (
         <>
-            <PostHash userId={userInfo._id}/>
+            <CreateNewHash userId={userInfo._id.toString()}/>
         </>
     )
 }

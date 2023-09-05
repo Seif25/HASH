@@ -1,3 +1,4 @@
+import { HashValidation } from "@/lib/validations/hash";
 import { UserValidation } from "@/lib/validations/user";
 import { Control } from "react-hook-form";
 import * as z from "zod";
@@ -22,7 +23,7 @@ export type User = {
 export type TextFieldProps = {
   control: Control<z.infer<typeof UserValidation>> | undefined;
   name: any;
-  label: string;
+  label?: string;
   max?: number;
   maxLength?: number;
   min?: number;
@@ -30,6 +31,10 @@ export type TextFieldProps = {
   type: string;
   placeholder?: string;
 };
+
+export type HashFieldProps = {
+  control: Control<z.infer<typeof HashValidation>> | undefined;
+} & Omit<TextAreaProps, "control">
 
 export type TextAreaProps = {
   rows: number;

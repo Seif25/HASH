@@ -4,7 +4,7 @@ export const HashValidation = z.object({
   hash: z
     .string()
     .min(1, { message: "You need to write at least 1 character" })
-    .max(255, { message: "Maximum amount of characters reached" })
+    .max(250, { message: "Maximum amount of characters reached" })
     .nonempty({ message: "You can't post an empty Hash" }),
   accountId: z
     .string()
@@ -15,6 +15,6 @@ export const CommentValidation = z.object({
   hash: z
     .string()
     .min(1, { message: "You need to write at least 1 character" })
-    .max(255, { message: "Maximum amount of characters reached" })
+    .max(205, { message: "Maximum amount of characters reached" })
     .nonempty({ message: "You can't post an empty Hash" }),
 });
