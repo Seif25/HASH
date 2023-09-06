@@ -44,13 +44,13 @@ export async function fetchHashes(pageNumber = 1, pageSize = 20) {
       .sort({ createdAt: "desc" })
       .skip(skip)
       .limit(pageSize)
-      .populate({ path: "author", model: "User" })
+      .populate({ path: "author", model: "User", select: "_id name username verified image" })
       .populate({
         path: "children",
         populate: {
           path: "author",
           model: "User",
-          select: "_id name parentId image",
+          select: "_id name parentId image verified username",
         },
       });
 
@@ -62,8 +62,43 @@ export async function fetchHashes(pageNumber = 1, pageSize = 20) {
 
     const isNext = totalPageCount > skip + hashes.length;
 
-    return  { hashes, isNext }
+    return { hashes, isNext };
   } catch (error: any) {
     throw new Error(`Error fetching hashes: ${error.message}`);
+  }
+}
+
+export async function deleteHash(id: string): Promise<void> {
+  connectDB();
+
+  try {
+    await Hash.findByIdAndDelete(id);
+  } catch (error: any) {
+    throw new Error(`Error deleting hash: ${error.message}`);
+  }
+}
+
+export async function getHash(id: string) {
+  connectDB();
+
+  try {
+    const hashQuery = Hash.find({
+      _id: id,
+    })
+      .populate({ path: "author", model: "User", select: "_id name username verified image" })
+      .populate({
+        path: "children",
+        populate: {
+          path: "author",
+          model: "User",
+          select: "_id name parentId image verified username",
+        },
+      });
+
+    const hash = hashQuery.exec();
+
+    return hash;
+  } catch (error: any) {
+    throw new Error(`Error getting hash: ${error.message}`);
   }
 }

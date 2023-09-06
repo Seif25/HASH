@@ -13,7 +13,7 @@ function FormattedWord({ text, index }: FormattedWordProps) {
         {index > 0 && <span>&nbsp;</span>}
         <span
           key={index}
-          className="text-[#7689F3] hover:underline text-base-semibold cursor-pointer"
+          className="text-[#CBCCFF] hover:underline text-base-semibold cursor-pointer italic font-light"
         >
           {word}
         </span>
@@ -26,7 +26,7 @@ function FormattedWord({ text, index }: FormattedWordProps) {
         <Link href={`/profile/${word.substring(1)}`}>
           <span
             key={index}
-            className="text-[#7689F3] hover:underline text-base-semibold cursor-pointer"
+            className="text-[#CBCCFF] hover:underline text-base-semibold cursor-pointer"
           >
             {word}
           </span>
@@ -41,7 +41,7 @@ function FormattedWord({ text, index }: FormattedWordProps) {
         <a
           key={index}
           href={word}
-          className="text-[#7689F3] hover:underline text-base-semibold"
+          className="text-[#CBCCFF] underline hover:font-extrabold text-base-semibold"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -52,7 +52,8 @@ function FormattedWord({ text, index }: FormattedWordProps) {
   } else {
     return (
       <span key={index} className="text-base-semibold text-light-1">
-        {index > 0 && ` ${word}`}
+        {index > 0 && <span>&nbsp;</span>}
+        {word}
       </span>
     );
   }

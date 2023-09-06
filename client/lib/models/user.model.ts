@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     bio: { type: String },
     location: { type: String },
     website: { type: String },
-    verified: { type: Boolean },
+    verified: { type: Boolean , default: false },
     birthDate: { type: Date },
     hashes: [
         {

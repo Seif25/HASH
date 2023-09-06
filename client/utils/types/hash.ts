@@ -17,6 +17,7 @@ export type HashCardProps = {
   comments: string[];
   author: User;
   media: Media[] | null;
+  verified: boolean;
 };
 
 type Media = {

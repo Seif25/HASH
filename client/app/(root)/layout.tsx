@@ -26,11 +26,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </head>
         <body className={`${lato.className} app`}>
           <Navbar />
-          <main className="flex flex-row">
+          <main className="flex flex-row w-full">
             <LeftSidebar />
-            <section className="main">
+            <section className="main lg:px-12 py-12">
               <div className="w-full max-w-4xl">{children}</div>
             </section>
             <RightSidebar />

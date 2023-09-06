@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 import { createHash } from "@/lib/actions/hash.actions";
+import { Loader2 } from "lucide-react";
 
 interface Props {
   userId: string;
@@ -33,6 +34,7 @@ const CreateNewHash: NextPage<Props> = ({ userId }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [focused, setFocused] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const form = useForm({
     resolver: zodResolver(HashValidation),
@@ -51,6 +53,7 @@ const CreateNewHash: NextPage<Props> = ({ userId }) => {
   };
 
   const onSubmit = async (values: z.infer<typeof HashValidation>) => {
+    setLoading(true)
     await createHash({
       text: values.hash,
       author: userId,
@@ -58,6 +61,9 @@ const CreateNewHash: NextPage<Props> = ({ userId }) => {
       pathname: pathname,
     });
 
+    setLoading(false)
+    form.reset();
+    
     router.push("/");
   };
 
@@ -122,8 +128,9 @@ const CreateNewHash: NextPage<Props> = ({ userId }) => {
                 className="rounded-full w-40"
                 variant={"default"}
                 type="submit"
-                disabled={form.getValues().hash.length < 1}
+                disabled={form.getValues().hash.length < 1 || loading}
               >
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Post
               </Button>
             </div>
