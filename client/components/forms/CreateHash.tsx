@@ -11,19 +11,11 @@ import { Form } from "@/components/ui/form";
 import { HashValidation } from "@/lib/validations/hash";
 import HashField from "./components/HashField";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ImageIcon from "@mui/icons-material/Image";
-import GifBoxIcon from "@mui/icons-material/GifBox";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 import { createHash } from "@/lib/actions/hash.actions";
+import Image from "next/image";
+import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 
 interface Props {
@@ -34,7 +26,7 @@ const CreateNewHash: NextPage<Props> = ({ userId }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [focused, setFocused] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(HashValidation),
@@ -53,7 +45,7 @@ const CreateNewHash: NextPage<Props> = ({ userId }) => {
   };
 
   const onSubmit = async (values: z.infer<typeof HashValidation>) => {
-    setLoading(true)
+    setLoading(true);
     await createHash({
       text: values.hash,
       author: userId,
@@ -61,9 +53,9 @@ const CreateNewHash: NextPage<Props> = ({ userId }) => {
       pathname: pathname,
     });
 
-    setLoading(false)
+    setLoading(false);
     form.reset();
-    
+
     router.push("/");
   };
 
@@ -72,68 +64,29 @@ const CreateNewHash: NextPage<Props> = ({ userId }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col justify-start gap-5 p-10"
+          className="flex items-start justify-start gap-5 p-10 bg-accent2 rounded-lg"
         >
-          <HashField
-            control={form.control}
-            name="hash"
-            placeholder="What's on your mind?"
-            maxLength={250}
-            rows={5}
-            handleFocus={onFocus}
-            handleBlur={onBlur}
-            focused={focused}
+          <Image
+            src="/assets/profile-pic.jpg"
+            alt=""
+            width={42}
+            height={42}
+            className="rounded-full"
           />
-          <div className="grid grid-cols-2 gap-10">
-            <div className="flex items-center w-full gap-5">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button className="rounded-full p-1 hover:bg-[#CBCCFF] hover:bg-opacity-30">
-                      <ImageIcon className="text-[#CBCCFF]" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Media</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button className="rounded-full p-1 hover:bg-[#CBCCFF] hover:bg-opacity-30">
-                      <GifBoxIcon className="text-[#CBCCFF]" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>GIF</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button className="rounded-full p-1 hover:bg-[#CBCCFF] hover:bg-opacity-30">
-                      <InsertEmoticonIcon className="text-[#CBCCFF]" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Emojis</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-            <div className="flex items-center justify-end">
-              <Button
-                className="rounded-full w-40"
-                variant={"default"}
-                type="submit"
-                disabled={form.getValues().hash.length < 1 || loading}
-              >
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Post
-              </Button>
-            </div>
+          <div className="flex flex-col gap-2 w-full">
+            <HashField
+              control={form.control}
+              name="hash"
+              placeholder="What's on your mind?"
+              maxLength={250}
+              rows={5}
+              handleFocus={onFocus}
+              handleBlur={onBlur}
+              focused={focused}
+              loading={loading}
+              length={form.getValues().hash.length}
+            />
+           
           </div>
         </form>
       </Form>

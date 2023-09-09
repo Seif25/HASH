@@ -31,9 +31,9 @@ export default function RootLayout({
         </head>
         <body className={`${lato.className} app`}>
           <Navbar />
-          <main className="flex flex-row w-full">
+          <main className="flex flex-row w-full justify-between">
             <LeftSidebar />
-            <section className="main lg:px-12 py-12">
+            <section className="main lg:px-5">
               <div className="w-full max-w-4xl">{children}</div>
             </section>
             <RightSidebar />

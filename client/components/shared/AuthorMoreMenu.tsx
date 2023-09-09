@@ -48,8 +48,8 @@ function AuthMoreMenu({ id, authorId }: { id: string; authorId: string }) {
     <div className="w-full">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant={"ghost"} className="rounded-full">
-            <MoreVertIcon className="text-[#CBCCFF]" />
+          <Button variant={"ghost"} className="rounded-full w-5 h-5 p-3 flex items-center justify-center">
+            <MoreVertIcon className="text-white" fontSize="small"/>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-full flex flex-col gap-2 p-2">

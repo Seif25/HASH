@@ -1,6 +1,6 @@
 "use server";
 
-import { MongoHash } from "@/utils/types/hash";
+import { HashCardProps, MongoHash } from "@/utils/types/hash";
 import { connectDB } from "../mongoose";
 import Hash from "../models/hash.model";
 import { revalidatePath } from "next/cache";
@@ -44,13 +44,13 @@ export async function fetchHashes(pageNumber = 1, pageSize = 20) {
       .sort({ createdAt: "desc" })
       .skip(skip)
       .limit(pageSize)
-      .populate({ path: "author", model: "User", select: "_id name username verified image" })
+      .populate({ path: "author", model: "User", select: "_id id name username verified image" })
       .populate({
         path: "children",
         populate: {
           path: "author",
           model: "User",
-          select: "_id name parentId image verified username",
+          select: "_id id name parentId image verified username",
         },
       });
 
@@ -78,26 +78,26 @@ export async function deleteHash(id: string): Promise<void> {
   }
 }
 
-export async function getHash(id: string) {
+export async function getHash(id: string): Promise<any> {
   connectDB();
 
   try {
     const hashQuery = Hash.find({
       _id: id,
     })
-      .populate({ path: "author", model: "User", select: "_id name username verified image" })
+      .populate({ path: "author", model: "User", select: "_id id name username verified image" })
       .populate({
         path: "children",
         populate: {
           path: "author",
           model: "User",
-          select: "_id name parentId image verified username",
+          select: "_id id name parentId image verified username",
         },
       });
 
-    const hash = hashQuery.exec();
+    const hash = await hashQuery.exec();
 
-    return hash;
+    return hash[0];
   } catch (error: any) {
     throw new Error(`Error getting hash: ${error.message}`);
   }

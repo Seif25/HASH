@@ -22,8 +22,8 @@ function ShareMenu({ id, authorId }: { id: string; authorId: string }) {
     <div className="w-full flex items-center justify-end">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant={"ghost"} className="rounded-full">
-            <IosShare className="text-[#CBCCFF]" />
+          <Button variant={"ghost"} className="rounded-full w-5 h-5 p-3 flex items-center justify-center">
+            <IosShare className="text-white" fontSize="small"/>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-full flex flex-col gap-2 p-2">

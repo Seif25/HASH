@@ -24,15 +24,16 @@ export default async function Home() {
           </TabsList>
           <TabsContent value="For-you">
             {/* Create Hash */}
-            <section className="w-full h-auto hidden lg:block border-b border-light-3">
+            <section className="w-full h-auto hidden lg:block">
               <CreateHash />
             </section>
             {/* Hashes */}
-            <section className="lg:px-10 flex flex-col gap-0 w-full">
+            <section className="flex flex-col gap-5 w-full pt-5">
               {userHashes.hashes.map((hash) => (
                 <HashCard
                   key={hash._id}
                   id={hash._id}
+                  _id={hash._id}
                   currentUserId={user?.id}
                   parentId={hash.parentId}
                   content={hash.text}
@@ -41,7 +42,6 @@ export default async function Home() {
                   community={hash.community}
                   comments={hash.children}
                   media={hash.media}
-                  verified={hash.author.verified}
                 />
               ))}
             </section>

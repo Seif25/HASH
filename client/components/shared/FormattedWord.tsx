@@ -9,24 +9,26 @@ function FormattedWord({ text, index }: FormattedWordProps) {
   const word = text.trim();
   if (word.startsWith("#")) {
     return (
-      <span>
-        {index > 0 && <span>&nbsp;</span>}
-        <span
-          key={index}
-          className="text-[#CBCCFF] hover:underline text-base-semibold cursor-pointer italic font-light"
-        >
-          {word}
+      <Link href={`/posts/${word.substring(1)}`} className="z-20">
+        <span>
+          {index > 0 && <span>&nbsp;</span>}
+          <span
+            key={index}
+            className="text-primary hover:underline text-sm cursor-pointer italic font-light"
+          >
+            {word}
+          </span>
         </span>
-      </span>
+      </Link>
     );
   } else if (word.startsWith("@")) {
     return (
       <span>
         {index > 0 && <span>&nbsp;</span>}
-        <Link href={`/profile/${word.substring(1)}`}>
+        <Link href={`/profile/${word.substring(1)}`} className="z-20">
           <span
             key={index}
-            className="text-[#CBCCFF] hover:underline text-base-semibold cursor-pointer"
+            className="text-primary hover:underline text-sm cursor-pointer"
           >
             {word}
           </span>
@@ -36,12 +38,12 @@ function FormattedWord({ text, index }: FormattedWordProps) {
   } else if (word.startsWith("http://") || word.startsWith("https://")) {
     const truncatedUrl = word.replace(/^(https?:\/\/)/, "");
     return (
-      <span>
+      <span className="z-20">
         {index > 0 && <span>&nbsp;</span>}
         <a
           key={index}
           href={word}
-          className="text-[#CBCCFF] underline hover:font-extrabold text-base-semibold"
+          className="text-primary underline hover:font-extrabold text-sm"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -51,7 +53,7 @@ function FormattedWord({ text, index }: FormattedWordProps) {
     );
   } else {
     return (
-      <span key={index} className="text-base-semibold text-light-1">
+      <span key={index} className="text-sm text-white">
         {index > 0 && <span>&nbsp;</span>}
         {word}
       </span>

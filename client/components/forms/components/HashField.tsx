@@ -12,10 +12,21 @@ import { FocusEventHandler } from "react";
 import { Button } from "@/components/ui/button";
 import PublicIcon from "@mui/icons-material/Public";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import ImageIcon from "@mui/icons-material/Image";
+import GifBoxIcon from "@mui/icons-material/GifBox";
+import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import { Loader2 } from "lucide-react";
+
 const HashField: NextPage<
   HashFieldProps & { handleFocus: FocusEventHandler<HTMLTextAreaElement> } & {
     handleBlur: FocusEventHandler<HTMLTextAreaElement>;
-  } & { focused: boolean }
+  } & { focused: boolean, loading: boolean, length: number }
 > = ({
   control,
   name,
@@ -26,20 +37,40 @@ const HashField: NextPage<
   handleFocus,
   handleBlur,
   focused,
+  loading,
+  length
 }) => {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col justify-start items-start gap-2">
-          <FormLabel className="font-bold">{label}</FormLabel>
-          <FormControl className="no-focus text-light-1">
-            <div className="w-full flex flex-col border-b-2 border-light-3 pb-2">
+        <FormItem
+          className={`flex flex-col justify-start items-start gap-0 w-full ${
+            focused ? "h-auto" : "h-[100px]"
+          }`}
+        >
+          <FormControl className="no-focus text-black">
+            <div
+              className={`w-full flex flex-col ${
+                focused ? "bubble-foc" : "bubble"
+              } rounded-r-2xl rounded-bl-2xl rounded-tl-none px-2`}
+            >
+              {focused && (
+                <div className={`flex items-center justify-start w-full`}>
+                  <Button
+                    className="flex items-center justify-start gap-1 w-auto h-auto hover:bg-primary text-[12px] p-1 rounded-full"
+                    size={"sm"}
+                  >
+                    <PublicIcon className="text-inherit" fontSize="small" />
+                    Everyone can reply
+                  </Button>
+                </div>
+              )}
               <HashTextarea
                 placeholder={placeholder || label}
                 {...field}
-                className="bg-transparent text-light-1 textarea"
+                className="bg-transparent bg-opacity-10 text-black w-full pl-2 textarea"
                 maxLength={maxLength}
                 onChange={field.onChange}
                 onFocus={handleFocus}
@@ -47,21 +78,75 @@ const HashField: NextPage<
                 rows={focused ? rows : 1}
               />
               {focused && (
-                <div
-                  className={`flex items-center ${
-                    focused ? "justify-between" : "justify-end"
-                  } w-full`}
-                >
-                  <Button
-                    variant={"ghost"}
-                    className="flex items-center gap-1 text-[#CBCCFF]"
-                  >
-                    <PublicIcon className="text-[#CBCCFF]" />
-                    Everyone can reply
-                  </Button>
-                  <span className="text-light-3">{field.value.length}/250</span>
+                <div className={`flex items-center justify-end w-full px-5 pt-2`}>
+                  <span className="text-light-3 text-[12px]">
+                    {field.value.length}/250
+                  </span>
                 </div>
               )}
+              <div className="grid grid-cols-2 gap-10 pl-2">
+                <div className="flex items-center w-full gap-5">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="rounded-full">
+                          <ImageIcon
+                            className="text-primary"
+                            fontSize="small"
+                          />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Media</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="rounded-full">
+                          <GifBoxIcon
+                            className="text-primary"
+                            fontSize="small"
+                          />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>GIF</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="rounded-full">
+                          <InsertEmoticonIcon
+                            className="text-primary"
+                            fontSize="small"
+                          />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Emojis</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+                <div className="flex items-center justify-end">
+                  <Button
+                    className="rounded-full w-20"
+                    variant={"default"}
+                    type="submit"
+                    disabled={length < 1 || loading}
+                    size={"sm"}
+                  >
+                    {loading && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    Post
+                  </Button>
+                </div>
+              </div>
             </div>
           </FormControl>
           <FormMessage />

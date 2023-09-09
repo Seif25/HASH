@@ -22,8 +22,8 @@ function ViewerMoreMenu({ id, authorId, username }: { id: string; authorId: stri
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant={"ghost"} className="rounded-full">
-            <MoreVertIcon className="text-[#CBCCFF]" />
+          <Button variant={"ghost"} className="rounded-full w-5 h-5 p-3 flex items-center justify-center">
+            <MoreVertIcon className="text-white" fontSize="small"/>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64 flex flex-col gap-2 p-2">

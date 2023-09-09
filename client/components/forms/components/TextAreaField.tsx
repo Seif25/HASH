@@ -28,7 +28,7 @@ const TextAreaField: NextPage<TextAreaProps> = ({
             <Textarea
               placeholder={placeholder || label}
               {...field}
-              className="bg-transparent text-light-1"
+              className="bg-transparent text-accent1"
               rows={rows}
               maxLength={maxLength}
               onChange={field.onChange}

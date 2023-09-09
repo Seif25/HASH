@@ -1,4 +1,4 @@
-import { HashValidation } from "@/lib/validations/hash";
+import { CommentValidation, HashValidation } from "@/lib/validations/hash";
 import { UserValidation } from "@/lib/validations/user";
 import { Control } from "react-hook-form";
 import * as z from "zod";
@@ -14,6 +14,7 @@ export type MongoUser = {
   location?: string;
   birthDate?: Date;
   onBoarded?: boolean;
+  verified?: boolean;
 };
 
 export type User = {
@@ -34,6 +35,10 @@ export type TextFieldProps = {
 
 export type HashFieldProps = {
   control: Control<z.infer<typeof HashValidation>> | undefined;
+} & Omit<TextAreaProps, "control">
+
+export type CommentFieldProps = {
+  control: Control<z.infer<typeof CommentValidation>> | undefined;
 } & Omit<TextAreaProps, "control">
 
 export type TextAreaProps = {

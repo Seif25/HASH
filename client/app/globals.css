@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb]
+bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb]
+bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] */
+
 .auth {
   background: #101010;
   /* background: #008e8b; */
@@ -9,15 +13,19 @@
 }
 
 .app {
-  @apply bg-black text-[#CBCCFF];
+  @apply bg-gradient-to-b from-[#070f16] via-[#000a13] to-black text-accent1 lg:p-10;
 }
 
 .main {
   @apply flex min-h-screen flex-1 flex-col items-center;
 }
 
+/* .navbar {
+  @apply fixed top-10 inline-block mx-auto items-center justify-between px-10 py-5 bg-accent2 h-20 rounded-lg;
+} */
+
 .navbar {
-  @apply fixed top-0 z-30 flex w-full items-center justify-between px-10 py-5 bg-transparent h-20;
+  @apply z-30 w-full h-auto mb-5 max-w-full mx-auto my-0 flex items-center justify-between p-5 lg:rounded-2xl bg-[#13161a] bg-opacity-100;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -36,23 +44,35 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #CBCCFF;
+  background: #345b91;
 }
 
-.leftsidebar {
+/* .leftsidebar {
   @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-dark-4 bg-glassmorphism pb-5 pt-28 max-md:hidden;
+} */
+
+.left-sidebar {
+  @apply sticky left-0 top-0 z-20 flex h-screen w-[20%] flex-col justify-between overflow-auto rounded-2xl p-5 max-md:hidden bg-[#13161a] bg-opacity-100;
 }
 
-.leftsidebar-link {
-  @apply relative flex justify-start gap-4 rounded-full p-4 text-[#CBCCFF];
+/* .rightsidebar {
+  @apply sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-glassmorphism px-10 pb-6 pt-28 max-xl:hidden;
+} */
+
+.right-sidebar {
+  @apply sticky right-0 top-0 z-20 flex h-screen w-[20%] flex-col justify-between gap-12 overflow-auto rounded-2xl p-5 max-xl:hidden bg-[#13161a] bg-opacity-100;
 }
 
-.leftsidebar-active-link {
-  @apply relative flex justify-start gap-4 rounded-full p-4 text-[#CBCCFF] bg-[#474B76] font-bold;
+.left-sidebar-link {
+  @apply relative flex justify-start items-center gap-4 rounded-full p-4 text-white;
 }
 
-.leftsidebar-link:hover {
-  @apply bg-[#474B76] bg-opacity-10;
+.left-sidebar-active-link {
+  @apply relative flex justify-start gap-4 rounded-full p-4 text-white bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] font-bold;
+}
+
+.left-sidebar-link:hover {
+  @apply bg-primary bg-opacity-10;
 }
 
 .footer {
@@ -64,19 +84,15 @@
 }
 
 .footer-link {
-  @apply relative flex flex-col items-center gap-2 rounded-full p-2 sm:flex-1 sm:px-2 sm:py-2.5 text-[#CBCCFF];
+  @apply relative flex flex-col items-center gap-2 rounded-full p-2 sm:flex-1 sm:px-2 sm:py-2.5 text-accent1;
 }
 
 .footer-active-link {
-  @apply relative flex flex-col items-center gap-2 rounded-full p-2 sm:flex-1 sm:px-2 sm:py-2.5 bg-[#474B76] font-bold;
+  @apply relative flex flex-col items-center gap-2 rounded-full p-2 sm:flex-1 sm:px-2 sm:py-2.5 bg-accent2 font-bold;
 }
 
 .footer-link:hover {
-  @apply bg-[#474B76] bg-opacity-10;
-}
-
-.rightsidebar {
-  @apply sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-glassmorphism px-10 pb-6 pt-28 max-xl:hidden;
+  @apply bg-accent2 bg-opacity-10;
 }
 
 .banner {
@@ -90,6 +106,7 @@
   border: none;
   overflow: auto;
   outline: none;
+  position: relative;
 
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -98,6 +115,52 @@
   resize: none; /*remove the resize handle on the bottom right*/
 }
 
-/* .textarea {
-  @apply;
+/* .textarea::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10px;
+  width: 25px;
+  height: 15px;
+  background-color: red;
+  z-index: 1;
 } */
+
+.bubble {
+  height: 100%;
+  width: 100%;
+  background: white;
+  position: relative;
+  padding: 10px;
+}
+.bubble:before {
+  content: "";
+  position: absolute;
+  top: -3%;
+  left: -11px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  transform: rotate(135deg) translate(-50%);
+  border-right: 10px solid white;
+}
+.bubble-foc {
+  height: 100%;
+  width: 100%;
+  background: white;
+  position: relative;
+  padding: 10px;
+}
+.bubble-foc::before {
+  content: "";
+  position: absolute;
+  top: -1.25%;
+  left: -11px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  transform: rotate(135deg) translate(-50%);
+  border-right: 10px solid white;
+}

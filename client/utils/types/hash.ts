@@ -9,6 +9,7 @@ export type MongoHash = {
 
 export type HashCardProps = {
   id: string;
+  _id: string
   content: string;
   currentUserId: string | undefined;
   parentId: string | null;
@@ -17,10 +18,9 @@ export type HashCardProps = {
   comments: string[];
   author: User;
   media: Media[] | null;
-  verified: boolean;
 };
 
-type Media = {
+export type Media = {
   url: string;
   alt: string;
   id: string;

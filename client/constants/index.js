@@ -4,35 +4,38 @@ import Favorite from "@mui/icons-material/Favorite"
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PeopleIcon from '@mui/icons-material/People';
 import PersonIcon from '@mui/icons-material/Person';
+// import { Home } from  '@styled-icons/boxicons-solid/Home'
+
 
 export const sidebarLinks = [
   {
-    icon: <Home fontSize="medium" sx={{ color: "white" }}/>,
+    icon: <Home fontSize="medium" sx={{ color: "#fff" }}/>,
+    // icon: <Home className="w-[20px] h-[20px] text-white" size="small"/>,
     route: "/",
     label: "Home",
   },
   {
-    icon: <Search fontSize="medium" sx={{ color: "white" }}/>,
+    icon: <Search fontSize="medium" sx={{ color: "#fff" }} />,
     route: "/search",
     label: "Search",
   },
   {
-    icon: <Favorite fontSize="medium" sx={{ color: "white" }}/>,
+    icon: <Favorite fontSize="medium" sx={{ color: "#fff" }}/>,
     route: "/activity",
     label: "Activity",
   },
   {
-    icon: <AddPhotoAlternateIcon fontSize="medium" sx={{ color: "white" }}/>,
+    icon: <AddPhotoAlternateIcon fontSize="medium" sx={{ color: "#fff" }}/>,
     route: "/create-hash",
     label: "Create Hash",
   },
   {
-    icon: <PeopleIcon fontSize="medium" sx={{ color: "white" }}/>,
+    icon: <PeopleIcon fontSize="medium" sx={{ color: "#fff" }}/>,
     route: "/communities",
     label: "Communities",
   },
   {
-    icon: <PersonIcon fontSize="medium" sx={{ color: "white" }}/>,
+    icon: <PersonIcon fontSize="medium" sx={{ color: "#fff" }}/>,
     route: "/profile",
     label: "Profile",
   },
