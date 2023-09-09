@@ -8,7 +8,7 @@ function Footer() {
   const router = useRouter();
   const pathname = usePathname();
   return (
-    <footer className="footer">
+    <footer className="footer z-30">
       <div className="footer-container">
         {sidebarLinks.map((link) => {
           const isActive =

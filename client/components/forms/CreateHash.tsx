@@ -20,9 +20,10 @@ import { Loader2 } from "lucide-react";
 
 interface Props {
   userId: string;
+  image: string | undefined;
 }
 
-const CreateNewHash: NextPage<Props> = ({ userId }) => {
+const CreateNewHash: NextPage<Props> = ({ userId, image }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [focused, setFocused] = useState(false);
@@ -67,7 +68,7 @@ const CreateNewHash: NextPage<Props> = ({ userId }) => {
           className="flex items-start justify-start gap-5 p-10 bg-accent2 rounded-lg"
         >
           <Image
-            src="/assets/profile-pic.jpg"
+            src={image ?? ""}
             alt=""
             width={42}
             height={42}

@@ -24,6 +24,12 @@ const hashSchema = new mongoose.Schema({
       url: { type: String },
       alt: { type: String },
     }
+  ],
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    }
   ]
 });
 

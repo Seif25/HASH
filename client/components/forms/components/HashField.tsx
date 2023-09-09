@@ -4,7 +4,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
 } from "@/components/ui/form";
 import { HashFieldProps } from "@/utils/types/user";
 import { HashTextarea } from "@/components/ui/hashtextarea";
@@ -46,9 +45,7 @@ const HashField: NextPage<
       name={name}
       render={({ field }) => (
         <FormItem
-          className={`flex flex-col justify-start items-start gap-0 w-full ${
-            focused ? "h-auto" : "h-[100px]"
-          }`}
+          className={`flex flex-col justify-start items-start gap-0 w-full`}
         >
           <FormControl className="no-focus text-black">
             <div
@@ -70,7 +67,7 @@ const HashField: NextPage<
               <HashTextarea
                 placeholder={placeholder || label}
                 {...field}
-                className="bg-transparent bg-opacity-10 text-black w-full pl-2 textarea"
+                className="bg-transparent text-black w-full pl-2 textarea"
                 maxLength={maxLength}
                 onChange={field.onChange}
                 onFocus={handleFocus}

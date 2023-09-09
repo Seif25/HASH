@@ -23,6 +23,7 @@ const HashCard: FC<HashCardProps> = ({
   community,
   comments,
   media,
+  likes
 }) => {
   moment.updateLocale("en", {
     relativeTime: {
@@ -53,7 +54,7 @@ const HashCard: FC<HashCardProps> = ({
 
   return (
     <article key={id} className="w-full">
-      <div className="flex flex-col gap-5 px-0 lg:p-5 pb-5 w-full bg-accent2 rounded-lg">
+      <div className="flex flex-col gap-5 p-5 w-full bg-accent2 rounded-lg">
         <div className="flex items-start justify-between gap-3 w-full">
           {/* User Information + Hash Information */}
           <div className="flex w-auto flex-1 flex-row items-center gap-0">
@@ -89,12 +90,12 @@ const HashCard: FC<HashCardProps> = ({
             {currentUserId === author.id ? (
               <AuthorMoreMenu
                 id={id.toString()}
-                authorId={currentUserId ?? ""}
+                authorId={currentUserId?.toString() ?? ""}
               />
             ) : (
               <ViewerMoreMenu
                 id={id.toString()}
-                authorId={currentUserId ?? ""}
+                authorId={currentUserId?.toString() ?? ""}
                 username={author.username ?? ""}
               />
             )}
@@ -131,13 +132,14 @@ const HashCard: FC<HashCardProps> = ({
                   {/* <div className="z-20"> */}
                   <ImageDialog
                     media={m}
-                    commentCount={0}
-                    likeCount={0}
+                    commentCount={comments.length}
+                    likeCount={likes?.length ?? 0}
                     repostCount={0}
                     viewCount={0}
                     id={id.toString()}
-                    currentUserId={currentUserId}
+                    currentUserId={currentUserId ?? ""}
                     index={index}
+                    liked={likes?.includes(currentUserId ?? "") ?? false}
                   />
                 </div>
                 // </div>
@@ -147,13 +149,16 @@ const HashCard: FC<HashCardProps> = ({
         </div>
         <div className="flex items-center justify-between w-full">
           <HashLinks
-            commentCount={0}
-            likeCount={0}
+            commentCount={comments.length}
+            likeCount={likes?.length ?? 0}
             repostCount={0}
             viewCount={0}
+            hashId={id.toString()}
+            userId={currentUserId?.toString() ?? ""}
+            liked={likes?.includes(currentUserId?.toString() ?? "") ?? false}
           />
           <div className="w-[10%] flex items-center justify-end">
-            <ShareMenu id={id.toString()} authorId={currentUserId ?? ""} />
+            <ShareMenu id={id.toString()} authorId={currentUserId?.toString() ?? ""} />
           </div>
         </div>
       </div>

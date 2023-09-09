@@ -17,7 +17,7 @@ const CreateHash: NextPage = async () => {
 
     return (
         <>
-            <CreateNewHash userId={userInfo._id.toString()}/>
+            <CreateNewHash userId={userInfo._id.toString()} image={userInfo.image}/>
         </>
     )
 }

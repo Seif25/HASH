@@ -2,10 +2,6 @@ import { Media } from "@/utils/types/hash";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { AspectRatio } from "../ui/aspect-ratio";
@@ -19,9 +15,10 @@ interface ImageDialogProps {
   likeCount: number;
   viewCount: number;
   repostCount: number;
-  currentUserId?: string;
+  currentUserId: string;
   id: string;
   index: number;
+  liked: boolean
 }
 
 function ImageDialog({
@@ -33,6 +30,7 @@ function ImageDialog({
   currentUserId,
   id,
   index,
+  liked
 }: ImageDialogProps) {
   return (
     <Dialog>
@@ -83,9 +81,12 @@ function ImageDialog({
             likeCount={likeCount}
             viewCount={viewCount}
             repostCount={repostCount}
+            userId={currentUserId.toString()}
+            hashId={id}
+            liked={liked}
           />
           <div className="w-[10%] flex items-center justify-end">
-            <ShareMenu id={id.toString()} authorId={currentUserId ?? ""} />
+            <ShareMenu id={id.toString()} authorId={currentUserId?.toString() ?? ""} />
           </div>
         </div>
       </DialogContent>
