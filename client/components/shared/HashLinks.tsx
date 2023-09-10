@@ -1,10 +1,8 @@
 "use client";
 
-import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import CachedIcon from "@mui/icons-material/Cached";
 import {
   Tooltip,
   TooltipContent,
@@ -13,15 +11,20 @@ import {
 } from "@/components/ui/tooltip";
 import { likeHash, unlikeHash } from "@/lib/actions/hash.actions";
 import { usePathname } from "next/navigation";
+import CommentButton from "../buttons/CommentButton";
+import RepostButton from "../buttons/RepostButton";
+import { abbreviateNumber } from "@/lib/utils";
 
 interface HashLinksProps {
-  commentCount: number | string;
-  likeCount: number | string;
-  repostCount: number | string;
-  viewCount: number | string;
+  commentCount: number;
+  likeCount: number;
+  repostCount: number;
+  viewCount: number;
   userId: string;
   hashId: string;
   liked: boolean;
+  image: string
+  reposted?: boolean;
 }
 
 function HashLinks({
@@ -32,6 +35,8 @@ function HashLinks({
   userId,
   hashId,
   liked,
+  image,
+  reposted
 }: HashLinksProps) {
   const pathname = usePathname();
 
@@ -46,43 +51,9 @@ function HashLinks({
   return (
     <div className="flex items-center gap-5 w-[90%] px-5">
       {/* Comment */}
-      <div className="flex items-center gap-1">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className="w-5 h-5 p-3 flex items-center justify-center">
-                <CommentIcon
-                  className="text-white hover:text-primary"
-                  fontSize="small"
-                />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Comment</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <span>{commentCount}</span>
-      </div>
+      <CommentButton commentCount={commentCount} userId={userId} parentId={hashId} image={image} />
       {/* Re-post */}
-      <div className="flex items-center gap-1">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className="w-5 h-5 p-3 flex items-center justify-center">
-                <CachedIcon
-                  className="text-white hover:text-green-500"
-                  fontSize="small"
-                />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Repost</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <span>{repostCount}</span>
-      </div>
+      <RepostButton repostCount={repostCount} pathname={pathname} hashId={hashId} userId={userId} reposted={reposted} />
       {/* Like */}
       <div className="flex items-center gap-1">
         <TooltipProvider>
@@ -118,7 +89,7 @@ function HashLinks({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <span>{likeCount}</span>
+        <span>{abbreviateNumber(likeCount)}</span>
       </div>
       {/* Views */}
       <div className="flex items-center gap-1">
@@ -137,7 +108,7 @@ function HashLinks({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <span>{viewCount}</span>
+        <span>{abbreviateNumber(viewCount)}</span>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ export type Hash = {
   createdAt: Date;
   media: Media[];
   likes: string[];
+  reposts: Repost[]
 };
 
 export type HashCardProps = {
@@ -30,6 +31,7 @@ export type HashCardProps = {
   author: User;
   media: Media[] | null;
   likes: string[];
+  reposts: Repost[];
 };
 
 export type Media = {
@@ -37,3 +39,8 @@ export type Media = {
   alt: string;
   id: string;
 };
+
+export type Repost = {
+  user: string
+  quote: string
+}

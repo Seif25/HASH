@@ -14,6 +14,8 @@ import ShareMenu from "@/components/shared/ShareMenu";
 import CreateComment from "@/components/forms/CreateComment";
 import { getUser } from "@/lib/actions/user.actions";
 import { MongoUser } from "@/utils/types/user";
+import CachedIcon from "@mui/icons-material/Cached";
+
 
 async function CommentCard({
   hashId,
@@ -29,6 +31,15 @@ async function CommentCard({
     dbUser = await getUser({ clerkId: user.id });
   }
 
+  let repostedByMe;
+  if (hash.reposts.length > 0) {
+    if (dbUser) {
+      repostedByMe = hash.reposts.find(
+        (repost) => repost.user?.toString() === dbUser?._id.toString()
+      );
+    }
+  }
+
   function formatContent(input: string) {
     const words = input.trim().split(/\s+/);
 
@@ -40,6 +51,12 @@ async function CommentCard({
     <article className="w-full">
       {hash && (
         <div className="flex flex-col gap-5 p-5 w-full bg-accent2 rounded-lg">
+          {repostedByMe && (
+            <p className="italic font-bold text-green-500 flex items-center gap-1">
+              <CachedIcon fontSize="small" color="inherit" />
+              You reposted
+            </p>
+          )}
           <div className="flex items-start justify-between gap-3 w-full">
             {/* User Information + Hash Information */}
             <div className="flex w-auto flex-1 flex-row items-center gap-0">
@@ -136,7 +153,11 @@ async function CommentCard({
                             id={hash._id.toString()}
                             currentUserId={dbUser?._id.toString() ?? ""}
                             index={index}
-                            liked={hash.likes?.includes(dbUser?._id.toString() ?? "") ?? false}
+                            liked={
+                              hash.likes?.includes(
+                                dbUser?._id.toString() ?? ""
+                              ) ?? false
+                            }
                           />
                         </div>
                       ))}
@@ -156,11 +177,15 @@ async function CommentCard({
                 <HashLinks
                   commentCount={hash.children.length}
                   likeCount={hash.likes?.length ?? 0}
-                  repostCount={"92"}
+                  repostCount={hash.reposts?.length ?? 0}
                   viewCount={"12.9m"}
                   userId={dbUser?._id.toString() ?? ""}
                   hashId={hash._id.toString()}
-                  liked={hash.likes?.includes(dbUser?._id.toString() ?? "") ?? false}
+                  liked={
+                    hash.likes?.includes(dbUser?._id.toString() ?? "") ?? false
+                  }
+                  image={dbUser?.image ?? ""}
+                  reposted={repostedByMe ? true : false}
                 />
                 <div className="w-[10%] flex items-center justify-end">
                   <ShareMenu
@@ -181,7 +206,11 @@ async function CommentCard({
                 {hash.children.length > 0 &&
                   !isChild &&
                   hash.children.map((c: Hash) => (
-                    <CommentCard hashId={c._id.toString()} isChild={true} key={c._id}/>
+                    <CommentCard
+                      hashId={c._id.toString()}
+                      isChild={true}
+                      key={c._id}
+                    />
                   ))}
               </div>
             </div>

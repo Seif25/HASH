@@ -5,6 +5,7 @@ import User from "../models/user.model";
 import { connectDB } from "../mongoose";
 import { revalidatePath } from "next/cache";
 import { addDays } from "date-fns";
+import mongoose from "mongoose";
 
 export async function updateUser({
   _id,
@@ -57,4 +58,14 @@ export async function getUser({clerkId}: {clerkId: string}): Promise<MongoUser |
         throw new Error(`Error getting user: ${error.message}`)
     }
 
+}
+
+export async function getUserById(id:string) {
+  connectDB()
+
+  try {
+    return await User.findById(new mongoose.Types.ObjectId(id))
+  } catch (error: any) {
+   throw new Error(`Error getting user: ${error.message}`) 
+  }
 }

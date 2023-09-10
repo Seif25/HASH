@@ -15,6 +15,8 @@ export type MongoUser = {
   birthDate?: Date;
   onBoarded?: boolean;
   verified?: boolean;
+  following?: string[];
+  followers?: string[];
 };
 
 export type User = {

@@ -41,3 +41,22 @@ export function formatThreadCount(count: number): string {
     return `${threadCount} ${threadWord}`;
   }
 }
+
+export function abbreviateNumber(number: number) {
+  if (number < 1000) {
+    return number.toString();
+  }
+
+  const suffixes = ["", "k", "M", "B", "T"];
+  const suffixNum = Math.min(Math.floor(("" + number).length / 3), suffixes.length - 1);
+
+  if (suffixNum >= suffixes.length) {
+    return "Number too large";
+  }
+
+  const shortNumber = parseFloat(
+    (suffixNum !== 0 ? number / Math.pow(1000, suffixNum) : number).toPrecision(3)
+  );
+
+  return shortNumber.toString() + suffixes[suffixNum];
+}

@@ -8,6 +8,7 @@ import { AspectRatio } from "../ui/aspect-ratio";
 import Image from "next/image";
 import HashLinks from "../shared/HashLinks";
 import ShareMenu from "../shared/ShareMenu";
+import { currentUser } from "@clerk/nextjs";
 
 interface ImageDialogProps {
   media: Media;
@@ -21,7 +22,7 @@ interface ImageDialogProps {
   liked: boolean
 }
 
-function ImageDialog({
+async function ImageDialog({
   media,
   commentCount,
   likeCount,
@@ -32,6 +33,7 @@ function ImageDialog({
   index,
   liked
 }: ImageDialogProps) {
+  const user = await currentUser()
   return (
     <Dialog>
       <DialogTrigger asChild className="z-20 cursor-pointer">
@@ -84,6 +86,7 @@ function ImageDialog({
             userId={currentUserId.toString()}
             hashId={id}
             liked={liked}
+            image={user?.imageUrl ?? ""}
           />
           <div className="w-[10%] flex items-center justify-end">
             <ShareMenu id={id.toString()} authorId={currentUserId?.toString() ?? ""} />

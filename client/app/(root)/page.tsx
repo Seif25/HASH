@@ -48,6 +48,7 @@ export default async function Home() {
                     comments={hash.children}
                     media={hash.media}
                     likes={hash.likes}
+                    reposts={hash.reposts}
                   />
                 ))}
               </section>
@@ -61,18 +62,6 @@ export default async function Home() {
           </Tabs>
         </section>
       )}
-
-      {/* <pre>
-        <code>
-          {
-            JSON.stringify(
-              userHashes.hashes[1].author,
-              null,
-              2
-            )
-          }
-        </code>
-      </pre> */}
     </main>
   );
 }

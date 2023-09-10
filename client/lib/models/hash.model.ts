@@ -30,6 +30,12 @@ const hashSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     }
+  ],
+  reposts: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      quote: { type: String }
+    }
   ]
 });
 

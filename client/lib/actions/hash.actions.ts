@@ -5,6 +5,7 @@ import { connectDB } from "../mongoose";
 import Hash from "../models/hash.model";
 import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
+import User from "../models/user.model";
 
 interface CommentParams {
   id: string;
@@ -29,8 +30,8 @@ export async function createHash({
       community: null, //TODO: community
     });
 
-    await Hash.findByIdAndUpdate(author, {
-      $push: { hash: createdHash._id },
+    await User.findByIdAndUpdate(author, {
+      $push: { hashes: createdHash._id },
     });
 
     revalidatePath(pathname);
@@ -56,14 +57,14 @@ export async function fetchHashes(pageNumber = 1, pageSize = 20) {
       .populate({
         path: "author",
         model: "User",
-        select: "_id id name username verified image",
+        select: "_id id name username verified image bio",
       })
       .populate({
         path: "children",
         populate: {
           path: "author",
           model: "User",
-          select: "_id id name parentId image verified username",
+          select: "_id id name parentId image verified username bio",
         },
       });
 
@@ -86,6 +87,7 @@ export async function deleteHash(id: string): Promise<void> {
 
   try {
     await Hash.findByIdAndDelete(id);
+    await User.findOneAndUpdate({ hashes: id }, { $pull: { hash: id } });
   } catch (error: any) {
     throw new Error(`Error deleting hash: ${error.message}`);
   }
@@ -101,14 +103,14 @@ export async function getHash(id: string): Promise<any> {
       .populate({
         path: "author",
         model: "User",
-        select: "_id id name username verified image",
+        select: "_id id name username verified image bio",
       })
       .populate({
         path: "children",
         populate: {
           path: "author",
           model: "User",
-          select: "_id id name parentId image verified username",
+          select: "_id id name parentId image verified username bio",
         },
       });
 
@@ -153,22 +155,22 @@ export async function addComment({
 export async function likeHash({
   id,
   userId,
-  pathname
+  pathname,
 }: {
   id: string;
   userId: string;
-  pathname: string
+  pathname: string;
 }): Promise<void> {
   connectDB();
-
 
   try {
     await Hash.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
       $push: { likes: new mongoose.Types.ObjectId(userId) },
     });
-
+    await User.findByIdAndUpdate(new mongoose.Types.ObjectId(userId), {
+      $push: { likes: new mongoose.Types.ObjectId(id) },
+    });
     revalidatePath(pathname);
-
   } catch (error: any) {
     throw new Error(`Error liking hash: ${error.message}`);
   }
@@ -177,21 +179,59 @@ export async function likeHash({
 export async function unlikeHash({
   id,
   userId,
-  pathname
+  pathname,
 }: {
   id: string;
   userId: string;
-  pathname: string
-}): Promise<void>{
-  connectDB()
+  pathname: string;
+}): Promise<void> {
+  connectDB();
 
   try {
     await Hash.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
       $pull: { likes: new mongoose.Types.ObjectId(userId) },
-    })
+    });
 
-    revalidatePath(pathname)
+    revalidatePath(pathname);
   } catch (error: any) {
     throw new Error(`Error un-liking hash: ${error.message}`);
+  }
+}
+
+export async function repostHash({
+  id,
+  userId,
+  pathname,
+  quote,
+}: {
+  id: string;
+  userId: string;
+  pathname: string;
+  quote?: string;
+}) {
+  connectDB();
+
+  try {
+    const repost = {
+      user: new mongoose.Types.ObjectId(userId),
+      quote: quote,
+    };
+    const hash = await Hash.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
+      $push: {
+        reposts: repost,
+      },
+    });
+
+    if (!hash) {
+      throw new Error("Hash not found");
+    } else {
+      await User.findByIdAndUpdate(new mongoose.Types.ObjectId(userId), {
+        $push: { hashes: new mongoose.Types.ObjectId(id) },
+      });
+
+      revalidatePath(pathname);
+    }
+  } catch (error: any) {
+    throw new Error(`Error reposting hash: ${error.message}`);
   }
 }
