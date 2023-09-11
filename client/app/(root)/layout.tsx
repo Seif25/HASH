@@ -6,6 +6,7 @@ import LeftSidebar from "@/components/shared/LeftSidebar";
 import RightSidebar from "@/components/shared/RightSidebar";
 import Footer from "@/components/shared/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
+import Search from "@/components/shared/Search";
 
 const lato = Lato({
   weight: ["300", "400", "700", "900"],

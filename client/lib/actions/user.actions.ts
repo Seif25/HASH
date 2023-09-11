@@ -4,8 +4,8 @@ import { MongoUser } from "@/utils/types/user";
 import User from "../models/user.model";
 import { connectDB } from "../mongoose";
 import { revalidatePath } from "next/cache";
-import { addDays } from "date-fns";
 import mongoose from "mongoose";
+import Hash from "../models/hash.model";
 
 export async function updateUser({
   _id,
@@ -18,8 +18,8 @@ export async function updateUser({
   birthDate,
   bio,
   pathname,
-  clerkId
-}: MongoUser & { pathname: string, clerkId: string }): Promise<void> {
+  clerkId,
+}: MongoUser & { pathname: string; clerkId: string }): Promise<void> {
   connectDB();
 
   try {
@@ -48,24 +48,42 @@ export async function updateUser({
   }
 }
 
-export async function getUser({clerkId}: {clerkId: string}): Promise<MongoUser | null> {
+export async function getUser({
+  clerkId,
+}: {
+  clerkId: string;
+}): Promise<MongoUser | null> {
   connectDB();
-  
-    try {
-        const user = await User.findOne({id: clerkId})
-        return user
-    } catch (error: any) {
-        throw new Error(`Error getting user: ${error.message}`)
-    }
-
-}
-
-export async function getUserById(id:string) {
-  connectDB()
 
   try {
-    return await User.findById(new mongoose.Types.ObjectId(id))
+    return await User.findOne({ id: clerkId });
   } catch (error: any) {
-   throw new Error(`Error getting user: ${error.message}`) 
+    throw new Error(`Error getting user: ${error.message}`);
+  }
+}
+
+export async function getUserById(id: string) {
+  connectDB();
+
+  try {
+    return await User.findById(new mongoose.Types.ObjectId(id));
+  } catch (error: any) {
+    throw new Error(`Error getting user: ${error.message}`);
+  }
+}
+
+export async function getUseProfile(id: string) {
+  connectDB();
+
+  try {
+    const userQuery = User.findOne({ id: id })
+      .populate({ path: "hashes", options: { sort: { createdAt: "desc" } } })
+      .populate({ path: "likes", options: { sort: { createdAt: "desc" } } })
+
+    const user = await userQuery.exec();
+
+    return user;
+  } catch (error: any) {
+    throw new Error(`Error getting user: ${error.message}`);
   }
 }

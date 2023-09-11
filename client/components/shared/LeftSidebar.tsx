@@ -3,7 +3,6 @@
 import { sidebarLinks } from "@/constants/index";
 import { SignOutButton, SignedIn } from "@clerk/nextjs";
 import Logout from "@mui/icons-material/Logout";
-import Button from "@mui/joy/Button";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -37,7 +36,6 @@ function LeftSidebar() {
           <SignOutButton signOutCallback={() => router.push('sign-in')}>
             <div className="flex cursor-pointer gap-1 left-sidebar-link">
               <Logout fontSize="medium" sx={{ color: "#fff" }} />
-
               <p className="text-accent1 max-lg:hidden">Logout</p>
             </div>
           </SignOutButton>

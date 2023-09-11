@@ -138,8 +138,8 @@ export async function addComment({
       community: null,
     });
 
-    await Hash.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
-      $push: { hash: createdHash._id },
+    await User.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
+      $push: { hashes: createdHash._id },
     });
 
     await Hash.findByIdAndUpdate(new mongoose.Types.ObjectId(parentId), {
@@ -233,5 +233,23 @@ export async function repostHash({
     }
   } catch (error: any) {
     throw new Error(`Error reposting hash: ${error.message}`);
+  }
+}
+
+export async function view(id: string): Promise<void> {
+  connectDB();
+
+  try {
+    await Hash.findByIdAndUpdate(
+      new mongoose.Types.ObjectId(id),
+      {
+        $inc: { views: 1 },
+      },
+      { upsert: true }
+    );
+
+    revalidatePath(`/hash/${id}`);
+  } catch (error: any) {
+    throw new Error(`Error finding hash: ${error.message}`);
   }
 }

@@ -33,6 +33,7 @@ const HashCard: FC<HashCardProps> = ({
   media,
   likes,
   reposts,
+  views
 }) => {
   let repostedByMe;
   if (reposts.length > 0) {
@@ -191,10 +192,11 @@ const HashCard: FC<HashCardProps> = ({
           </div>
         </div>
         {/* Hash Image + Content */}
+        {/* TODO: + Text Limit & View More */}
         <div className="px-10 flex flex-col gap-3 justify-center w-full">
           <Link href={`/hash/${id}`}>
             <h2 className="whitespace-pre-line break-all h-auto w-full text-sm">
-              {formatContent(content)}
+              {formatContent(content)} 
             </h2>
           </Link>
           {media && (
@@ -241,7 +243,7 @@ const HashCard: FC<HashCardProps> = ({
             commentCount={comments.length}
             likeCount={likes?.length ?? 0}
             repostCount={reposts.length ?? 0}
-            viewCount={123456789}
+            viewCount={views ?? 0}
             hashId={id.toString()}
             userId={currentUserId?.toString() ?? ""}
             liked={likes?.includes(currentUserId?.toString() ?? "") ?? false}

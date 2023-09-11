@@ -4,6 +4,7 @@ import Favorite from "@mui/icons-material/Favorite"
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PeopleIcon from '@mui/icons-material/People';
 import PersonIcon from '@mui/icons-material/Person';
+import { currentUser } from "@clerk/nextjs";
 // import { Home } from  '@styled-icons/boxicons-solid/Home'
 
 
@@ -36,7 +37,7 @@ export const sidebarLinks = [
   },
   {
     icon: <PersonIcon fontSize="medium" sx={{ color: "#fff" }}/>,
-    route: "/profile",
+    route: `/profile`,
     label: "Profile",
   },
 ];

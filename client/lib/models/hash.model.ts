@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const hashSchema = new mongoose.Schema({
   text: { type: String, required: true },
+  views: { type: Number, default: 0, required: true },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -36,7 +37,7 @@ const hashSchema = new mongoose.Schema({
       user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       quote: { type: String }
     }
-  ]
+  ],
 });
 
 const Hash = mongoose.models.Hash || mongoose.model("Hash", hashSchema);

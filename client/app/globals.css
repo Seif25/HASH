@@ -55,12 +55,13 @@ bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] */
   @apply sticky left-0 top-0 z-20 flex h-screen w-[20%] flex-col justify-between overflow-auto rounded-2xl p-5 max-md:hidden bg-[#13161a] bg-opacity-100;
 }
 
-/* .rightsidebar {
-  @apply sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-glassmorphism px-10 pb-6 pt-28 max-xl:hidden;
-} */
+
+.right-sidebar-component{
+  @apply sticky right-0 top-0 z-20 flex h-screen w-[20%] flex-col gap-2 overflow-auto rounded-2xl max-xl:hidden
+}
 
 .right-sidebar {
-  @apply sticky right-0 top-0 z-20 flex h-screen w-[20%] flex-col justify-between gap-12 overflow-auto rounded-2xl p-5 max-xl:hidden bg-[#13161a] bg-opacity-100;
+  @apply z-20 flex h-screen w-full flex-col justify-between gap-12 overflow-auto rounded-2xl p-5 max-xl:hidden bg-[#13161a] bg-opacity-100;
 }
 
 .left-sidebar-link {

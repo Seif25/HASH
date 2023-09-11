@@ -16,6 +16,11 @@ import { getUser } from "@/lib/actions/user.actions";
 import { MongoUser } from "@/utils/types/user";
 import CachedIcon from "@mui/icons-material/Cached";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 async function CommentCard({
   hashId,
@@ -60,32 +65,98 @@ async function CommentCard({
           <div className="flex items-start justify-between gap-3 w-full">
             {/* User Information + Hash Information */}
             <div className="flex w-auto flex-1 flex-row items-center gap-0">
-              <Link href={`/profile/${hash.author.id}`}>
-                {/* Profile Picture + Name + isVerified + Username */}
-                <div className="flex w-full flex-1 flex-row items-center justify-start gap-2">
-                  <Image
-                    src={hash.author.image ?? ""}
-                    alt="pp"
-                    width={42}
-                    height={42}
-                    className="rounded-full"
-                  />
-                  <div className="flex flex-col gap-0">
-                    <span className="font-extrabold text-ellipsis w-40 text-white flex items-center gap-1">
-                      {hash.author.name}
-                      {hash.author.verified && (
-                        <span className="flex items-center justify-center">
-                          <VerifiedIcon className="text-amber-400" />
+              <HoverCard>
+                <HoverCardTrigger>
+                  <Link href={`/profile/${hash.author.id}`}>
+                    {/* Profile Picture + Name + isVerified + Username */}
+                    <div className="flex w-full flex-1 flex-row items-center justify-start gap-2">
+                      <Image
+                        src={hash.author.image ?? ""}
+                        alt="pp"
+                        width={42}
+                        height={42}
+                        className="rounded-full"
+                      />
+                      <div className="flex flex-col gap-0">
+                        <span className="font-extrabold text-ellipsis w-40 text-white flex items-center gap-1">
+                          {hash.author.name}
+                          {hash.author.verified && (
+                            <span className="flex items-center justify-center">
+                              <VerifiedIcon className="text-amber-400" />
+                            </span>
+                          )}
                         </span>
-                      )}
-                    </span>
-                    <span className="font-light text-accent1 text-ellipsis w-40">
-                      {"@"}
-                      {hash.author.username}
-                    </span>
+                        <span className="font-light text-accent1 text-ellipsis w-40">
+                          {"@"}
+                          {hash.author.username}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="flex flex-col gap-3 w-full h-auto">
+                    <div className="flex flex-col gap-1 w-full h-auto">
+                      <div className="flex items-center justify-between w-full">
+                        <Link href={`/profile/${hash.author.id}`}>
+                          <Image
+                            src={hash.author.image ?? ""}
+                            alt="pp"
+                            width={52}
+                            height={52}
+                            className="rounded-full"
+                          />
+                        </Link>
+                        <button className="bg-gradient-to-b from-primary via-[#1183e8] to-[#0671cb] p-2 rounded-full w-20 z-20 hover:scale-105">
+                          Follow
+                        </button>
+                      </div>
+                      <Link href={`/profile/${hash.author.id}`}>
+                        <div className="flex items-center gap-1">
+                          <span className="font-extrabold truncate w-20 lg:w-auto text-white flex items-center gap-0 hover:underline">
+                            {hash.author.name}
+                          </span>
+                          {hash.author.verified && (
+                            <span className="flex items-center justify-center">
+                              <VerifiedIcon
+                                className="text-amber-400"
+                                fontSize="small"
+                              />
+                            </span>
+                          )}
+                        </div>
+                      </Link>
+                      <Link href={`/profile/${hash.author.id}`}>
+                        <span className="font-light text-white truncate w-16 lg:w-auto">
+                          {"@"}
+                          {hash.author.username}
+                        </span>
+                      </Link>
+                    </div>
+                    <p className="whitespace-pre-line break-all h-auto w-full text-sm text-white">
+                      {hash.author.bio}
+                    </p>
+                    <div className="grid grid-cols-2 items-center gap-5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-white font-bold">
+                          {hash.author.following?.length ?? 0}
+                        </span>
+                        <span className="text-light-3 font-light">
+                          Following
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-white font-bold">
+                          {hash.author.followers?.length ?? 0}
+                        </span>
+                        <span className="text-light-3 font-light">
+                          Followers
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </HoverCardContent>
+              </HoverCard>
             </div>
             {/* More Information */}
             <div className="w-auto flex items-center justify-end">
@@ -146,10 +217,10 @@ async function CommentCard({
                         >
                           <ImageDialog
                             media={m}
-                            commentCount={0}
-                            likeCount={0}
-                            repostCount={0}
-                            viewCount={0}
+                            commentCount={hash.children.length}
+                            likeCount={hash.likes?.length ?? 0}
+                            repostCount={hash.reposts?.length ?? 0}
+                            viewCount={hash.views ?? 0}
                             id={hash._id.toString()}
                             currentUserId={dbUser?._id.toString() ?? ""}
                             index={index}
@@ -170,7 +241,9 @@ async function CommentCard({
                   {moment(hash.createdAt).format("hh:mm a")}
                 </span>
                 <span>• {moment(hash.createdAt).format("MMM D, YYYY")}</span>
-                <span>• {0} views</span>
+                <span>
+                  • {hash.views} {hash.views > 1 ? "views" : "view"}
+                </span>
               </div>
               {/* Links */}
               <div className="flex items-center justify-between w-full pt-5">
@@ -178,7 +251,7 @@ async function CommentCard({
                   commentCount={hash.children.length}
                   likeCount={hash.likes?.length ?? 0}
                   repostCount={hash.reposts?.length ?? 0}
-                  viewCount={"12.9m"}
+                  viewCount={hash.views ?? 0}
                   userId={dbUser?._id.toString() ?? ""}
                   hashId={hash._id.toString()}
                   liked={

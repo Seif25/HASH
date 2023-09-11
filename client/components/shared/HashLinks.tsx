@@ -108,7 +108,9 @@ function HashLinks({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <span>{abbreviateNumber(viewCount)}</span>
+        <span className="flex flex-col gap-1">
+          {abbreviateNumber(viewCount)}
+        </span>
       </div>
     </div>
   );

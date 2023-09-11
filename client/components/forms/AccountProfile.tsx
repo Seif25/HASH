@@ -22,14 +22,14 @@ interface Params {
 
 function AccountProfile({ user, btnTitle }: Params) {
   const [date, setDate] = useState<Date>(user.birthDate || new Date());
-  const pathname = usePathname()
-  const router = useRouter()
+  const pathname = usePathname();
+  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(UserValidation),
     defaultValues: {
       username: user.username || "",
-      name: user.name === "null null" ? "" : (user.name || ""),
+      name: user.name === "null null" ? "" : user.name || "",
       bio: user.bio || "",
       image: user.image || "",
       bannerUrl: user.bannerUrl || "",
@@ -39,8 +39,9 @@ function AccountProfile({ user, btnTitle }: Params) {
     },
   });
 
-
-  const onSubmit = async (values: z.infer<typeof UserValidation & { pathname: string }>) => {
+  const onSubmit = async (
+    values: z.infer<typeof UserValidation & { pathname: string }>
+  ) => {
     try {
       await updateUser({
         _id: user._id,
@@ -53,33 +54,50 @@ function AccountProfile({ user, btnTitle }: Params) {
         location: values.location,
         birthDate: values.birthDate,
         pathname,
-        clerkId: user.id ?? ""
-      })
-  
+        clerkId: user.id ?? "",
+      });
+
       if (pathname.startsWith("/profile/edit")) {
-        router.back()
+        router.back();
       } else {
-        router.push("/")
+        router.push("/");
       }
     } catch (error: any) {
-      console.log(error.message)
+      console.log(error.message);
     }
-
-  }
+  };
 
   return (
     <div>
-      <section
-        className="lg:rounded-lg p-10"
-        style={{
-          backgroundImage: `url("/assets/utopia-banner.png")`,
-          backgroundSize: "cover",
-          width: "100%",
-          height: "300px",
-        }}
-      ></section>
+      {user.bannerUrl ? (
+        <section
+          className="lg:rounded-lg p-10"
+          style={{
+            backgroundImage: `url(${
+              user.bannerUrl ||
+              `https://placehold.co/800x300/13161a/1991fe?text=${user.username};&font=Lato`
+            })`,
+            backgroundSize: "cover",
+            width: "100%",
+            height: "300px",
+          }}
+        ></section>
+      ) : (
+        <section
+          className="lg:rounded-lg p-5 bg-accent2 flex items-start justify-end"
+          style={{
+            backgroundSize: "cover",
+            width: "100%",
+            height: "150px",
+          }}
+        >
+          <button className="bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] rounded-full text-white p-2">
+            Add Banner
+          </button>
+        </section>
+      )}
       <Image
-        src={"/assets/profile-pic.jpg"}
+        src={user.image ? user.image : "/assets/profile-pic.png"}
         alt="banner"
         width={128}
         height={128}

@@ -1,8 +1,13 @@
-import { NextPage } from "next";
+import { Metadata, NextPage } from "next";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/actions/user.actions";
 import CreateNewHash from "@/components/forms/CreateHash";
+
+export const metadata: Metadata = {
+    title: 'Create Hash / Hash',
+    description: 'Create a new hash',
+  }
 
 const CreateHash: NextPage = async () => {
     const user = await currentUser();
