@@ -7,7 +7,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { TextAreaProps } from "@/utils/types/user";
+import { TextAreaProps } from "@/utils/types/user.types";
 
 const TextAreaField: NextPage<TextAreaProps> = ({
   control,

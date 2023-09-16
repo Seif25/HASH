@@ -1,96 +1,59 @@
-"use client";
-
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+// * ICONS
 import BarChartIcon from "@mui/icons-material/BarChart";
+
+// * SHADCN COMPONENTS
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { likeHash, unlikeHash } from "@/lib/actions/hash.actions";
-import { usePathname } from "next/navigation";
+
+// * COMPONENTS
 import CommentButton from "../buttons/CommentButton";
 import RepostButton from "../buttons/RepostButton";
+const LikeButton = dynamic(() => import("../shared/LikeButton"), {
+  ssr: false, // This ensures the component is only rendered on the client-side
+});
+
+// * UTILS
 import { abbreviateNumber } from "@/lib/utils";
+import dynamic from "next/dynamic";
 
 interface HashLinksProps {
+  hashId: string;
   commentCount: number;
   likeCount: number;
   repostCount: number;
   viewCount: number;
-  userId: string;
-  hashId: string;
+  currentUser: string;
   liked: boolean;
-  image: string
+  image: string;
   reposted?: boolean;
+  parentAuthor: string;
 }
 
-function HashLinks({
+export default function HashLinks({
   commentCount,
   likeCount,
   repostCount,
   viewCount,
-  userId,
+  currentUser,
   hashId,
   liked,
   image,
-  reposted
+  reposted,
+  parentAuthor,
 }: HashLinksProps) {
-  const pathname = usePathname();
-
-  const handleLike = async () => {
-    if (liked) {
-      await unlikeHash({ id: hashId, userId, pathname });
-    } else {
-      await likeHash({ id: hashId, userId, pathname });
-    }
-  };
 
   return (
-    <div className="flex items-center gap-5 w-[90%] px-5">
+    <div className="flex items-center gap-5 w-[95%]">
       {/* Comment */}
-      <CommentButton commentCount={commentCount} userId={userId} parentId={hashId} image={image} />
+      <CommentButton commentCount={commentCount} currentUser={currentUser} parentId={hashId} image={image} parentAuthor={parentAuthor}/>
       {/* Re-post */}
-      <RepostButton repostCount={repostCount} pathname={pathname} hashId={hashId} userId={userId} reposted={reposted} />
+      <RepostButton repostCount={repostCount} hashId={hashId} currentUser={currentUser} reposted={reposted} />
       {/* Like */}
-      <div className="flex items-center gap-1">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                className="w-5 h-5 p-3 flex items-center justify-center"
-                onClick={handleLike}
-              >
-                {liked ? (
-                  <FavoriteIcon
-                    className={`${
-                      liked
-                        ? "text-red-600 hover:text-white"
-                        : "text-white hover:text-red-600"
-                    }`}
-                    fontSize="small"
-                  />
-                ) : (
-                  <FavoriteBorderIcon
-                    className={`${
-                      liked
-                        ? "text-red-600 hover:text-white"
-                        : "text-white hover:text-red-600"
-                    }`}
-                    fontSize="small"
-                  />
-                )}
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{liked ? "Unlike" : "Like"}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <span>{abbreviateNumber(likeCount)}</span>
-      </div>
+      <LikeButton liked={liked} likeCount={likeCount} hashId={hashId} currentUser={currentUser} />
       {/* Views */}
       <div className="flex items-center gap-1">
         <TooltipProvider>
@@ -115,5 +78,3 @@ function HashLinks({
     </div>
   );
 }
-
-export default HashLinks;

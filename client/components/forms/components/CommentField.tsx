@@ -1,33 +1,39 @@
-import { NextPage } from "next";
+// *SHADCN COMPONENTS
 import {
   FormMessage,
   FormControl,
   FormField,
   FormItem,
 } from "@/components/ui/form";
-import { CommentFieldProps } from "@/utils/types/user";
 import { HashTextarea } from "@/components/ui/hashtextarea";
-import { FocusEventHandler } from "react";
 import { Button } from "@/components/ui/button";
+import { FocusEventHandler } from "react";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ImageIcon from "@mui/icons-material/Image";
-import GifBoxIcon from "@mui/icons-material/GifBox";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+// *LUCIDE
 import { Loader2 } from "lucide-react";
+import { Control } from "react-hook-form";
 
-const CommentField: NextPage<
-  CommentFieldProps & {
-    handleFocus: FocusEventHandler<HTMLTextAreaElement>;
-  } & {
-    handleBlur: FocusEventHandler<HTMLTextAreaElement>;
-  } & { focused: boolean, loading: boolean, length: number }
-> = ({
+// *UTILS
+import * as z from "zod";
+import { CommentValidation } from "@/lib/validations/hash";
+import HashFieldOptions from "@/components/shared/HashFieldOptions";
+
+interface CommentFieldProps {
+  control: Control<z.infer<typeof CommentValidation>> | undefined;
+  name: any;
+  label?: string;
+  maxLength: number;
+  rows: number;
+  placeholder: string;
+  handleFocus: FocusEventHandler<HTMLTextAreaElement>;
+  handleBlur: FocusEventHandler<HTMLTextAreaElement>;
+  focused: boolean;
+  loading: boolean;
+  length: number;
+  parentAuthor: string;
+}
+
+export default function CommentField({
   control,
   name,
   label,
@@ -38,8 +44,9 @@ const CommentField: NextPage<
   handleBlur,
   focused,
   loading,
-  length
-}) => {
+  length,
+  parentAuthor
+}: CommentFieldProps) {
   return (
     <FormField
       control={control}
@@ -47,12 +54,14 @@ const CommentField: NextPage<
       render={({ field }) => (
         <FormItem className="flex flex-col justify-start items-start gap-0 w-full">
           <FormControl className="no-focus text-black">
-            <div className={`w-full flex flex-col ${
+            <div
+              className={`w-full flex flex-col ${
                 focused ? "bubble-foc" : "bubble"
-              } rounded-r-2xl rounded-bl-2xl rounded-tl-none px-2`}>
+              } rounded-r-2xl rounded-bl-2xl rounded-tl-none px-2`}
+            >
               {focused && (
                 <span className="text-[12px] font-bold text-primary italic px-2 pt-2">
-                  {`Replying to @user1, @user2 and @user3`}
+                  {`Replying to @${parentAuthor}`}
                 </span>
               )}
               <HashTextarea
@@ -66,60 +75,16 @@ const CommentField: NextPage<
                 rows={focused ? rows : 1}
               />
               {focused && (
-                <div className={`flex items-center justify-end w-full px-5 pt-2`}>
+                <div
+                  className={`flex items-center justify-end w-full px-5 pt-2`}
+                >
                   <span className="text-light-3 text-[12px]">
                     {field.value.length}/250
                   </span>
                 </div>
               )}
-               <div className="grid grid-cols-2 gap-10 pl-2">
-                <div className="flex items-center w-full gap-5">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button className="rounded-full">
-                          <ImageIcon
-                            className="text-primary"
-                            fontSize="small"
-                          />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Media</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button className="rounded-full">
-                          <GifBoxIcon
-                            className="text-primary"
-                            fontSize="small"
-                          />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>GIF</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button className="rounded-full">
-                          <InsertEmoticonIcon
-                            className="text-primary"
-                            fontSize="small"
-                          />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Emojis</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
+              <div className="grid grid-cols-2 gap-10 pl-2">
+                <HashFieldOptions />
                 <div className="flex items-center justify-end">
                   <Button
                     className="rounded-full w-20"
@@ -142,6 +107,4 @@ const CommentField: NextPage<
       )}
     />
   );
-};
-
-export default CommentField;
+}

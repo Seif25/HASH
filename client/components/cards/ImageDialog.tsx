@@ -1,4 +1,4 @@
-import { Media } from "@/utils/types/hash";
+import { Media } from "@/utils/types/hash.types";
 import {
   Dialog,
   DialogContent,
@@ -78,12 +78,14 @@ async function ImageDialog({
           </div>
         </div>
         <div className="flex items-center justify-between h-[10%]">
+          {/* // TODO: PARENT AUTHOR */}
           <HashLinks
             commentCount={commentCount}
             likeCount={likeCount}
             viewCount={viewCount}
             repostCount={repostCount}
-            userId={currentUserId.toString()}
+            currentUser={user?.username ?? ""}
+            parentAuthor=""
             hashId={id}
             liked={liked}
             image={user?.imageUrl ?? ""}

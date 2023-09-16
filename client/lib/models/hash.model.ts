@@ -4,16 +4,17 @@ const hashSchema = new mongoose.Schema({
   text: { type: String, required: true },
   views: { type: Number, default: 0, required: true },
   author: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "User",
     required: true,
   },
   community: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Community",
+    default: null,
   },
   createdAt: { type: Date, default: Date.now },
-  parentId: { type: String },
+  parentId: { type: String, default: null },
   children: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -28,14 +29,14 @@ const hashSchema = new mongoose.Schema({
   ],
   likes: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "User",
     }
   ],
   reposts: [
     {
-      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-      quote: { type: String }
+      user: { type: String, ref: "User" },
+      quote: { type: String },
     }
   ],
 });

@@ -5,19 +5,23 @@ import { currentUser } from "@clerk/nextjs";
 import HashCard from "@/components/cards/HashCard";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getUser } from "@/lib/actions/user.actions";
+import { getUserInformation } from "@/lib/actions/user.actions";
 import { Metadata } from "next";
+import { Hash } from "@/utils/types/hash.types";
+import HashCardSkeleton from "@/components/skeletons/HashCardSkeleton";
+import ForYou from "@/components/layouts/foryou";
 
 export const metadata: Metadata = {
-  title: 'Home / Hash',
-  description: 'Home page for Hash',
-}
+  title: "Home / Hash",
+  description: "Home page for Hash",
+};
 
 export default async function Home() {
-  const userHashes = await fetchHashes(1, 30);
+  const userHashes = await fetchHashes(1, 20);
+
   const user = await currentUser();
 
-  const dbUser = await getUser({ clerkId: user?.id ?? "" });
+  const dbUser = await getUserInformation(user?.username ?? "");
 
   return (
     <main className="flex flex-col flex-1 justify-start gap-10 w-full p-5 lg:p-0">
@@ -39,28 +43,41 @@ export default async function Home() {
                 <CreateHash />
               </section>
               {/* Hashes */}
-              {userHashes && (
-                <section className="flex flex-col gap-5 w-full pt-5">
-                  {userHashes.hashes.map((hash) => (
-                    <HashCard
-                      key={hash._id}
-                      id={hash._id}
-                      _id={hash._id}
-                      currentUserId={dbUser?._id.toString() ?? ""}
-                      parentId={hash.parentId}
-                      content={hash.text}
-                      author={hash.author}
-                      createdAt={hash.createdAt}
-                      community={hash.community}
-                      comments={hash.children}
-                      media={hash.media}
-                      likes={hash.likes}
-                      reposts={hash.reposts}
-                      views={hash.views}
+              <section className="flex flex-col gap-5 w-full pt-5">
+                {userHashes ? (
+                  <>
+                    <ForYou
+                      hashes={userHashes.hashes}
+                      currentUser={user.username ?? ""}
                     />
-                  ))}
-                </section>
-              )}
+                    {/* {userHashes.hashes.map((hash: Hash) => (
+                      <HashCard
+                        key={hash._id}
+                        id={hash._id}
+                        _id={hash._id}
+                        currentUserId={dbUser?._id.toString() ?? ""}
+                        parentId={hash.parentId}
+                        content={hash.text}
+                        author={hash.author}
+                        createdAt={hash.createdAt}
+                        community={hash.community}
+                        comments={hash.children}
+                        media={hash.media}
+                        likes={hash.likes}
+                        reposts={hash.reposts}
+                        views={hash.views}
+                        following={dbUser?.following ?? []}
+                      />
+                    ))} */}
+                  </>
+                ) : (
+                  <>
+                    {Array.from(Array(10).keys()).map((i) => (
+                      <HashCardSkeleton key={`skeleton-${i}`} />
+                    ))}
+                  </>
+                )}
+              </section>
             </TabsContent>
             <TabsContent value="Following">
               {/* Create Hash */}

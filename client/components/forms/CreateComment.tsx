@@ -1,34 +1,47 @@
 "use client";
 
 import { NextPage } from "next";
+// *HOOKS
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
-
-import { Form } from "@/components/ui/form";
-
-import { CommentValidation } from "@/lib/validations/hash";
-
 import { useState } from "react";
 
-import { addComment } from "@/lib/actions/hash.actions";
+// *VALIDATIONS
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CommentValidation } from "@/lib/validations/hash";
+
+// *SHARED COMPONENTS
+import { Form } from "@/components/ui/form";
+
+// *COMPONENTS
 import CommentField from "./components/CommentField";
 import Image from "next/image";
 import Link from "next/link";
 
-interface Props {
-  userId: string;
+// *ACTIONS
+import { addComment } from "@/lib/actions/hash.actions";
+
+interface CreateCommentProps {
+  currentUser: string;
   parentId: string;
-  image: string
+  image: string;
+  parentAuthor: string;
 }
 
-const CreateComment: NextPage<Props> = ({ userId, parentId, image }) => {
+export default function CreateComment({
+  currentUser,
+  parentId,
+  image,
+  parentAuthor,
+}: CreateCommentProps) {
+  // Hooks
   const router = useRouter();
   const pathname = usePathname();
   const [focused, setFocused] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Form
   const form = useForm({
     resolver: zodResolver(CommentValidation),
     defaultValues: {
@@ -36,6 +49,7 @@ const CreateComment: NextPage<Props> = ({ userId, parentId, image }) => {
     },
   });
 
+  // Handlers
   const onFocus = () => {
     setFocused(true);
   };
@@ -46,11 +60,12 @@ const CreateComment: NextPage<Props> = ({ userId, parentId, image }) => {
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
     setLoading(true);
-    
+    setFocused(true)
+
     try {
       await addComment({
         text: values.hash,
-        id: userId,
+        author: currentUser,
         parentId: parentId,
         community: null,
         pathname: pathname,
@@ -61,7 +76,6 @@ const CreateComment: NextPage<Props> = ({ userId, parentId, image }) => {
     } catch (error) {
       setLoading(false);
     }
-
   };
 
   return (
@@ -72,11 +86,10 @@ const CreateComment: NextPage<Props> = ({ userId, parentId, image }) => {
           className="flex flex-col justify-start gap-2 px-5 py-5"
         >
           <div className="flex items-center gap-2 w-full">
-            {/* TODO: fetch image of commenter */}
-            <Link href={`/profile/${userId}`}>
+            <Link href={`/profile/${currentUser}`}>
               <Image
-                src={image}
-                alt={""}
+                src={image || "/assets/profile-pic.png"}
+                alt={currentUser}
                 width={42}
                 height={42}
                 className="rounded-full"
@@ -93,12 +106,11 @@ const CreateComment: NextPage<Props> = ({ userId, parentId, image }) => {
               focused={focused}
               loading={loading}
               length={form.getValues().hash.length}
+              parentAuthor={parentAuthor}
             />
           </div>
         </form>
       </Form>
     </>
   );
-};
-
-export default CreateComment;
+}

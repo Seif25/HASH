@@ -6,7 +6,6 @@ import LeftSidebar from "@/components/shared/LeftSidebar";
 import RightSidebar from "@/components/shared/RightSidebar";
 import Footer from "@/components/shared/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
-import Search from "@/components/shared/Search";
 
 const lato = Lato({
   weight: ["300", "400", "700", "900"],
@@ -34,7 +33,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex flex-row w-full justify-between">
             <LeftSidebar />
-            <section className="main lg:px-5">
+            <section className="main lg:px-5 pb-20 lg:pb-0">
               <div className="w-full max-w-4xl">{children}</div>
             </section>
             <RightSidebar />

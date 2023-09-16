@@ -1,108 +1,320 @@
 "use server";
 
-import { MongoHash } from "@/utils/types/hash";
-import { connectDB } from "../mongoose";
-import Hash from "../models/hash.model";
+import {
+  AddCommentProps,
+  CreateHashProps,
+  Hash,
+  LikeHashProps,
+  MongoHash,
+} from "@/utils/types/hash.types";
+import { initializeMongoConnection, isConnected } from "../mongoose.middleware";
+import HashModel from "../models/hash.model";
 import { revalidatePath } from "next/cache";
-import mongoose from "mongoose";
+import mongoose, { MongooseError } from "mongoose";
 import User from "../models/user.model";
+import { ErrorProps } from "next/error";
 
-interface CommentParams {
-  id: string;
-  parentId: string;
-  text: string;
-  community: string | null;
-  pathname: string;
-}
-
-export async function createHash({
-  text,
-  author,
-  community,
-  pathname,
-}: MongoHash) {
-  connectDB();
-
-  try {
-    const createdHash = await Hash.create({
-      text,
-      author,
-      community: null, //TODO: community
-    });
-
-    await User.findByIdAndUpdate(author, {
-      $push: { hashes: createdHash._id },
-    });
-
-    revalidatePath(pathname);
-  } catch (error: any) {
-    throw new Error(`Error creating hash: ${error.message}`);
+/**
+ * Try connecting to the database if not already connected
+ */
+function connectToDB() {
+  if (!isConnected) {
+    initializeMongoConnection();
   }
 }
 
-export async function fetchHashes(pageNumber = 1, pageSize = 20) {
-  connectDB();
+/**
+ * Create Hash
+ * @param {CreateHashProps} {text, author, community, pathname}
+ * @returns {Promise<void>}
+ * @throws {MongooseError}
+ */
+export async function createHash({
+  text,
+  username,
+  community,
+  pathname,
+}: CreateHashProps): Promise<void> {
+  // Connect to DB
+  connectToDB();
+
+  /**
+   * @type {Hash}
+   * @returns {Promise<void>}
+   * @throws {MongooseError}
+   */
+  HashModel.create({
+    text,
+    author: username,
+    community: null, //TODO: create community model
+  }).then((newHash: Hash) => {
+    console.info(`New hash created successfully for: ${username}`);
+    // Add hash to user's hashes
+    User.findOneAndUpdate(
+      { username: username },
+      {
+        $push: { hashes: newHash._id },
+      }
+    )
+      .then(() => {
+        console.info(`Updated hashes for: ${username}`);
+      })
+      .catch((error: MongooseError) => {
+        throw new Error(
+          `Error updating ${username}'s hashes: ${error.message}`
+        );
+      })
+      .catch((error: MongooseError) => {
+        throw new Error(
+          `Error creating hash for ${username}: ${error.message}`
+        );
+      });
+  });
+  // Revalidate path on the client
+  revalidatePath(pathname);
+}
+
+/**
+ * Return all hashes
+ * @param pageNumber {number}
+ * @param pageSize {number}
+ * @returns {Promise<{hashes: Hash[], isNext: boolean}>}
+ * @throws {MongooseError}
+ */
+export async function fetchHashes(
+  pageNumber: number = 1,
+  pageSize: number = 20
+): Promise<{ hashes: Hash[]; isNext: boolean }> {
+  // Connect to DB
+  connectToDB();
 
   try {
     // Calculate skip and limit
     const skip = (pageNumber - 1) * pageSize;
 
     // Find parent threads
-    const hashQuery = Hash.find({
-      parentId: { $in: [null, undefined] },
-    })
+    const hashQuery = HashModel.find({ parentId: { $in: [null, undefined] } })
       .sort({ createdAt: "desc" })
       .skip(skip)
       .limit(pageSize)
       .populate({
         path: "author",
         model: "User",
-        select: "_id id name username verified image bio",
+        foreignField: "username",
+        select: "_id id name username verified image bio following followers",
       })
       .populate({
         path: "children",
         populate: {
           path: "author",
           model: "User",
-          select: "_id id name parentId image verified username bio",
+          foreignField: "username",
+          select:
+            "_id id name parentId image verified username bio following followers",
         },
       });
 
-    const totalPageCount = await Hash.countDocuments({
+    const totalPageCount = await HashModel.countDocuments({
       parentId: { $in: [null, undefined] },
     });
 
-    const hashes = await hashQuery.exec();
+    const hashes = (await hashQuery.exec()) as Hash[];
 
     const isNext = totalPageCount > skip + hashes.length;
 
+    console.info("Fetched all hashes successfully");
+
     return { hashes, isNext };
   } catch (error: any) {
-    throw new Error(`Error fetching hashes: ${error.message}`);
+    console.error(`Error fetching hashes: ${error.message}`);
+    revalidatePath("/");
+    return { hashes: [], isNext: false };
   }
 }
 
+/**
+ * Delete a Hash by ID
+ * @param id {string}
+ * @returns {Promise<void>}
+ * @throws {MongooseError}
+ */
 export async function deleteHash(id: string): Promise<void> {
-  connectDB();
+  // Connect to DB
+  connectToDB();
 
   try {
-    await Hash.findByIdAndDelete(id);
-    await User.findOneAndUpdate({ hashes: id }, { $pull: { hash: id } });
+    // Delete Hash from hash collection
+    const deletedHash: Hash | null = await HashModel.findByIdAndDelete(id);
+
+    console.info(`Deleted hash successfully`);
+
+    if (deletedHash) {
+      // Delete Hash from user's hashes
+      await User.findOneAndUpdate(
+        { username: deletedHash.author },
+        { $pull: { hashes: deletedHash._id } }
+      );
+      console.info(`Deleted hash from user's hashes successfully`);
+
+      // Check if deleted hash was a child
+      if (deletedHash.parentId) {
+        await HashModel.findByIdAndUpdate(
+          { _id: new mongoose.Types.ObjectId(deletedHash.parentId) },
+          { $pull: { children: deletedHash._id } }
+        );
+        console.info(`Deleted hash from parent's children successfully`);
+      }
+    }
   } catch (error: any) {
-    throw new Error(`Error deleting hash: ${error.message}`);
+    throw new Error(`Error deleting hash: ${id} - ${error.message}`);
   }
+}
+
+/**
+ * Add Comment to Hash
+ * @param {CommentParams} {author, parentId, text, community, pathname}
+ * @returns {Promise<void>}
+ * @throws {MongooseError}
+ */
+export async function addComment({
+  author,
+  parentId,
+  text,
+  community,
+  pathname,
+}: AddCommentProps): Promise<void> {
+  // Connect to DB
+  connectToDB();
+
+  // Add comment as new hash to hash collection
+  HashModel.create({
+    text,
+    author,
+    parentId,
+    community: null, //TODO: create community model
+  }).then((newHash: Hash) => {
+    console.info(`New comment created successfully by: ${author}`);
+    // Add comment to parent hash's children
+    HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(parentId), {
+      $push: { children: newHash._id },
+    })
+      .then(() => {
+        console.info(`Updated children for: ${parentId}`);
+        // Add comment to user's hashes
+        User.findOneAndUpdate(
+          { username: author },
+          {
+            $push: { hashes: newHash._id },
+          }
+        )
+          .then(() => console.info(`Updated hashes for: ${author}`))
+          .catch((error: MongooseError) => {
+            throw new Error(
+              `Error updating ${author}'s hashes: ${error.message}`
+            );
+          });
+      })
+      .catch((error: MongooseError) => {
+        throw new Error(
+          `Error updating ${parentId}'s children: ${error.message}`
+        );
+      });
+  });
+  // Revalidate path on the client
+  revalidatePath(pathname);
+}
+
+/**
+ * Like a Hash
+ * @param {LikeHashProps} {id, currentUser, pathname}
+ * @returns {Promise<void>}
+ * @throws {MongooseError}
+ */
+export async function likeHash({
+  id,
+  currentUser,
+  pathname,
+}: LikeHashProps): Promise<void> {
+  // Connect to DB
+  connectToDB();
+
+  // Add like to hash
+  HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
+    $push: { likes: currentUser },
+  })
+    .then(() => {
+      console.info(`${currentUser} liked hash: ${id}`);
+      // Add like to user's likes
+      User.findOneAndUpdate(
+        { username: currentUser },
+        {
+          $push: { likes: new mongoose.Types.ObjectId(id) },
+        }
+      )
+        .then(() => {
+          console.info(`Updated likes for: ${currentUser}`);
+        })
+        .catch((error: MongooseError) => {
+          throw new Error(
+            `Error updating ${currentUser}'s likes: ${error.message}`
+          );
+        });
+    })
+    .catch((error: MongooseError) => {
+      throw new Error(`Error updating ${id}'s likes: ${error.message}`);
+    });
+
+  revalidatePath(pathname);
+}
+
+/**
+ * Unlike a Hash
+ * @param {LikeHashProps} {id, currentUser, pathname}
+ * @returns {Promise<void>}
+ * @throws {MongooseError}
+ */
+export async function unlikeHash({
+  id,
+  currentUser,
+  pathname,
+}: LikeHashProps): Promise<void> {
+  // Connect to DB
+  connectToDB();
+
+  // Remove like from hash
+  HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
+    $pull: { likes: currentUser },
+  })
+    .then(() => {
+      console.info(`${currentUser} unliked hash: ${id}`);
+      // Remove like from user's likes
+      User.findOneAndUpdate(
+        { username: currentUser },
+        {
+          $pull: { likes: new mongoose.Types.ObjectId(id) },
+        }
+      ).catch((error: MongooseError) => {
+        throw new Error(
+          `Error updating ${currentUser}'s likes: ${error.message}`
+        );
+      });
+    })
+    .catch((error: MongooseError) => {
+      throw new Error(`Error updating ${id}'s likes: ${error.message}`);
+    });
+
+  revalidatePath(pathname);
 }
 
 export async function getHash(id: string): Promise<any> {
-  connectDB();
+  // connectDB();
 
   try {
-    const hashQuery = Hash.find({
-      _id: id,
-    })
+    const hashQuery = HashModel.findById(new mongoose.Types.ObjectId(id))
       .populate({
         path: "author",
         model: "User",
+        foreignField: "username",
         select: "_id id name username verified image bio",
       })
       .populate({
@@ -110,91 +322,16 @@ export async function getHash(id: string): Promise<any> {
         populate: {
           path: "author",
           model: "User",
+          foreignField: "username",
           select: "_id id name parentId image verified username bio",
         },
       });
 
     const hash = await hashQuery.exec();
 
-    return hash[0];
+    return hash;
   } catch (error: any) {
     throw new Error(`Error getting hash: ${error.message}`);
-  }
-}
-
-export async function addComment({
-  id,
-  parentId,
-  text,
-  community,
-  pathname,
-}: CommentParams): Promise<void> {
-  connectDB();
-
-  try {
-    const createdHash = await Hash.create({
-      text,
-      author: new mongoose.Types.ObjectId(id),
-      community: null,
-    });
-
-    await User.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
-      $push: { hashes: createdHash._id },
-    });
-
-    await Hash.findByIdAndUpdate(new mongoose.Types.ObjectId(parentId), {
-      $push: { children: createdHash._id },
-    });
-
-    revalidatePath(pathname);
-  } catch (error: any) {
-    throw new Error(`Error adding comment: ${error.message}`);
-  }
-}
-
-export async function likeHash({
-  id,
-  userId,
-  pathname,
-}: {
-  id: string;
-  userId: string;
-  pathname: string;
-}): Promise<void> {
-  connectDB();
-
-  try {
-    await Hash.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
-      $push: { likes: new mongoose.Types.ObjectId(userId) },
-    });
-    await User.findByIdAndUpdate(new mongoose.Types.ObjectId(userId), {
-      $push: { likes: new mongoose.Types.ObjectId(id) },
-    });
-    revalidatePath(pathname);
-  } catch (error: any) {
-    throw new Error(`Error liking hash: ${error.message}`);
-  }
-}
-
-export async function unlikeHash({
-  id,
-  userId,
-  pathname,
-}: {
-  id: string;
-  userId: string;
-  pathname: string;
-}): Promise<void> {
-  connectDB();
-
-  try {
-    await Hash.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
-      $pull: { likes: new mongoose.Types.ObjectId(userId) },
-    });
-
-    revalidatePath(pathname);
-  } catch (error: any) {
-    throw new Error(`Error un-liking hash: ${error.message}`);
   }
 }
 
@@ -209,18 +346,21 @@ export async function repostHash({
   pathname: string;
   quote?: string;
 }) {
-  connectDB();
+  // connectDB();
 
   try {
     const repost = {
       user: new mongoose.Types.ObjectId(userId),
       quote: quote,
     };
-    const hash = await Hash.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
-      $push: {
-        reposts: repost,
-      },
-    });
+    const hash = await HashModel.findByIdAndUpdate(
+      new mongoose.Types.ObjectId(id),
+      {
+        $push: {
+          reposts: repost,
+        },
+      }
+    );
 
     if (!hash) {
       throw new Error("Hash not found");
@@ -236,11 +376,18 @@ export async function repostHash({
   }
 }
 
+/**
+ * Add a view to a Hash
+ * @param id {string}
+ * @returns {Promise<void>}
+ * @throws {MongooseError}
+ */
 export async function view(id: string): Promise<void> {
-  connectDB();
+  // Connect to DB
+  connectToDB();
 
   try {
-    await Hash.findByIdAndUpdate(
+    await HashModel.findByIdAndUpdate(
       new mongoose.Types.ObjectId(id),
       {
         $inc: { views: 1 },

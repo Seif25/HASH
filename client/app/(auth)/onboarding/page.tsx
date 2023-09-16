@@ -1,24 +1,27 @@
 import AccountProfile from "@/components/forms/AccountProfile";
-import { getUser } from "@/lib/actions/user.actions";
-import { MongoUser, User } from "@/utils/types/user";
+import { getUserInformation } from "@/lib/actions/user.actions";
+import { User } from "@/utils/types/user.types";
 import { currentUser } from "@clerk/nextjs";
 
 async function Profile() {
   const user = await currentUser();
 
-  const userInfo: MongoUser | null = await getUser({clerkId: user?.id ?? ""});
+  const userInfo: User | null = await getUserInformation(user?.username ?? "");
 
   const userData: User = {
-    id: user?.id,
+    id: user?.id ?? "",
     _id: userInfo?._id.toString() ?? "",
-    username: userInfo?.username || user?.username,
+    username: (userInfo?.username || user?.username) ?? "",
     name: userInfo?.name || user?.firstName + " " + user?.lastName,
     bio: userInfo?.bio || "",
     image: userInfo?.image || user?.imageUrl,
-    bannerUrl: userInfo?.bannerUrl || "",
+    banner: userInfo?.banner || "",
     birthDate: userInfo?.birthDate || new Date(),
     website: userInfo?.website || "",
     location: userInfo?.location || "",
+    verified: userInfo?.verified || false,
+    onBoarded: userInfo?.onBoarded || false,
+    joinedAt: userInfo?.joinedAt || new Date(),
   };
   return (
     <main className="mx-auto flex max-w-4xl flex-col justify-start lg:px-10 py-20 bg-dark-2 my-10 rounded-lg">

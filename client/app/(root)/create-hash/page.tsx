@@ -1,7 +1,7 @@
 import { Metadata, NextPage } from "next";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { getUser } from "@/lib/actions/user.actions";
+import { getUserInformation } from "@/lib/actions/user.actions";
 import CreateNewHash from "@/components/forms/CreateHash";
 
 export const metadata: Metadata = {
@@ -16,13 +16,13 @@ const CreateHash: NextPage = async () => {
         redirect('/sign-in');
     }
 
-    const userInfo = await getUser({clerkId: user.id});
+    const userInfo = await getUserInformation(user.username ?? "");
 
     if (!userInfo?.onBoarded) redirect('/onboarding');
 
     return (
         <>
-            <CreateNewHash userId={userInfo._id.toString()} image={userInfo.image}/>
+            <CreateNewHash username={userInfo.username ?? ""} image={userInfo.image}/>
         </>
     )
 }

@@ -18,12 +18,13 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 
+// TODO: change userId to username
 interface Props {
-  userId: string;
+  username: string;
   image: string | undefined;
 }
 
-const CreateNewHash: NextPage<Props> = ({ userId, image }) => {
+const CreateNewHash: NextPage<Props> = ({ username, image }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [focused, setFocused] = useState(false);
@@ -33,7 +34,7 @@ const CreateNewHash: NextPage<Props> = ({ userId, image }) => {
     resolver: zodResolver(HashValidation),
     defaultValues: {
       hash: "",
-      accountId: userId,
+      username: username,
     },
   });
 
@@ -49,7 +50,7 @@ const CreateNewHash: NextPage<Props> = ({ userId, image }) => {
     setLoading(true);
     await createHash({
       text: values.hash,
-      author: userId,
+      username: username,
       community: null,
       pathname: pathname,
     });

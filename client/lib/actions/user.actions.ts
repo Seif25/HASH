@@ -1,18 +1,137 @@
 "use server";
 
-import { MongoUser } from "@/utils/types/user";
-import User from "../models/user.model";
-import { connectDB } from "../mongoose";
+import { DetailedUser, MongoUser, User } from "@/utils/types/user.types";
+import UserModel from "../models/user.model";
+import { initializeMongoConnection } from "../mongoose.middleware";
 import { revalidatePath } from "next/cache";
-import mongoose from "mongoose";
+import mongoose, { MongooseError } from "mongoose";
 import Hash from "../models/hash.model";
+
+/**
+ * Get Full User by Username
+ * @param username {string}
+ * @returns {Promise<User | null>}
+ * @throws {MongooseError}
+ */
+export async function fetchUser(
+  username: string
+): Promise<DetailedUser | null> {
+  // Connect to MongoDB
+  initializeMongoConnection();
+
+  try {
+    const userQuery = UserModel.findOne({ username: username })
+      .populate({
+        path: "hashes",
+        populate: {
+          path: "author",
+          foreignField: "username",
+          select: "username name image verified following followers bio",
+        },
+        options: { sort: { createdAt: "desc" } },
+      })
+      .populate({
+        path: "likes",
+        populate: {
+          path: "author",
+          foreignField: "username",
+          select: "username name image verified following followers bio",
+        },
+        options: { sort: { createdAt: "desc" } },
+      });
+
+    const user = await userQuery.exec();
+
+    if (user) {
+      console.info(`User ${username} found!`);
+      return user;
+    } else {
+      console.error(`User ${username} not found!`);
+      return null;
+    }
+  } catch (error: any) {
+    console.error(`Error finding user ${username}: ${error.message}`);
+    return null;
+  }
+}
+
+/**
+ * Get User Information by Username
+ * @param username {string}
+ * @returns {Promise<User | null>}
+ * @throws {MongooseError}
+ */
+export async function getUserInformation(
+  username: string
+): Promise<User | null> {
+  initializeMongoConnection();
+
+  try {
+    return await UserModel.findOne({ username: username });
+  } catch (error: any) {
+    throw new Error(`Error getting user: ${error.message}`);
+  }
+}
+
+/**
+ * Get Users followed by current user
+ * @param username {string}
+ * @returns {Promise<User[] | null>}
+ * @throws {MongooseError}
+ */
+export async function getFollowing(username: string): Promise<any> {
+  // Connect to MongoDB
+  initializeMongoConnection();
+
+  try {
+    const followingQuery = UserModel.findOne({ username: username })
+      .populate({
+        path: "following",
+        foreignField: "username",
+        options: { sort: { createdAt: "desc" } },
+        select: "username name bio followers following image verified",
+      })
+      .select("following")
+      .lean();
+
+    return await followingQuery.exec();
+  } catch (error: any) {
+    throw new Error(`Error getting user's following: ${error.message}`);
+  }
+}
+
+/**
+ * Get Users following current user
+ * @param username {string}
+ * @returns {Promise<User[] | null>}
+ * @throws {MongooseError}
+ */
+export async function getFollowers(username: string): Promise<any> {
+  // Connect to MongoDB
+  initializeMongoConnection();
+
+  try {
+    const followersQuery = UserModel.findById({ username: username })
+      .populate({
+        path: "followers",
+        options: { sort: { createdAt: "desc" } },
+        select: "username name bio followers following image verified",
+      })
+      .select("followers")
+      .lean();
+
+    return await followersQuery.exec();
+  } catch (error: any) {
+    throw new Error(`Error getting user's followers: ${error.message}`);
+  }
+}
 
 export async function updateUser({
   _id,
   username,
   name,
   image,
-  bannerUrl,
+  banner,
   location,
   website,
   birthDate,
@@ -20,17 +139,17 @@ export async function updateUser({
   pathname,
   clerkId,
 }: MongoUser & { pathname: string; clerkId: string }): Promise<void> {
-  connectDB();
+  initializeMongoConnection();
 
   try {
-    await User.findOneAndUpdate(
+    await UserModel.findOneAndUpdate(
       { id: clerkId },
       {
         id: clerkId,
         username: username?.toLowerCase(),
         name: name,
         image: image,
-        banner: bannerUrl,
+        banner: banner,
         bio: bio,
         location: location,
         website: website,
@@ -48,42 +167,59 @@ export async function updateUser({
   }
 }
 
-export async function getUser({
-  clerkId,
-}: {
-  clerkId: string;
-}): Promise<MongoUser | null> {
-  connectDB();
-
-  try {
-    return await User.findOne({ id: clerkId });
-  } catch (error: any) {
-    throw new Error(`Error getting user: ${error.message}`);
-  }
-}
-
 export async function getUserById(id: string) {
-  connectDB();
+  initializeMongoConnection();
 
   try {
-    return await User.findById(new mongoose.Types.ObjectId(id));
+    return await UserModel.findById(new mongoose.Types.ObjectId(id));
   } catch (error: any) {
     throw new Error(`Error getting user: ${error.message}`);
   }
 }
 
 export async function getUseProfile(id: string) {
-  connectDB();
+  initializeMongoConnection();
 
   try {
-    const userQuery = User.findOne({ id: id })
+    const userQuery = UserModel.findOne({ id: id })
       .populate({ path: "hashes", options: { sort: { createdAt: "desc" } } })
-      .populate({ path: "likes", options: { sort: { createdAt: "desc" } } })
+      .populate({ path: "likes", options: { sort: { createdAt: "desc" } } });
 
     const user = await userQuery.exec();
 
     return user;
   } catch (error: any) {
     throw new Error(`Error getting user: ${error.message}`);
+  }
+}
+
+export async function followUser({
+  currentUser,
+  toFollowId,
+  pathname,
+}: {
+  currentUser: string;
+  toFollowId: string;
+  pathname: string;
+}): Promise<void> {
+  initializeMongoConnection();
+
+  try {
+    await UserModel.findOneAndUpdate(
+      { username: currentUser },
+      {
+        $push: { following: toFollowId },
+      }
+    );
+    await UserModel.findOneAndUpdate(
+      { username: toFollowId },
+      {
+        $push: { followers: currentUser },
+      }
+    );
+
+    revalidatePath(pathname);
+  } catch (error: any) {
+    throw new Error(`Error following user: ${error.message}`);
   }
 }

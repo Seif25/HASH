@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { NextPage } from "next";
-import { DatePickerProps } from "@/utils/types/user";
+import { DatePickerProps } from "@/utils/types/user.types";
 import { generateYears, getMonths } from "@/constants";
 import { useState } from "react";
 

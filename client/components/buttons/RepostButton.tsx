@@ -9,25 +9,25 @@ import {
 } from "@/components/ui/tooltip";
 import { repostHash } from "@/lib/actions/hash.actions";
 import { abbreviateNumber } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 interface RepostButtonProps {
   repostCount: number;
-  pathname: string;
   hashId: string;
-  userId: string;
+  currentUser: string;
   reposted?: boolean;
 }
 
 function RepostButton({
   repostCount,
-  pathname,
   hashId,
-  userId,
+  currentUser,
   reposted,
 }: RepostButtonProps) {
+  const pathname = usePathname()
   const handleRepost = async () => {
     if (!reposted) {
-      await repostHash({ id: hashId, userId, pathname });
+      await repostHash({ id: hashId, userId: currentUser, pathname });
     }
   };
   return (

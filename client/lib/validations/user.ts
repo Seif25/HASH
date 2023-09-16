@@ -16,7 +16,7 @@ export const UserValidation = z.object({
   bio: z
     .string()
     .max(150, { message: "Bio Can't be More Than 150 Characters" }),
-  bannerUrl: z.string(),
+  banner: z.string(),
   website: z.string().max(100, { message: "Website Can't be More Than 100 Characters" }),
   location: z.string().max(30, { message: "Location Can't be More Than 30 Characters" }),
   birthDate: z.date().min(subYears(new Date(), 60), { message: "Invalid Date" }).max(new Date()),

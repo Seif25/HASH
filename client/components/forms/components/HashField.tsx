@@ -5,7 +5,7 @@ import {
   FormField,
   FormItem,
 } from "@/components/ui/form";
-import { HashFieldProps } from "@/utils/types/user";
+import { HashFieldProps } from "@/utils/types/user.types";
 import { HashTextarea } from "@/components/ui/hashtextarea";
 import { FocusEventHandler } from "react";
 import { Button } from "@/components/ui/button";

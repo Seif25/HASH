@@ -1,5 +1,10 @@
+// *COMPONENTS
 import CommentCard from "@/components/cards/CommentCard";
+
+// *ACTIONS
 import { getHash, view } from "@/lib/actions/hash.actions";
+
+// *UTILS
 import type { Metadata, ResolvingMetadata } from 'next'
 
 type Props = {
@@ -23,9 +28,8 @@ export async function generateMetadata(
   }
 }
 
-async function Hash({ params }: { params: { hashId: string } }) {
-  await view(params.hashId);
-  return <CommentCard hashId={params.hashId} isChild={false} />;
+export default async function Hash({ params }: { params: { hashId: string } }) {
+  // TODO: Implement increasing view count
+  // await view(params.hashId);
+  return <CommentCard hashId={params.hashId} isChild={false} isComment={true} />;
 }
-
-export default Hash;

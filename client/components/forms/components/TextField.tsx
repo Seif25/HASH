@@ -7,7 +7,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { TextFieldProps } from "@/utils/types/user";
+import { TextFieldProps } from "@/utils/types/user.types";
 
 const TextField: NextPage<TextFieldProps> = ({
   control,

@@ -3,10 +3,6 @@ import Search from "@mui/icons-material/Search"
 import Favorite from "@mui/icons-material/Favorite"
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PeopleIcon from '@mui/icons-material/People';
-import PersonIcon from '@mui/icons-material/Person';
-import { currentUser } from "@clerk/nextjs";
-// import { Home } from  '@styled-icons/boxicons-solid/Home'
-
 
 export const sidebarLinks = [
   {
@@ -34,11 +30,6 @@ export const sidebarLinks = [
     icon: <PeopleIcon fontSize="medium" sx={{ color: "#fff" }}/>,
     route: "/communities",
     label: "Communities",
-  },
-  {
-    icon: <PersonIcon fontSize="medium" sx={{ color: "#fff" }}/>,
-    route: `/profile`,
-    label: "Profile",
   },
 ];
 

@@ -1,4 +1,31 @@
-import { User } from "./user";
+import { Query } from "mongoose";
+import { User } from "./user.types";
+
+// Type definitions for Hash
+
+// * Types for creating a new hash
+export type CreateHashProps = {
+  text: string;
+  username: string;
+  community: string | null;
+  pathname: string;
+};
+
+// * Types for adding a new comment
+export type AddCommentProps = {
+  author: string;
+  parentId: string;
+  text: string;
+  community: string | null;
+  pathname: string;
+}
+
+// * Types for liking a hash
+export type LikeHashProps = {
+  id: string;
+  currentUser: string;
+  pathname: string;
+}
 
 export type MongoHash = {
   text: string;
@@ -8,6 +35,7 @@ export type MongoHash = {
 };
 
 export type Hash = {
+  parentId: string | null;
   _id: string;
   text: string;
   author: User;
@@ -34,6 +62,7 @@ export type HashCardProps = {
   likes: string[];
   reposts: Repost[];
   views: number;
+  following: string[];
 };
 
 export type Media = {
@@ -43,6 +72,6 @@ export type Media = {
 };
 
 export type Repost = {
-  user: string
-  quote: string
-}
+  user: string;
+  quote: string;
+};

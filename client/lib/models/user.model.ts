@@ -20,14 +20,16 @@ const userSchema = new mongoose.Schema({
     onBoarded: { type: Boolean, default: false },
     following: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            type: String,
+            ref: "User",
+            default: []
         }
     ],
     followers: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            type: String,
+            ref: "User",
+            default: []
         }
     ],
     communities: [

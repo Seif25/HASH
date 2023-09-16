@@ -32,13 +32,13 @@ import { deleteHash } from "@/lib/actions/hash.actions";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
-function AuthMoreMenu({ id, authorId }: { id: string; authorId: string }) {
+function AuthMoreMenu({ hashId, currentUser }: { hashId: string; currentUser: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false)
 
   const handleDelete = async () => {
     setLoading(true)
-    await deleteHash(id);
+    await deleteHash(hashId);
 
     setLoading(false)
     router.refresh();

@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@/utils/types/user";
+import { User } from "@/utils/types/user.types";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,13 +32,14 @@ function AccountProfile({ user, btnTitle }: Params) {
       name: user.name === "null null" ? "" : user.name || "",
       bio: user.bio || "",
       image: user.image || "",
-      bannerUrl: user.bannerUrl || "",
+      banner: user.banner || "",
       website: user.website || "",
       location: user.location || "",
       birthDate: user.birthDate || date,
     },
   });
 
+  // ! This is a workaround to avoid errors -> Needs to be fixed in new version
   const onSubmit = async (
     values: z.infer<typeof UserValidation & { pathname: string }>
   ) => {
@@ -49,12 +50,18 @@ function AccountProfile({ user, btnTitle }: Params) {
         name: values.name,
         bio: values.bio,
         image: values.image,
-        bannerUrl: values.bannerUrl,
+        banner: values.banner,
         website: values.website,
         location: values.location,
         birthDate: values.birthDate,
         pathname,
         clerkId: user.id ?? "",
+        followers: [],
+        following: [],
+        id: "",
+        joinedAt: new Date(),
+        onBoarded: false,
+        verified: false,
       });
 
       if (pathname.startsWith("/profile/edit")) {
@@ -69,12 +76,12 @@ function AccountProfile({ user, btnTitle }: Params) {
 
   return (
     <div>
-      {user.bannerUrl ? (
+      {user.banner ? (
         <section
           className="lg:rounded-lg p-10"
           style={{
             backgroundImage: `url(${
-              user.bannerUrl ||
+              user.banner ||
               `https://placehold.co/800x300/13161a/1991fe?text=${user.username};&font=Lato`
             })`,
             backgroundSize: "cover",

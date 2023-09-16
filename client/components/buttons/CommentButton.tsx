@@ -1,4 +1,7 @@
+// *ICONS
 import CommentIcon from "@mui/icons-material/Comment";
+
+// *SHADCN COMPONENTS
 import {
   Tooltip,
   TooltipContent,
@@ -6,22 +9,27 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+
+// *COMPONENTS
 import CreateComment from "../forms/CreateComment";
-import { currentUser } from "@clerk/nextjs";
+
+// *UTILS
 import { abbreviateNumber } from "@/lib/utils";
 
 interface CommentButtonProps {
   commentCount: number;
-  userId: string;
+  currentUser: string;
   parentId: string;
   image: string;
+  parentAuthor: string;
 }
 
-function CommentButton({
+export default async function CommentButton({
   commentCount,
-  userId,
+  currentUser,
   parentId,
   image,
+  parentAuthor,
 }: CommentButtonProps) {
   return (
     <Dialog>
@@ -46,10 +54,8 @@ function CommentButton({
         </Tooltip>
       </TooltipProvider>
       <DialogContent className="sm:max-w-[425px] lg:w-full">
-        <CreateComment image={image} userId={userId} parentId={parentId} />
+        <CreateComment image={image} currentUser={currentUser} parentId={parentId} parentAuthor={parentAuthor}/>
       </DialogContent>
     </Dialog>
   );
 }
-
-export default CommentButton;
