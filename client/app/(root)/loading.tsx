@@ -4,7 +4,7 @@ export default function Loading() {
   return (
     <div className="w-full min-h-screen flex items-center justify-center">
       <Image
-        src={"/Logo.png"}
+        src={"/logo.png"}
         alt="Hash"
         width={200}
         height={200}

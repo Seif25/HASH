@@ -52,7 +52,7 @@ const UserFriends = ({ followers, following }: Props) => {
                 </>
               ) : (
                 <div className="flex flex-col items-center justify-center gap-10 min-h-screen w-full">
-                  <Image src="/Logo.png" alt="logo" width={128} height={128} />
+                  <Image src="/logo.png" alt="logo" width={128} height={128} />
                   <h3 className="text-heading3-bold uppercase">
                     {"Looks like you haven't followed anyone yet"}
                   </h3>
@@ -73,7 +73,7 @@ const UserFriends = ({ followers, following }: Props) => {
                 </>
               ) : (
                 <div className="flex flex-col items-center justify-center gap-10 h-full">
-                  <Image src="/Logo.png" alt="logo" width={200} height={200} />
+                  <Image src="/logo.png" alt="logo" width={200} height={200} />
                   <h3 className="text-heading3-bold uppercase">
                     {"Looks like you don't have any followers yet"}
                   </h3>
