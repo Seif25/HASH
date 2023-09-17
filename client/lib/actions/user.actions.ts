@@ -1,10 +1,15 @@
 "use server";
 
-import { DetailedUser, MongoUser, User } from "@/utils/types/user.types";
+import {
+  DetailedUser,
+  FetchAllUsersParams,
+  MongoUser,
+  User,
+} from "@/utils/types/user.types";
 import UserModel from "../models/user.model";
 import { initializeMongoConnection } from "../mongoose.middleware";
 import { revalidatePath } from "next/cache";
-import mongoose, { MongooseError } from "mongoose";
+import mongoose, { FilterQuery, MongooseError } from "mongoose";
 import Hash from "../models/hash.model";
 
 /**
@@ -124,6 +129,67 @@ export async function getFollowers(username: string): Promise<any> {
     return await followersQuery.exec();
   } catch (error: any) {
     throw new Error(`Error getting user's followers: ${error.message}`);
+  }
+}
+
+/**
+ * Fetch All Users for Search
+ *
+ * @returns {Promise<{users: User[], isNext: boolean }>}
+ * @throws {MongooseError}
+ */
+export async function fetchUsers({
+  currentUser,
+  searchString = "",
+  pageNumber = 1,
+  pageSize = 20,
+  sortBy = "desc",
+}: FetchAllUsersParams): Promise<{ users: User[]; isNext: boolean } | null> {
+  // Connect to MongoDB
+  initializeMongoConnection();
+
+  const skip = (pageNumber - 1) * pageSize;
+
+  const regex = new RegExp(searchString, "i");
+
+  if (searchString.length === 0){
+    return null
+  }
+
+  try {
+    const query: FilterQuery<typeof UserModel> = {
+      username: { $ne: currentUser },
+    };
+
+    if (searchString.trim() !== "") {
+      query.$or = [
+        {
+          username: {
+            $regex: regex,
+          },
+        },
+        {
+          name: { $regex: regex },
+        },
+      ];
+    }
+
+    const sortOptions = { createdAt: sortBy };
+
+    const usersQuery = UserModel.find(query)
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(pageSize);
+
+    const totalUsers = await UserModel.countDocuments(query);
+
+    const users = await usersQuery.exec();
+
+    const isNext = totalUsers > skip + users.length;
+
+    return { users, isNext };
+  } catch (error: any) {
+    throw new Error(`Error getting users: ${error.message}`);
   }
 }
 

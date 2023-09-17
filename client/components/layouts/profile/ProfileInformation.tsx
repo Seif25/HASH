@@ -42,11 +42,7 @@ export default function ProfileInformation({ user }: ProfileInformationProps) {
             width: "100%",
             height: "150px",
           }}
-        >
-          <button className="bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] rounded-full text-white p-2">
-            Add Banner
-          </button>
-        </section>
+        ></section>
       )}
 
       {/* PROFILE PICTURE + EDIT PROFILE */}

@@ -1,10 +1,11 @@
+import SearchPage from "@/app/(root)/search/page";
 import Search from "./Search";
 
 function RightSidebar() {
   return (
     <div className="right-sidebar-component">
       <section className="search-box">
-        <Search />
+        <SearchPage />
       </section>
       <section className="custom-scrollbar right-sidebar">
         <div className="flex flex-1 flex-col justify-start">

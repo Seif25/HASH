@@ -3,6 +3,7 @@ import { UserValidation } from "@/lib/validations/user";
 import { Control } from "react-hook-form";
 import * as z from "zod";
 import { Hash } from "./hash.types";
+import { SortOrder } from "mongoose";
 
 // *Type for User object in MongoDB
 export type User = {
@@ -57,6 +58,15 @@ export type ImageFieldProps = {
   accept: string;
   placeholder?: string;
   handleImageChange: (e: React.ChangeEvent<HTMLInputElement>, field: (...event: any[]) => void) => void;
+}
+
+// *Types for fetching all Users
+export type FetchAllUsersParams = {
+  currentUser: string,
+  searchString: string,
+  pageNumber: number,
+  pageSize: number,
+  sortBy: SortOrder,
 }
 
 export type MongoUser = {

@@ -34,7 +34,7 @@ export default function ImageField({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="rounded-full bg-contain z-10 -mt-[15%]">
+        <FormItem className="rounded-full bg-contain z-10 -mt-[15%] ml-[5%]">
           <FormLabel className="">
             {field.value ? (
               <Image
@@ -46,6 +46,7 @@ export default function ImageField({
                 priority
                 onClick={openFileUpload}
                 placeholder="blur"
+                blurDataURL="/assets/profile-pic.png"
               />
             ) : (
               <Image
