@@ -48,6 +48,17 @@ export type DetailedUser = {
   joinedAt: Date;
 }
 
+// *Types for uploading an image
+export type ImageFieldProps = {
+  control: Control<z.infer<typeof UserValidation>> | undefined;
+  name: any;
+  label?: string;
+  type: string;
+  accept: string;
+  placeholder?: string;
+  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>, field: (...event: any[]) => void) => void;
+}
+
 export type MongoUser = {
   _id: string;
   id: string;

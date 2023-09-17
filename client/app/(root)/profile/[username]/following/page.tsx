@@ -5,7 +5,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 
 import dynamic from "next/dynamic";
 
-const UserFriends = dynamic(() => import("@/components/shared/UserFriends"), {
+const UserFollowings = dynamic(() => import("@/components/shared/profile/UserFollowings"), {
   ssr: false, // This ensures the component is only rendered on the client-side
 });
 
@@ -29,8 +29,8 @@ export async function generateMetadata(
   };
 }
 
-async function fetchFollowing(id: string) {
-    const userFollowing = await getFollowing(id);
+async function fetchFollowing(username: string) {
+    const userFollowing = await getFollowing(username);
     return userFollowing 
 }
 
@@ -40,5 +40,5 @@ export default async function Following({
   params: { username: string };
 }) {
   const data = await fetchFollowing(params.username);
-  return <UserFriends following={data.following} />;
+  return <UserFollowings following={data.following} />;
 }

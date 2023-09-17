@@ -74,6 +74,9 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
             width={42}
             height={42}
             className="rounded-full"
+            priority
+            placeholder="blur"
+            blurDataURL="/assets/profile-pic.png"
           />
           <div className="flex flex-col gap-2 w-full">
             <HashField
@@ -88,7 +91,6 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
               loading={loading}
               length={form.getValues().hash.length}
             />
-           
           </div>
         </form>
       </Form>

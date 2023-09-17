@@ -111,9 +111,10 @@ export async function getFollowers(username: string): Promise<any> {
   initializeMongoConnection();
 
   try {
-    const followersQuery = UserModel.findById({ username: username })
+    const followersQuery = UserModel.findOne({ username: username })
       .populate({
         path: "followers",
+        foreignField: "username",
         options: { sort: { createdAt: "desc" } },
         select: "username name bio followers following image verified",
       })

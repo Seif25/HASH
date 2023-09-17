@@ -1,9 +1,5 @@
 import { Media } from "@/utils/types/hash.types";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { AspectRatio } from "../ui/aspect-ratio";
 import Image from "next/image";
 import HashLinks from "../shared/HashLinks";
@@ -19,7 +15,7 @@ interface ImageDialogProps {
   currentUserId: string;
   id: string;
   index: number;
-  liked: boolean
+  liked: boolean;
 }
 
 async function ImageDialog({
@@ -31,9 +27,9 @@ async function ImageDialog({
   currentUserId,
   id,
   index,
-  liked
+  liked,
 }: ImageDialogProps) {
-  const user = await currentUser()
+  const user = await currentUser();
   return (
     <Dialog>
       <DialogTrigger asChild className="z-20 cursor-pointer">
@@ -44,11 +40,13 @@ async function ImageDialog({
             alt={media.alt}
             fill
             priority
-            className={`object-cover z-20 ${
-              index === 0 && "rounded-tl-lg"
-            } ${index === 1 && "rounded-tr-lg"} ${
-              index === 2 && "rounded-bl-lg"
-            } ${index === 3 && "rounded-br-lg"}`}
+            className={`object-cover z-20 ${index === 0 && "rounded-tl-lg"} ${
+              index === 1 && "rounded-tr-lg"
+            } ${index === 2 && "rounded-bl-lg"} ${
+              index === 3 && "rounded-br-lg"
+            }`}
+            placeholder="blur"
+            blurDataURL="/assets/profile-pic.png"
           />
         </AspectRatio>
       </DialogTrigger>
@@ -62,9 +60,19 @@ async function ImageDialog({
               fill
               priority
               className="object-contain rounded-lg w-auto h-auto"
+              placeholder="blur"
+              blurDataURL="/assets/profile-pic.png"
             />
           </div>
-          <div className="hidden lg:block rounded-lg" style={{ width:"auto", maxWidth: 600, height: 600, maxHeight: 600}}>
+          <div
+            className="hidden lg:block rounded-lg"
+            style={{
+              width: "auto",
+              maxWidth: 600,
+              height: 600,
+              maxHeight: 600,
+            }}
+          >
             <Image
               key={media.id}
               src={media.url}
@@ -73,7 +81,15 @@ async function ImageDialog({
               height={400}
               priority
               className="object-contain rounded-lg p-2"
-              style={{ width:"auto", maxWidth: 600, height: 600, maxHeight: 600, borderRadius: "8px" }}
+              style={{
+                width: "auto",
+                maxWidth: 600,
+                height: 600,
+                maxHeight: 600,
+                borderRadius: "8px",
+              }}
+              placeholder="blur"
+              blurDataURL="/assets/profile-pic.png"
             />
           </div>
         </div>
@@ -91,7 +107,10 @@ async function ImageDialog({
             image={user?.imageUrl ?? ""}
           />
           <div className="w-[10%] flex items-center justify-end">
-            <ShareMenu id={id.toString()} authorId={currentUserId?.toString() ?? ""} />
+            <ShareMenu
+              id={id.toString()}
+              authorId={currentUserId?.toString() ?? ""}
+            />
           </div>
         </div>
       </DialogContent>

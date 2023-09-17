@@ -62,12 +62,12 @@ function ViewerMoreMenu({
               <PersonAddAlt1Icon className="mr-2 h-4 w-4" />
             )}
             <span className="">
-              {isFollowing ? "Unfollow" : "Follow"} @{currentUser}
+              {isFollowing ? "Unfollow" : "Follow"} @{author}
             </span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <VolumeOffIcon className="mr-2 h-4 w-4" />
-            <span className="">Mute @{currentUser}</span>
+            <span className="">Mute @{author}</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <VolumeOffIcon className="mr-2 h-4 w-4" />
@@ -75,7 +75,7 @@ function ViewerMoreMenu({
           </DropdownMenuItem>
           <DropdownMenuItem>
             <BlockIcon className="mr-2 h-4 w-4" />
-            <span className="">Block @{currentUser}</span>
+            <span className="">Block @{author}</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <FlagIcon className="mr-2 h-4 w-4" />

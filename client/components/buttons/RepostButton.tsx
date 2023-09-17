@@ -18,16 +18,21 @@ interface RepostButtonProps {
   reposted?: boolean;
 }
 
-function RepostButton({
+export default function RepostButton({
   repostCount,
   hashId,
   currentUser,
   reposted,
 }: RepostButtonProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const handleRepost = async () => {
     if (!reposted) {
-      await repostHash({ id: hashId, userId: currentUser, pathname });
+      await repostHash({
+        id: hashId,
+        currentUser: currentUser,
+        pathname,
+        quote: "",
+      });
     }
   };
   return (
@@ -58,5 +63,3 @@ function RepostButton({
     </div>
   );
 }
-
-export default RepostButton;

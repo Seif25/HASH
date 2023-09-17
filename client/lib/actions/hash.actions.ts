@@ -1,11 +1,12 @@
 "use server";
 
 import {
-  AddCommentProps,
-  CreateHashProps,
+  AddCommentParams,
+  CreateHashParams,
   Hash,
-  LikeHashProps,
+  LikeHashParams,
   MongoHash,
+  RepostHashParams,
 } from "@/utils/types/hash.types";
 import { initializeMongoConnection, isConnected } from "../mongoose.middleware";
 import HashModel from "../models/hash.model";
@@ -25,7 +26,7 @@ function connectToDB() {
 
 /**
  * Create Hash
- * @param {CreateHashProps} {text, author, community, pathname}
+ * @param {CreateHashParams} {text, author, community, pathname}
  * @returns {Promise<void>}
  * @throws {MongooseError}
  */
@@ -34,7 +35,7 @@ export async function createHash({
   username,
   community,
   pathname,
-}: CreateHashProps): Promise<void> {
+}: CreateHashParams): Promise<void> {
   // Connect to DB
   connectToDB();
 
@@ -133,6 +134,41 @@ export async function fetchHashes(
 }
 
 /**
+ * Fetch a Hash by ID
+ * @param id {string}
+ * @returns {Promise<Hash>}
+ * @throws {MongooseError}
+ */
+export async function getHash(id: string): Promise<any> {
+  // connectDB();
+
+  try {
+    const hashQuery = HashModel.findById(new mongoose.Types.ObjectId(id))
+      .populate({
+        path: "author",
+        model: "User",
+        foreignField: "username",
+        select: "_id id name username verified image bio",
+      })
+      .populate({
+        path: "children",
+        populate: {
+          path: "author",
+          model: "User",
+          foreignField: "username",
+          select: "_id id name parentId image verified username bio",
+        },
+      });
+
+    const hash = await hashQuery.exec();
+
+    return hash;
+  } catch (error: any) {
+    throw new Error(`Error getting hash: ${error.message}`);
+  }
+}
+
+/**
  * Delete a Hash by ID
  * @param id {string}
  * @returns {Promise<void>}
@@ -172,7 +208,7 @@ export async function deleteHash(id: string): Promise<void> {
 
 /**
  * Add Comment to Hash
- * @param {CommentParams} {author, parentId, text, community, pathname}
+ * @param {AddCommentParams} {author, parentId, text, community, pathname}
  * @returns {Promise<void>}
  * @throws {MongooseError}
  */
@@ -182,7 +218,7 @@ export async function addComment({
   text,
   community,
   pathname,
-}: AddCommentProps): Promise<void> {
+}: AddCommentParams): Promise<void> {
   // Connect to DB
   connectToDB();
 
@@ -226,7 +262,7 @@ export async function addComment({
 
 /**
  * Like a Hash
- * @param {LikeHashProps} {id, currentUser, pathname}
+ * @param {LikeHashParams} {id, currentUser, pathname}
  * @returns {Promise<void>}
  * @throws {MongooseError}
  */
@@ -234,7 +270,7 @@ export async function likeHash({
   id,
   currentUser,
   pathname,
-}: LikeHashProps): Promise<void> {
+}: LikeHashParams): Promise<void> {
   // Connect to DB
   connectToDB();
 
@@ -269,7 +305,7 @@ export async function likeHash({
 
 /**
  * Unlike a Hash
- * @param {LikeHashProps} {id, currentUser, pathname}
+ * @param {LikeHashParams} {id, currentUser, pathname}
  * @returns {Promise<void>}
  * @throws {MongooseError}
  */
@@ -277,7 +313,7 @@ export async function unlikeHash({
   id,
   currentUser,
   pathname,
-}: LikeHashProps): Promise<void> {
+}: LikeHashParams): Promise<void> {
   // Connect to DB
   connectToDB();
 
@@ -306,53 +342,27 @@ export async function unlikeHash({
   revalidatePath(pathname);
 }
 
-export async function getHash(id: string): Promise<any> {
-  // connectDB();
-
-  try {
-    const hashQuery = HashModel.findById(new mongoose.Types.ObjectId(id))
-      .populate({
-        path: "author",
-        model: "User",
-        foreignField: "username",
-        select: "_id id name username verified image bio",
-      })
-      .populate({
-        path: "children",
-        populate: {
-          path: "author",
-          model: "User",
-          foreignField: "username",
-          select: "_id id name parentId image verified username bio",
-        },
-      });
-
-    const hash = await hashQuery.exec();
-
-    return hash;
-  } catch (error: any) {
-    throw new Error(`Error getting hash: ${error.message}`);
-  }
-}
-
+/**
+ * Repost a Hash
+ * @param {RepostHashParams} {id, currentUser, pathname, quote}
+ * @returns
+ * @throws {MongooseError}
+ */
 export async function repostHash({
   id,
-  userId,
+  currentUser,
   pathname,
   quote,
-}: {
-  id: string;
-  userId: string;
-  pathname: string;
-  quote?: string;
-}) {
-  // connectDB();
+}: RepostHashParams) {
+  // Connect to DB
+  initializeMongoConnection();
 
   try {
     const repost = {
-      user: new mongoose.Types.ObjectId(userId),
+      user: currentUser,
       quote: quote,
     };
+
     const hash = await HashModel.findByIdAndUpdate(
       new mongoose.Types.ObjectId(id),
       {
@@ -365,9 +375,12 @@ export async function repostHash({
     if (!hash) {
       throw new Error("Hash not found");
     } else {
-      await User.findByIdAndUpdate(new mongoose.Types.ObjectId(userId), {
-        $push: { hashes: new mongoose.Types.ObjectId(id) },
-      });
+      await User.findOneAndUpdate(
+        { username: currentUser },
+        {
+          $push: { hashes: new mongoose.Types.ObjectId(id) },
+        }
+      );
 
       revalidatePath(pathname);
     }

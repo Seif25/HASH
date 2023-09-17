@@ -2,6 +2,11 @@ import AccountProfile from "@/components/forms/AccountProfile";
 import { getUserInformation } from "@/lib/actions/user.actions";
 import { User } from "@/utils/types/user.types";
 import { currentUser } from "@clerk/nextjs";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "User Onboarding / Hash",
+};
 
 async function Profile() {
   const user = await currentUser();
@@ -14,7 +19,7 @@ async function Profile() {
     username: (userInfo?.username || user?.username) ?? "",
     name: userInfo?.name || user?.firstName + " " + user?.lastName,
     bio: userInfo?.bio || "",
-    image: userInfo?.image || user?.imageUrl,
+    image: userInfo?.image || "",
     banner: userInfo?.banner || "",
     birthDate: userInfo?.birthDate || new Date(),
     website: userInfo?.website || "",

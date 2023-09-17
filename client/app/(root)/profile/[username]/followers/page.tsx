@@ -1,11 +1,16 @@
-import UserFriends from "@/components/shared/UserFriends";
 import { getFollowers } from "@/lib/actions/user.actions";
 
-import { getUserById } from "@/lib/actions/user.actions";
+import { fetchUser } from "@/lib/actions/user.actions";
 import type { Metadata, ResolvingMetadata } from "next";
 
+import dynamic from "next/dynamic";
+
+const UserFollowings = dynamic(() => import("@/components/shared/profile/UserFollowings"), {
+  ssr: false, // This ensures the component is only rendered on the client-side
+});
+
 type Props = {
-  params: { userId: string };
+  params: { username: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
@@ -14,27 +19,26 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const userId = params.userId;
+  const username = params.username;
 
   // fetch data
-  const user = await getUserById(userId);
+  const user = await fetchUser(username);
 
   return {
-    title: `People Following (@${user.username}) / Hash`,
+    title: `People Following (@${user?.username}) / Hash`,
   };
 }
 
-async function fetchFollowers(id: string) {
-  const followers = await getFollowers(id);
-
-  return followers;
+async function fetchFollowers(username: string) {
+  const userFollowers = await getFollowers(username);
+  return userFollowers;
 }
 
 export default async function Following({
   params,
 }: {
-  params: { userId: string };
+  params: { username: string };
 }) {
-  const data = await fetchFollowers(params.userId);
-  return <UserFriends followers={data.followers} />;
+  const data = await fetchFollowers(params.username);
+  return <UserFollowings followers={data.followers} />;
 }

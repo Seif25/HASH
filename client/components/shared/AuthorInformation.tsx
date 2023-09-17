@@ -74,6 +74,9 @@ export default function AuthorInformation({
                   width={42}
                   height={42}
                   className="rounded-full"
+                  priority
+                  placeholder="blur"
+                  blurDataURL="/assets/profile-pic.png"
                 />
                 <div
                   className={`flex ${
@@ -114,6 +117,9 @@ export default function AuthorInformation({
                       width={52}
                       height={52}
                       className="rounded-full"
+                      priority
+                      placeholder="blur"
+                      blurDataURL="/assets/profile-pic.png"
                     />
                   </Link>
                   {currentUser !== author.username && (

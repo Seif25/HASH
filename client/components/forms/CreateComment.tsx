@@ -60,7 +60,7 @@ export default function CreateComment({
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
     setLoading(true);
-    setFocused(true)
+    setFocused(true);
 
     try {
       await addComment({
@@ -93,6 +93,9 @@ export default function CreateComment({
                 width={42}
                 height={42}
                 className="rounded-full"
+                priority
+                placeholder="blur"
+                blurDataURL="/assets/profile-pic.png"
               />
             </Link>
             <CommentField

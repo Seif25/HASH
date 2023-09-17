@@ -3,16 +3,16 @@
 import { DetailedUser } from "@/utils/types/user.types";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import UserCard from "../cards/UserCard";
+import UserCard from "../../cards/UserCard";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
-interface Props {
+interface UserFollowingsProps {
   following?: DetailedUser[];
   followers?: DetailedUser[];
 }
 
-const UserFriends = ({ followers, following }: Props) => {
+export default function UserFollowings ({ followers, following }: UserFollowingsProps) {
   const router = useRouter();
   const pathname = usePathname();
   const tab = pathname.split("/")[3];
@@ -26,6 +26,7 @@ const UserFriends = ({ followers, following }: Props) => {
     }
     router.replace(path);
   };
+
   return (
     <>
       <Tabs
@@ -86,5 +87,3 @@ const UserFriends = ({ followers, following }: Props) => {
     </>
   );
 };
-
-export default UserFriends;

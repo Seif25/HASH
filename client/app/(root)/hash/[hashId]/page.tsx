@@ -21,7 +21,12 @@ export async function generateMetadata(
  
   // fetch data
   const hash = await getHash(hashId)
- 
+  
+  if(!hash) {
+    return {
+      title: "Hash not found"
+    }
+  }
  
   return {
     title: `${hash.author.name} on Hash: ${hash.text}`,

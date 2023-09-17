@@ -4,7 +4,7 @@ import { User } from "./user.types";
 // Type definitions for Hash
 
 // * Types for creating a new hash
-export type CreateHashProps = {
+export type CreateHashParams = {
   text: string;
   username: string;
   community: string | null;
@@ -12,7 +12,7 @@ export type CreateHashProps = {
 };
 
 // * Types for adding a new comment
-export type AddCommentProps = {
+export type AddCommentParams = {
   author: string;
   parentId: string;
   text: string;
@@ -21,9 +21,17 @@ export type AddCommentProps = {
 }
 
 // * Types for liking a hash
-export type LikeHashProps = {
+export type LikeHashParams = {
   id: string;
   currentUser: string;
+  pathname: string;
+}
+
+// * Types for reposting a hash
+export type RepostHashParams = {
+  id: string;
+  currentUser: string;
+  quote: string;
   pathname: string;
 }
 

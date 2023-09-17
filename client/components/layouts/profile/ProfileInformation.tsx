@@ -57,6 +57,9 @@ export default function ProfileInformation({ user }: ProfileInformationProps) {
           width={128}
           height={128}
           className="rounded-full bg-contain z-10 -mt-[15%] md:-mt-[10%] lg:-mt-[8%] ml-[5%]"
+          priority
+          placeholder="blur"
+          blurDataURL="/assets/profile-pic.png"
         />
         <Link href={"/onboarding"} className="pt-2 px-5">
           <button className="bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] rounded-full text-white p-2">

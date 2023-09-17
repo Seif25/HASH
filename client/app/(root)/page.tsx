@@ -43,7 +43,7 @@ export default async function Home() {
                 <CreateHash />
               </section>
               {/* Hashes */}
-              <section className="flex flex-col gap-5 w-full pt-5">
+              <section className="flex flex-col gap-5 w-full">
                 {userHashes ? (
                   <>
                     <ForYou

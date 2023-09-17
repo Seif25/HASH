@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { DetailedUser } from "@/utils/types/user.types";
 import Verified from "@mui/icons-material/Verified";
@@ -16,6 +16,9 @@ export default function UserCard({ user }: { user: DetailedUser }) {
             width={50}
             height={50}
             className="rounded-full"
+            priority
+            placeholder="blur"
+            blurDataURL="/assets/profile-pic.png"
           />
           <div className="flex flex-col">
             <h3 className="font-bold text-white text-[14px] flex items-center gap-1">

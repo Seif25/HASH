@@ -8,12 +8,16 @@ import { UserValidation } from "@/lib/validations/user";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import TextField from "./components/TextField";
 import TextAreaField from "./components/TextAreaField";
 import DatePickerField from "./components/DatePickerField";
 import { updateUser } from "@/lib/actions/user.actions";
 import { usePathname, useRouter } from "next/navigation";
+import ImageField from "../shared/ImageField";
+import { isBase64Image } from "@/lib/utils";
+import { useUploadThing } from "@/lib/uploadThing";
+import { Loader2 } from "lucide-react";
 
 interface Params {
   user: User;
@@ -24,6 +28,11 @@ function AccountProfile({ user, btnTitle }: Params) {
   const [date, setDate] = useState<Date>(user.birthDate || new Date());
   const pathname = usePathname();
   const router = useRouter();
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [files, setFiles] = useState<File[]>([]);
+  const { startUpload } = useUploadThing("profileMedia");
 
   const form = useForm({
     resolver: zodResolver(UserValidation),
@@ -39,10 +48,45 @@ function AccountProfile({ user, btnTitle }: Params) {
     },
   });
 
+  // *Handle Profile Picture Upload
+  const uploadImage = async (
+    e: ChangeEvent<HTMLInputElement>,
+    fieldChange: (value: string) => void
+  ) => {
+    const fileReader = new FileReader();
+
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+
+      setFiles(Array.from(e.target.files));
+
+      if (!file.type.includes("image")) return;
+
+      fileReader.onload = async (event) => {
+        const imageDataUrl = event.target?.result?.toString() ?? "";
+
+        fieldChange(imageDataUrl);
+      };
+      fileReader.readAsDataURL(file);
+    }
+  };
+
   // ! This is a workaround to avoid errors -> Needs to be fixed in new version
   const onSubmit = async (
     values: z.infer<typeof UserValidation & { pathname: string }>
   ) => {
+    setLoading(true)
+    const blob = values.image;
+
+    const ImageHasChanged = isBase64Image(blob);
+
+    if (ImageHasChanged) {
+      const imgRes = await startUpload(files);
+
+      if (imgRes && imgRes[0].url) {
+        values.image = imgRes[0].url;
+      }
+    }
     try {
       await updateUser({
         _id: user._id,
@@ -72,6 +116,8 @@ function AccountProfile({ user, btnTitle }: Params) {
     } catch (error: any) {
       console.log(error.message);
     }
+
+    setLoading(false)
   };
 
   return (
@@ -103,19 +149,22 @@ function AccountProfile({ user, btnTitle }: Params) {
           </button>
         </section>
       )}
-      <Image
-        src={user.image ? user.image : "/assets/profile-pic.png"}
-        alt="banner"
-        width={128}
-        height={128}
-        className="rounded-full bg-contain z-10 -mt-[15%] md:-mt-[10%] lg:-mt-[8%] ml-[5%]"
-      />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onError={(errors) => console.log(errors)}
           className="p-10 flex flex-col justify-start gap-10"
         >
+          {/* Profile Picture */}
+          <ImageField
+            control={form.control}
+            name="image"
+            label="Profile Picture"
+            type="file"
+            accept="image/*"
+            placeholder="Please provide a profile picture"
+            handleImageChange={uploadImage}
+          />
           {/* Username */}
           <TextField
             control={form.control}
@@ -179,7 +228,9 @@ function AccountProfile({ user, btnTitle }: Params) {
           <Button
             type="submit"
             className="text-white border hover:bg-white hover:text-black bg-transparent"
+            disabled={loading}
           >
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {btnTitle}
           </Button>
         </form>

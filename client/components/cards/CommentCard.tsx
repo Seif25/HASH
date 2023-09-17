@@ -18,6 +18,7 @@ import { User } from "@/utils/types/user.types";
 import RepostedLabel from "../shared/RepostedLabel";
 import AuthorInformationSkeleton from "../skeletons/AuthorInformationSkeleton";
 import HashInformationSkeleton from "../skeletons/HashInformationSkeleton";
+import { notFound } from "next/navigation";
 
 
 const AuthorInformation = dynamic(() => import("../shared/AuthorInformation"), {
@@ -39,6 +40,8 @@ export default async function CommentCard({
 }: CommentCardProps) {
   // *GET HASH
   const hash: Hash = await getHash(hashId);
+
+  if (!hash) notFound();
 
   // *GET CURRENT USER
   const user = await currentUser();
@@ -117,7 +120,7 @@ export default async function CommentCard({
         {hash.children.length > 0 && !isChild && (
           <div className="flex flex-col gap-5 -ml-5 -mt-5">
             {hash.children.map((comment: Hash) => (
-              <div className={`flex flex-col`}>
+              <div className={`flex flex-col`} key={comment._id}>
                 <CommentCard
                   hashId={comment._id.toString()}
                   isChild={true}
