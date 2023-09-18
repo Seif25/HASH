@@ -12,11 +12,14 @@ import { revalidatePath } from "next/cache";
 import mongoose, { FilterQuery, MongooseError } from "mongoose";
 import Hash from "../models/hash.model";
 
-import { logger } from "../logs/logger";
 import moment from "moment";
+import { logger } from "../logs/logger";
 
 // *SETTING UP LOGGER
-logger.defaultMeta = { service: "user-actions", timestamp: moment().format("DD MMM YYYY hh:mm A") };
+logger.defaultMeta = {
+  service: "user-actions",
+  timestamp: moment().format("DD MMM YYYY hh:mm A"),
+};
 
 /**
  * Try connecting to the database if not already connected
@@ -93,7 +96,9 @@ export async function getUserInformation(
     logger.info(`Successfully fetched user information for ${username}`);
     return user;
   } catch (error: any) {
-    logger.error(`Error finding user information for ${username}: ${error.message}`);
+    logger.error(
+      `Error finding user information for ${username}: ${error.message}`
+    );
     throw new Error(`Error getting user: ${error.message}`);
   }
 }
@@ -110,7 +115,6 @@ export async function getFollowing(username: string): Promise<any> {
 
   logger.wait(`Attempting to Fetch user's following for ${username}`);
 
-
   try {
     const followingQuery = UserModel.findOne({ username: username })
       .populate({
@@ -123,7 +127,9 @@ export async function getFollowing(username: string): Promise<any> {
       .lean();
     return await followingQuery.exec();
   } catch (error: any) {
-    logger.error(`Error finding user's following for ${username}: ${error.message}`);
+    logger.error(
+      `Error finding user's following for ${username}: ${error.message}`
+    );
     throw new Error(`Error getting user's following: ${error.message}`);
   }
 }
@@ -140,7 +146,6 @@ export async function getFollowers(username: string): Promise<any> {
 
   logger.wait(`Attempting to Fetch user's followers for ${username}`);
 
-
   try {
     const followersQuery = UserModel.findOne({ username: username })
       .populate({
@@ -153,7 +158,9 @@ export async function getFollowers(username: string): Promise<any> {
       .lean();
     return await followersQuery.exec();
   } catch (error: any) {
-    logger.error(`Error finding user's followers for ${username}: ${error.message}`);
+    logger.error(
+      `Error finding user's followers for ${username}: ${error.message}`
+    );
     throw new Error(`Error getting user's followers: ${error.message}`);
   }
 }
@@ -174,14 +181,14 @@ export async function fetchUsers({
   // Connect to MongoDB
   connectToDB();
 
-  logger.wait(`Attempting to Fetch users with search string ${searchString}`)
+  logger.wait(`Attempting to Fetch users with search string ${searchString}`);
 
   const skip = (pageNumber - 1) * pageSize;
 
   const regex = new RegExp(searchString, "i");
 
-  if (searchString.length === 0){
-    return null
+  if (searchString.length === 0) {
+    return null;
   }
 
   try {
@@ -215,10 +222,14 @@ export async function fetchUsers({
 
     const isNext = totalUsers > skip + users.length;
 
-    logger.info(`Successfully fetched users with search string ${searchString}`)
+    logger.info(
+      `Successfully fetched users with search string ${searchString}`
+    );
     return { users, isNext };
   } catch (error: any) {
-    logger.error(`Error finding users with search string ${searchString}: ${error.message}`)
+    logger.error(
+      `Error finding users with search string ${searchString}: ${error.message}`
+    );
     throw new Error(`Error getting users: ${error.message}`);
   }
 }
@@ -244,7 +255,7 @@ export async function updateUser({
 }: MongoUser & { pathname: string; clerkId: string }): Promise<void> {
   connectToDB();
 
-  logger.wait(`Attempting to update user ${username}`)
+  logger.wait(`Attempting to update user ${username}`);
 
   try {
     await UserModel.findOneAndUpdate(

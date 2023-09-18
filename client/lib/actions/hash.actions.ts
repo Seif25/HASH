@@ -12,11 +12,14 @@ import HashModel from "../models/hash.model";
 import { revalidatePath } from "next/cache";
 import mongoose, { MongooseError } from "mongoose";
 import User from "../models/user.model";
-import { logger } from "../logs/logger";
 import moment from "moment";
+import { logger } from "../logs/logger";
 
 // *SETTING UP LOGGER
-logger.defaultMeta = { service: "hash-actions", timestamp: moment().format("DD MMM YYYY hh:mm A") };
+logger.defaultMeta = {
+  service: "hash-actions",
+  timestamp: moment().format("DD MMM YYYY hh:mm A"),
+};
 
 /**
  * Try connecting to the database if not already connected
@@ -38,12 +41,12 @@ export async function createHash({
   username,
   community,
   pathname,
-  media
+  media,
 }: CreateHashParams): Promise<void> {
   // Connect to DB
   connectToDB();
 
-  logger.wait(`Creating new hash for: ${username}`)
+  logger.wait(`Creating new hash for: ${username}`);
 
   /**
    * @type {Hash}
@@ -54,31 +57,31 @@ export async function createHash({
     text,
     author: username,
     community: null, //TODO: create community model
-    media: media
-  }).then((newHash: Hash) => {
-    logger.info(`New hash created successfully for: ${username}`);
-    // Add hash to user's hashes
-    User.findOneAndUpdate(
-      { username: username },
-      {
-        $push: { hashes: newHash._id },
-      }
-    )
-      .then(() => {
-        logger.info(`Updated hashes for: ${username}`);
-      })
-      .catch((error: MongooseError) => {
-        logger.error(`Error updating ${username}'s hashes: ${error.message}`);
-        throw new Error(
-          `Error updating ${username}'s hashes: ${error.message}`
-        );
-      })
-  }).catch((error: MongooseError) => {
-    logger.error(`Error creating new hash`);
-    throw new Error(
-      `Error creating hash for ${username}: ${error.message}`
-    );
-  });
+    media: media,
+  })
+    .then((newHash: Hash) => {
+      logger.info(`New hash created successfully for: ${username}`);
+      // Add hash to user's hashes
+      User.findOneAndUpdate(
+        { username: username },
+        {
+          $push: { hashes: newHash._id },
+        }
+      )
+        .then(() => {
+          logger.info(`Updated hashes for: ${username}`);
+        })
+        .catch((error: MongooseError) => {
+          logger.error(`Error updating ${username}'s hashes: ${error.message}`);
+          throw new Error(
+            `Error updating ${username}'s hashes: ${error.message}`
+          );
+        });
+    })
+    .catch((error: MongooseError) => {
+      logger.error(`Error creating new hash`);
+      throw new Error(`Error creating hash for ${username}: ${error.message}`);
+    });
   // Revalidate path on the client
   revalidatePath(pathname);
 }
@@ -96,7 +99,7 @@ export async function fetchHashes(
 ): Promise<{ hashes: Hash[]; isNext: boolean }> {
   // Connect to DB
   connectToDB();
-  logger.wait(`Attempting to Fetch All Hashes`)
+  logger.wait(`Attempting to Fetch All Hashes`);
 
   try {
     // Calculate skip and limit
@@ -124,15 +127,15 @@ export async function fetchHashes(
         },
       });
 
-    let totalPageCount: number = 0
+    let totalPageCount: number = 0;
     try {
-      logger.wait(`Attempting to retrieve total page count`)
+      logger.wait(`Attempting to retrieve total page count`);
       totalPageCount = await HashModel.countDocuments({
         parentId: { $in: [null, undefined] },
       });
-      logger.info(`Total page count retrieved successfully`)
+      logger.info(`Total page count retrieved successfully`);
     } catch (error: any) {
-      logger.error(`Error retrieving total page count: ${error.message}`)
+      logger.error(`Error retrieving total page count: ${error.message}`);
       revalidatePath(`/`);
       return { hashes: [], isNext: false };
     }
@@ -141,7 +144,6 @@ export async function fetchHashes(
 
     const isNext = totalPageCount > skip + hashes.length;
 
-    
     return { hashes, isNext };
   } catch (error: any) {
     logger.error(`Error fetching hashes: ${error.message}`);
@@ -159,7 +161,7 @@ export async function getHash(id: string): Promise<any> {
   // Connect to DB
   connectToDB();
 
-  logger.wait(`Attempting to Fetch Hash: ${id}`)
+  logger.wait(`Attempting to Fetch Hash: ${id}`);
 
   try {
     const hashQuery = HashModel.findById(new mongoose.Types.ObjectId(id))
@@ -180,7 +182,7 @@ export async function getHash(id: string): Promise<any> {
       });
 
     const hash = await hashQuery.exec();
-    logger.info(`Fetched Hash: ${id}`)
+    logger.info(`Fetched Hash: ${id}`);
     return hash;
   } catch (error: any) {
     throw new Error(`Error getting hash: ${error.message}`);
@@ -196,7 +198,7 @@ export async function getHash(id: string): Promise<any> {
 export async function deleteHash(id: string): Promise<void> {
   // Connect to DB
   connectToDB();
-  logger.wait(`Attempting to Delete Hash: ${id}`)
+  logger.wait(`Attempting to Delete Hash: ${id}`);
   try {
     // Delete Hash from hash collection
     const deletedHash: Hash | null = await HashModel.findByIdAndDelete(id);
@@ -241,7 +243,7 @@ export async function addComment({
   // Connect to DB
   connectToDB();
 
-  logger.wait(`Attempting to Add Comment to Hash: ${parentId}`)
+  logger.wait(`Attempting to Add Comment to Hash: ${parentId}`);
 
   // Add comment as new hash to hash collection
   HashModel.create({
@@ -295,7 +297,7 @@ export async function likeHash({
   // Connect to DB
   connectToDB();
 
-  logger.wait(`Attempting to Like Hash: ${id}`)
+  logger.wait(`Attempting to Like Hash: ${id}`);
 
   // Add like to hash
   HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
@@ -340,7 +342,7 @@ export async function unlikeHash({
   // Connect to DB
   connectToDB();
 
-  logger.wait(`Attempting to Unlike Hash: ${id}`)
+  logger.wait(`Attempting to Unlike Hash: ${id}`);
 
   // Remove like from hash
   HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
@@ -382,7 +384,7 @@ export async function repostHash({
   // Connect to DB
   connectToDB();
 
-  logger.wait(`Attempting to Repost Hash: ${id}`)
+  logger.wait(`Attempting to Repost Hash: ${id}`);
 
   try {
     const repost = {

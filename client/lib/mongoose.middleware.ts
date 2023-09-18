@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { logger } from "@/lib/logs/logger";
+import { logger } from "./logs/logger";
 
 // *SETTING UP LOGGER
 logger.defaultMeta = { service: "mongodb" };
