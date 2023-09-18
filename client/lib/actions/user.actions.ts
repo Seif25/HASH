@@ -13,13 +13,13 @@ import mongoose, { FilterQuery, MongooseError } from "mongoose";
 import Hash from "../models/hash.model";
 
 import moment from "moment";
-import { logger } from "../logs/logger";
+// import { logger } from "../logs/logger";
 
 // *SETTING UP LOGGER
-logger.defaultMeta = {
-  service: "user-actions",
-  timestamp: moment().format("DD MMM YYYY hh:mm A"),
-};
+// logger.defaultMeta = {
+//   service: "user-actions",
+//   timestamp: moment().format("DD MMM YYYY hh:mm A"),
+// };
 
 /**
  * Try connecting to the database if not already connected
@@ -62,18 +62,18 @@ export async function fetchUser(
         options: { sort: { createdAt: "desc" } },
       });
 
-    logger.wait(`Attempting to Fetch user ${username}`);
+    console.log(`Attempting to Fetch user ${username}`);
     const user = await userQuery.exec();
 
     if (user) {
-      logger.info(`Successfully fetched user ${username}`);
+      console.info(`Successfully fetched user ${username}`);
       return user;
     } else {
-      logger.error(`Failed to fetch user ${username}`);
+      console.error(`Failed to fetch user ${username}`);
       return null;
     }
   } catch (error: any) {
-    logger.error(`Error finding user ${username}: ${error.message}`);
+    console.error(`Error finding user ${username}: ${error.message}`);
     return null;
   }
 }
@@ -89,14 +89,14 @@ export async function getUserInformation(
 ): Promise<User | null> {
   connectToDB();
 
-  logger.wait(`Attempting to Fetch user information for ${username}`);
+  console.log(`Attempting to Fetch user information for ${username}`);
 
   try {
     const user = await UserModel.findOne({ username: username });
-    logger.info(`Successfully fetched user information for ${username}`);
+    console.info(`Successfully fetched user information for ${username}`);
     return user;
   } catch (error: any) {
-    logger.error(
+    console.error(
       `Error finding user information for ${username}: ${error.message}`
     );
     throw new Error(`Error getting user: ${error.message}`);
@@ -113,7 +113,7 @@ export async function getFollowing(username: string): Promise<any> {
   // Connect to MongoDB
   connectToDB();
 
-  logger.wait(`Attempting to Fetch user's following for ${username}`);
+  console.log(`Attempting to Fetch user's following for ${username}`);
 
   try {
     const followingQuery = UserModel.findOne({ username: username })
@@ -127,7 +127,7 @@ export async function getFollowing(username: string): Promise<any> {
       .lean();
     return await followingQuery.exec();
   } catch (error: any) {
-    logger.error(
+    console.error(
       `Error finding user's following for ${username}: ${error.message}`
     );
     throw new Error(`Error getting user's following: ${error.message}`);
@@ -144,7 +144,7 @@ export async function getFollowers(username: string): Promise<any> {
   // Connect to MongoDB
   connectToDB();
 
-  logger.wait(`Attempting to Fetch user's followers for ${username}`);
+  console.log(`Attempting to Fetch user's followers for ${username}`);
 
   try {
     const followersQuery = UserModel.findOne({ username: username })
@@ -158,7 +158,7 @@ export async function getFollowers(username: string): Promise<any> {
       .lean();
     return await followersQuery.exec();
   } catch (error: any) {
-    logger.error(
+    console.error(
       `Error finding user's followers for ${username}: ${error.message}`
     );
     throw new Error(`Error getting user's followers: ${error.message}`);
@@ -181,7 +181,7 @@ export async function fetchUsers({
   // Connect to MongoDB
   connectToDB();
 
-  logger.wait(`Attempting to Fetch users with search string ${searchString}`);
+  console.log(`Attempting to Fetch users with search string ${searchString}`);
 
   const skip = (pageNumber - 1) * pageSize;
 
@@ -222,12 +222,12 @@ export async function fetchUsers({
 
     const isNext = totalUsers > skip + users.length;
 
-    logger.info(
+    console.info(
       `Successfully fetched users with search string ${searchString}`
     );
     return { users, isNext };
   } catch (error: any) {
-    logger.error(
+    console.error(
       `Error finding users with search string ${searchString}: ${error.message}`
     );
     throw new Error(`Error getting users: ${error.message}`);
@@ -255,7 +255,7 @@ export async function updateUser({
 }: MongoUser & { pathname: string; clerkId: string }): Promise<void> {
   connectToDB();
 
-  logger.wait(`Attempting to update user ${username}`);
+  console.log(`Attempting to update user ${username}`);
 
   try {
     await UserModel.findOneAndUpdate(
