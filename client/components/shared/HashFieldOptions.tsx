@@ -7,25 +7,29 @@ import {
 } from "@/components/ui/tooltip";
 
 // *ICONS
-import ImageIcon from "@mui/icons-material/Image";
 import GifBoxIcon from "@mui/icons-material/GifBox";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import MediaButton from "../buttons/MediaButtons";
 
-export default function HashFieldOptions() {
+interface HashFieldOptionsProps {
+  control: any;
+  handleImageChange: (e: any, onChange: any) => void;
+}
+
+export default function HashFieldOptions({
+  control,
+  handleImageChange,
+}: HashFieldOptionsProps) {
   return (
     <div className="flex items-center w-full gap-5">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button className="rounded-full">
-              <ImageIcon className="text-primary" fontSize="small" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Media</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <MediaButton
+        control={control}
+        name="media"
+        type="file"
+        accept="image/*"
+        placeholder="Upload Image"
+        handleImageChange={handleImageChange}
+      />
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>

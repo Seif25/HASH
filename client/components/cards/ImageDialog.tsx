@@ -45,8 +45,6 @@ async function ImageDialog({
             } ${index === 2 && "rounded-bl-lg"} ${
               index === 3 && "rounded-br-lg"
             }`}
-            placeholder="blur"
-            blurDataURL="/assets/profile-pic.png"
           />
         </AspectRatio>
       </DialogTrigger>
@@ -60,8 +58,6 @@ async function ImageDialog({
               fill
               priority
               className="object-contain rounded-lg w-auto h-auto"
-              placeholder="blur"
-              blurDataURL="/assets/profile-pic.png"
             />
           </div>
           <div
@@ -88,8 +84,6 @@ async function ImageDialog({
                 maxHeight: 600,
                 borderRadius: "8px",
               }}
-              placeholder="blur"
-              blurDataURL="/assets/profile-pic.png"
             />
           </div>
         </div>

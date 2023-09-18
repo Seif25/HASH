@@ -9,6 +9,7 @@ export const HashValidation = z.object({
   username: z
     .string()
     .nonempty({ message: "You need to be logged in to post a Hash" }),
+  media: z.array(z.any()),
 });
 
 export const CommentValidation = z.object({
@@ -17,4 +18,5 @@ export const CommentValidation = z.object({
     .min(1, { message: "You need to write at least 1 character" })
     .max(205, { message: "Maximum amount of characters reached" })
     .nonempty({ message: "You can't post an empty Hash" }),
+  media: z.array(z.string()),
 });

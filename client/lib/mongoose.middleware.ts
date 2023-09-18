@@ -1,11 +1,15 @@
 import mongoose from "mongoose";
+import { logger } from "@/lib/logs/logger";
+
+// *SETTING UP LOGGER
+logger.defaultMeta = { service: "mongodb" };
 
 export let isConnected = false;
 
 export const initializeMongoConnection = async () => {
   mongoose.set("strictQuery", true);
 
-  if (!process.env.MONGO_URI) return console.log("Failed to load DB URI");
+  if (!process.env.MONGO_URI) return logger.error("Failed to load DB URI");
   if (isConnected) return;
 
   try {
@@ -13,8 +17,8 @@ export const initializeMongoConnection = async () => {
 
     isConnected = true;
 
-    console.log("Successfully connected to DB");
+    logger.info("Initialized MongoDB Connection Successfully");
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 };

@@ -9,6 +9,7 @@ export type CreateHashParams = {
   username: string;
   community: string | null;
   pathname: string;
+  media: Media[];
 };
 
 // * Types for adding a new comment

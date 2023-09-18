@@ -84,7 +84,10 @@ export default function CommentField({
                 </div>
               )}
               <div className="grid grid-cols-2 gap-10 pl-2">
-                <HashFieldOptions />
+                <HashFieldOptions 
+                  control={control}
+                  handleImageChange={() => {}}
+                />
                 <div className="flex items-center justify-end">
                   <Button
                     className="rounded-full w-20"

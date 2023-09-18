@@ -11,21 +11,13 @@ import { FocusEventHandler } from "react";
 import { Button } from "@/components/ui/button";
 import PublicIcon from "@mui/icons-material/Public";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ImageIcon from "@mui/icons-material/Image";
-import GifBoxIcon from "@mui/icons-material/GifBox";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import { Loader2 } from "lucide-react";
+import HashFieldOptions from "@/components/shared/HashFieldOptions";
 
 const HashField: NextPage<
   HashFieldProps & { handleFocus: FocusEventHandler<HTMLTextAreaElement> } & {
     handleBlur: FocusEventHandler<HTMLTextAreaElement>;
-  } & { focused: boolean, loading: boolean, length: number }
+  } & { focused: boolean, loading: boolean, length: number, handleImageChange: (e: any, onChange: any) => void }
 > = ({
   control,
   name,
@@ -37,7 +29,8 @@ const HashField: NextPage<
   handleBlur,
   focused,
   loading,
-  length
+  length,
+  handleImageChange
 }) => {
   return (
     <FormField
@@ -82,53 +75,7 @@ const HashField: NextPage<
                 </div>
               )}
               <div className="grid grid-cols-2 gap-10 pl-2">
-                <div className="flex items-center w-full gap-5">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button className="rounded-full">
-                          <ImageIcon
-                            className="text-primary"
-                            fontSize="small"
-                          />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Media</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button className="rounded-full">
-                          <GifBoxIcon
-                            className="text-primary"
-                            fontSize="small"
-                          />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>GIF</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button className="rounded-full">
-                          <InsertEmoticonIcon
-                            className="text-primary"
-                            fontSize="small"
-                          />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Emojis</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
+                <HashFieldOptions control={control} handleImageChange={handleImageChange}/>
                 <div className="flex items-center justify-end">
                   <Button
                     className="rounded-full w-20"

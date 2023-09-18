@@ -121,7 +121,7 @@ function AccountProfile({ user, btnTitle }: Params) {
       const imgRes = await startUpload(bannerPictureFiles);
 
       if (imgRes && imgRes[0].url) {
-        values.image = imgRes[0].url;
+        values.banner = imgRes[0].url;
       }
     }
 
@@ -160,7 +160,6 @@ function AccountProfile({ user, btnTitle }: Params) {
 
   return (
     <div>
-      
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

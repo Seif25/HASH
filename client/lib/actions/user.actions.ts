@@ -7,11 +7,25 @@ import {
   User,
 } from "@/utils/types/user.types";
 import UserModel from "../models/user.model";
-import { initializeMongoConnection } from "../mongoose.middleware";
+import { initializeMongoConnection, isConnected } from "../mongoose.middleware";
 import { revalidatePath } from "next/cache";
 import mongoose, { FilterQuery, MongooseError } from "mongoose";
 import Hash from "../models/hash.model";
 
+import { logger } from "../logs/logger";
+import moment from "moment";
+
+// *SETTING UP LOGGER
+logger.defaultMeta = { service: "user-actions", timestamp: moment().format("DD MMM YYYY hh:mm A") };
+
+/**
+ * Try connecting to the database if not already connected
+ */
+function connectToDB() {
+  if (!isConnected) {
+    initializeMongoConnection();
+  }
+}
 /**
  * Get Full User by Username
  * @param username {string}
@@ -22,7 +36,7 @@ export async function fetchUser(
   username: string
 ): Promise<DetailedUser | null> {
   // Connect to MongoDB
-  initializeMongoConnection();
+  connectToDB();
 
   try {
     const userQuery = UserModel.findOne({ username: username })
@@ -45,17 +59,18 @@ export async function fetchUser(
         options: { sort: { createdAt: "desc" } },
       });
 
+    logger.wait(`Attempting to Fetch user ${username}`);
     const user = await userQuery.exec();
 
     if (user) {
-      console.info(`User ${username} found!`);
+      logger.info(`Successfully fetched user ${username}`);
       return user;
     } else {
-      console.error(`User ${username} not found!`);
+      logger.error(`Failed to fetch user ${username}`);
       return null;
     }
   } catch (error: any) {
-    console.error(`Error finding user ${username}: ${error.message}`);
+    logger.error(`Error finding user ${username}: ${error.message}`);
     return null;
   }
 }
@@ -69,11 +84,16 @@ export async function fetchUser(
 export async function getUserInformation(
   username: string
 ): Promise<User | null> {
-  initializeMongoConnection();
+  connectToDB();
+
+  logger.wait(`Attempting to Fetch user information for ${username}`);
 
   try {
-    return await UserModel.findOne({ username: username });
+    const user = await UserModel.findOne({ username: username });
+    logger.info(`Successfully fetched user information for ${username}`);
+    return user;
   } catch (error: any) {
+    logger.error(`Error finding user information for ${username}: ${error.message}`);
     throw new Error(`Error getting user: ${error.message}`);
   }
 }
@@ -86,7 +106,10 @@ export async function getUserInformation(
  */
 export async function getFollowing(username: string): Promise<any> {
   // Connect to MongoDB
-  initializeMongoConnection();
+  connectToDB();
+
+  logger.wait(`Attempting to Fetch user's following for ${username}`);
+
 
   try {
     const followingQuery = UserModel.findOne({ username: username })
@@ -98,9 +121,9 @@ export async function getFollowing(username: string): Promise<any> {
       })
       .select("following")
       .lean();
-
     return await followingQuery.exec();
   } catch (error: any) {
+    logger.error(`Error finding user's following for ${username}: ${error.message}`);
     throw new Error(`Error getting user's following: ${error.message}`);
   }
 }
@@ -113,7 +136,10 @@ export async function getFollowing(username: string): Promise<any> {
  */
 export async function getFollowers(username: string): Promise<any> {
   // Connect to MongoDB
-  initializeMongoConnection();
+  connectToDB();
+
+  logger.wait(`Attempting to Fetch user's followers for ${username}`);
+
 
   try {
     const followersQuery = UserModel.findOne({ username: username })
@@ -125,9 +151,9 @@ export async function getFollowers(username: string): Promise<any> {
       })
       .select("followers")
       .lean();
-
     return await followersQuery.exec();
   } catch (error: any) {
+    logger.error(`Error finding user's followers for ${username}: ${error.message}`);
     throw new Error(`Error getting user's followers: ${error.message}`);
   }
 }
@@ -146,7 +172,9 @@ export async function fetchUsers({
   sortBy = "desc",
 }: FetchAllUsersParams): Promise<{ users: User[]; isNext: boolean } | null> {
   // Connect to MongoDB
-  initializeMongoConnection();
+  connectToDB();
+
+  logger.wait(`Attempting to Fetch users with search string ${searchString}`)
 
   const skip = (pageNumber - 1) * pageSize;
 
@@ -187,11 +215,19 @@ export async function fetchUsers({
 
     const isNext = totalUsers > skip + users.length;
 
+    logger.info(`Successfully fetched users with search string ${searchString}`)
     return { users, isNext };
   } catch (error: any) {
+    logger.error(`Error finding users with search string ${searchString}: ${error.message}`)
     throw new Error(`Error getting users: ${error.message}`);
   }
 }
+
+/*
+    ! ################################### !
+    ! NOT UPDATED FOR NEW CONVENTIONS YET !
+    ! ################################### !
+*/
 
 export async function updateUser({
   _id,
@@ -206,7 +242,9 @@ export async function updateUser({
   pathname,
   clerkId,
 }: MongoUser & { pathname: string; clerkId: string }): Promise<void> {
-  initializeMongoConnection();
+  connectToDB();
+
+  logger.wait(`Attempting to update user ${username}`)
 
   try {
     await UserModel.findOneAndUpdate(
@@ -235,7 +273,7 @@ export async function updateUser({
 }
 
 export async function getUserById(id: string) {
-  initializeMongoConnection();
+  connectToDB();
 
   try {
     return await UserModel.findById(new mongoose.Types.ObjectId(id));
@@ -245,7 +283,7 @@ export async function getUserById(id: string) {
 }
 
 export async function getUseProfile(id: string) {
-  initializeMongoConnection();
+  connectToDB();
 
   try {
     const userQuery = UserModel.findOne({ id: id })
@@ -269,7 +307,7 @@ export async function followUser({
   toFollowId: string;
   pathname: string;
 }): Promise<void> {
-  initializeMongoConnection();
+  connectToDB();
 
   try {
     await UserModel.findOneAndUpdate(

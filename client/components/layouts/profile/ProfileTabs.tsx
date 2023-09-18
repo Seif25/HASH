@@ -13,6 +13,9 @@ export default function ProfileTabs({
   likes,
   currentUser,
 }: ProfileTabsProps) {
+  const replies: Hash[] | undefined = posts?.filter(
+    (hash: Hash) => hash.parentId !== null
+  );
   return (
     <div className="lg:p-5">
       <Tabs defaultValue="Posts" className="w-full">
@@ -48,7 +51,17 @@ export default function ProfileTabs({
         </TabsContent>
         <TabsContent value="Replies">
           <div className="flex flex-col gap-5 items-center justify-center p-5">
-            <h3>Replies</h3>
+            {replies && (
+              <>
+                {replies.map((hash: Hash) => (
+                  <HashCard
+                    key={hash._id}
+                    hash={hash}
+                    currentUser={currentUser}
+                  />
+                ))}
+              </>
+            )}
           </div>
         </TabsContent>
         <TabsContent value="Highlights">

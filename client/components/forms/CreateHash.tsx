@@ -11,12 +11,14 @@ import { Form } from "@/components/ui/form";
 import { HashValidation } from "@/lib/validations/hash";
 import HashField from "./components/HashField";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import { createHash } from "@/lib/actions/hash.actions";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
+import { useUploadThing } from "@/lib/uploadThing";
+import { Media } from "@/utils/types/hash.types";
 
 // TODO: change userId to username
 interface Props {
@@ -29,12 +31,41 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
   const pathname = usePathname();
   const [focused, setFocused] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { startUpload } = useUploadThing("hashMedia");
+
+  const [hashMedia, setHashMedia] = useState<File[]>([]);
+  // *Handle Profile Picture Upload
+  const uploadHashMedia = async (
+    e: ChangeEvent<HTMLInputElement>,
+    fieldChange: (value: string[]) => void
+  ) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const files = e.target.files;
+
+      setHashMedia(Array.from(e.target.files));
+
+      const fieldValue: string[] = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const fileReader = new FileReader();
+        if (!files[i].type.includes("image")) return;
+
+        fileReader.onload = async (event) => {
+          const imageDataUrl = event.target?.result?.toString() ?? "";
+          fieldValue.push(imageDataUrl);
+        };
+        fieldChange(fieldValue);
+        fileReader.readAsDataURL(files[i]);
+      }
+    }
+  };
 
   const form = useForm({
     resolver: zodResolver(HashValidation),
     defaultValues: {
       hash: "",
       username: username,
+      media: [],
     },
   });
 
@@ -48,11 +79,24 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
 
   const onSubmit = async (values: z.infer<typeof HashValidation>) => {
     setLoading(true);
+
+    if (hashMedia) {
+      const imgRes = await startUpload(hashMedia);
+      const media: Media[] = [];
+      if (imgRes) {
+        imgRes.forEach((img) => {
+          media.push({ url: img.url, alt: img.name, id: img.key });
+        });
+        values.media = media;
+      }
+    }
+
     await createHash({
       text: values.hash,
       username: username,
       community: null,
       pathname: pathname,
+      media: values.media,
     });
 
     setLoading(false);
@@ -90,10 +134,26 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
               focused={focused}
               loading={loading}
               length={form.getValues().hash.length}
+              handleImageChange={uploadHashMedia}
             />
           </div>
         </form>
       </Form>
+      <pre className="flex flex-col gap-5 items-center justify-center">
+        <code className="text-red-500">{JSON.stringify(form.formState.errors, null, 2)}</code>
+        <code>{JSON.stringify(form.getValues().media.length)}</code>
+        {/* <code className="flex flex-col gap-5 items-center justify-center">
+          {
+            form.getValues().media.map((img: any) => (
+              <h3>
+                {
+                  JSON.stringify(img, null, 2)
+                }
+              </h3>
+            ))
+          }
+        </code> */}
+      </pre>
     </>
   );
 };

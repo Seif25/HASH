@@ -25,19 +25,20 @@ const hashSchema = new mongoose.Schema({
     {
       url: { type: String },
       alt: { type: String },
-    }
+      id: { type: String },
+    },
   ],
   likes: [
     {
       type: String,
       ref: "User",
-    }
+    },
   ],
   reposts: [
     {
       user: { type: String, ref: "User" },
       quote: { type: String },
-    }
+    },
   ],
 });
 

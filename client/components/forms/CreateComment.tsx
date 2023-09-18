@@ -46,6 +46,7 @@ export default function CreateComment({
     resolver: zodResolver(CommentValidation),
     defaultValues: {
       hash: "",
+      media: []
     },
   });
 
