@@ -103,7 +103,7 @@ export default function CreateComment({
               control={form.control}
               name="hash"
               placeholder="Post your comment"
-              maxLength={250}
+              maxLength={280}
               rows={5}
               handleFocus={onFocus}
               handleBlur={onBlur}

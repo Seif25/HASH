@@ -10,6 +10,7 @@ import HashLinks from "./HashLinks";
 import ShareMenu from "./ShareMenu";
 import FormattedWord from "./FormattedWord";
 import moment from "moment";
+import HashText from "../text/HashText";
 
 interface HashInformationProps {
   hash: Hash;
@@ -26,64 +27,59 @@ export default function HashInformation({
   reposted,
   isComment,
 }: HashInformationProps) {
-  function formatContent(input: string) {
-    const words = input.trim().split(/\s+/);
-
-    return words.map((formattedWord, index) => (
-      <FormattedWord key={index} text={formattedWord} index={index} />
-    ));
-  }
   return (
     <div className="flex flex-col gap-3 justify-center w-full">
       {/* HASH TEXT */}
-      {!isComment ? (
-        <Link href={`/hash/${hash._id.toString()}`} className="px-10">
-          <h2 className="whitespace-pre-line break-all h-auto w-full text-sm">
-            {formatContent(hash.text)}
+      <div className="max-w-xs lg:max-w-4xl">
+        {!isComment ? (
+          <Link href={`/hash/${hash._id.toString()}`} className="px-10">
+            <HashText text={hash.text} />
+          </Link>
+        ) : (
+          <h2 className="hash-text-wrap h-auto text-sm">
+            <HashText text={hash.text} />
           </h2>
-        </Link>
-      ) : (
-        <h2 className="whitespace-pre-line break-all h-auto w-full text-sm px-10">
-          {formatContent(hash.text)}
-        </h2>
-      )}
+        )}
+      </div>
       {/* HASH IMAGES, GIFs or VIDEOS */}
-      {hash.media && (
-        <div
-          className={`${
-            hash.media?.length > 1
-              ? "grid grid-cols-2 items-center justify-center h-auto border border-light-1 rounded-lg"
-              : "flex items-center justify-center"
-          } z-20 px-10`}
-        >
-          {hash.media.map((image: Media, index: number) => (
-            <div
-              className={`${
-                hash.media?.length > 1
-                  ? `w-auto h-auto object-cover ${
-                      index === 0 && "rounded-tl-lg"
-                    } ${index === 1 && "rounded-tr-lg"} ${
-                      index === 2 && "rounded-bl-lg"
-                    } ${index === 3 && "rounded-br-lg"}`
-                  : "w-full h-full rounded-lg"
-              }`}
-              key={image.id}
-            >
-              <ImageDialog
-                media={image}
-                commentCount={hash.children?.length ?? 0}
-                likeCount={hash.likes?.length ?? 0}
-                repostCount={hash.reposts?.length ?? 0}
-                viewCount={hash.views ?? 0}
-                id={hash._id.toString()}
-                currentUserId={currentUser}
-                index={index}
-                liked={hash.likes?.includes(currentUser ?? "") ?? false}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="px-10">
+        {hash.media && (
+          <div
+            className={`${
+              hash.media?.length > 1
+                ? "grid grid-cols-2 items-center justify-center h-auto border border-light-1 rounded-lg"
+                : "flex items-center justify-center"
+            }`}
+          >
+            {hash.media.map((image: Media, index: number) => (
+              <div
+                className={`${
+                  hash.media?.length > 1
+                    && `w-auto h-auto object-cover ${
+                        index === 0 && "rounded-tl-lg"
+                      } ${index === 1 && "rounded-tr-lg"} ${
+                        index === 2 && "rounded-bl-lg"
+                      } ${index === 3 && "rounded-br-lg"}`
+                } ${hash.media?.length === 1 && "w-full h-full rounded-lg"}`}
+                key={image.id}
+              >
+                <ImageDialog
+                  media={image}
+                  commentCount={hash.children?.length ?? 0}
+                  likeCount={hash.likes?.length ?? 0}
+                  repostCount={hash.reposts?.length ?? 0}
+                  viewCount={hash.views ?? 0}
+                  id={hash._id.toString()}
+                  currentUserId={currentUser}
+                  index={index}
+                  liked={hash.likes?.includes(currentUser ?? "") ?? false}
+                  length={hash.media?.length ?? 0}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* HASH METADATA IF DISPLAYING HASH PAGE */}
       {isComment && (

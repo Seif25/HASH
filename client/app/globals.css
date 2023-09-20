@@ -51,7 +51,7 @@
 }
 
 .footer {
-  @apply fixed bottom-0 z-10 w-full rounded-t-3xl bg-glassmorphism p-4 backdrop-blur-md xs:px-7 md:hidden;
+  @apply fixed bottom-0 w-full rounded-t-3xl bg-glassmorphism p-4 backdrop-blur-md xs:px-7 md:hidden;
 }
 
 .footer-container {
@@ -167,3 +167,8 @@
 .btn {
   @apply rounded-full p-2 bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb];
 }
+
+.hash-text-wrap{
+  @apply flex flex-wrap whitespace-pre-wrap
+}
+/* whitespace-pre-line break-all */

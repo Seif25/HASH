@@ -16,6 +16,7 @@ interface ImageDialogProps {
   id: string;
   index: number;
   liked: boolean;
+  length: number;
 }
 
 async function ImageDialog({
@@ -28,11 +29,12 @@ async function ImageDialog({
   id,
   index,
   liked,
+  length,
 }: ImageDialogProps) {
   const user = await currentUser();
   return (
     <Dialog>
-      <DialogTrigger asChild className="z-20 cursor-pointer">
+      <DialogTrigger asChild className="cursor-pointer">
         <AspectRatio ratio={4 / 3}>
           <Image
             key={media.id}
@@ -40,10 +42,12 @@ async function ImageDialog({
             alt={media.alt}
             fill
             priority
-            className={`object-cover z-20 ${index === 0 && "rounded-tl-lg"} ${
-              index === 1 && "rounded-tr-lg"
-            } ${index === 2 && "rounded-bl-lg"} ${
-              index === 3 && "rounded-br-lg"
+            className={`object-cover ${
+              index === 0 && length > 1 && "rounded-tl-lg"
+            } ${index === 1 && "rounded-tr-lg"} ${
+              index === 2 && "rounded-bl-lg"
+            } ${index === 3 && "rounded-br-lg"} ${
+              length === 1 && "rounded-lg"
             }`}
           />
         </AspectRatio>

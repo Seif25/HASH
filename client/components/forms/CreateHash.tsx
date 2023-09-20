@@ -127,7 +127,7 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
               control={form.control}
               name="hash"
               placeholder="What's on your mind?"
-              maxLength={250}
+              maxLength={280}
               rows={5}
               handleFocus={onFocus}
               handleBlur={onBlur}
@@ -139,9 +139,10 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
           </div>
         </form>
       </Form>
-      <pre className="flex flex-col gap-5 items-center justify-center">
+      {/* <pre className="flex flex-col gap-5 items-center justify-center">
         <code className="text-red-500">{JSON.stringify(form.formState.errors, null, 2)}</code>
-        <code>{JSON.stringify(form.getValues().media.length)}</code>
+        <code>{JSON.stringify(form.getValues().hash.length)}</code>
+        <code>{JSON.stringify(form.getValues().hash)}</code> */}
         {/* <code className="flex flex-col gap-5 items-center justify-center">
           {
             form.getValues().media.map((img: any) => (
@@ -153,7 +154,7 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
             ))
           }
         </code> */}
-      </pre>
+      {/* </pre> */}
     </>
   );
 };

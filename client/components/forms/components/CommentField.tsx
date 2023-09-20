@@ -79,7 +79,7 @@ export default function CommentField({
                   className={`flex items-center justify-end w-full px-5 pt-2`}
                 >
                   <span className="text-light-3 text-[12px]">
-                    {field.value.length}/250
+                    {field.value.length}/280
                   </span>
                 </div>
               )}

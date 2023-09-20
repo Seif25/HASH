@@ -62,11 +62,11 @@ export async function fetchUser(
         options: { sort: { createdAt: "desc" } },
       });
 
-    console.log(`Attempting to Fetch user ${username}`);
+    // console.log(`Attempting to Fetch user ${username}`);
     const user = await userQuery.exec();
 
     if (user) {
-      console.info(`Successfully fetched user ${username}`);
+      // console.info(`Successfully fetched user ${username}`);
       return user;
     } else {
       console.error(`Failed to fetch user ${username}`);
@@ -89,11 +89,11 @@ export async function getUserInformation(
 ): Promise<User | null> {
   connectToDB();
 
-  console.log(`Attempting to Fetch user information for ${username}`);
+  // console.log(`Attempting to Fetch user information for ${username}`);
 
   try {
     const user = await UserModel.findOne({ username: username });
-    console.info(`Successfully fetched user information for ${username}`);
+    // console.info(`Successfully fetched user information for ${username}`);
     return user;
   } catch (error: any) {
     console.error(
@@ -113,7 +113,7 @@ export async function getFollowing(username: string): Promise<any> {
   // Connect to MongoDB
   connectToDB();
 
-  console.log(`Attempting to Fetch user's following for ${username}`);
+  // console.log(`Attempting to Fetch user's following for ${username}`);
 
   try {
     const followingQuery = UserModel.findOne({ username: username })
@@ -144,7 +144,7 @@ export async function getFollowers(username: string): Promise<any> {
   // Connect to MongoDB
   connectToDB();
 
-  console.log(`Attempting to Fetch user's followers for ${username}`);
+  // console.log(`Attempting to Fetch user's followers for ${username}`);
 
   try {
     const followersQuery = UserModel.findOne({ username: username })
@@ -181,7 +181,7 @@ export async function fetchUsers({
   // Connect to MongoDB
   connectToDB();
 
-  console.log(`Attempting to Fetch users with search string ${searchString}`);
+  // console.log(`Attempting to Fetch users with search string ${searchString}`);
 
   const skip = (pageNumber - 1) * pageSize;
 
@@ -222,9 +222,9 @@ export async function fetchUsers({
 
     const isNext = totalUsers > skip + users.length;
 
-    console.info(
-      `Successfully fetched users with search string ${searchString}`
-    );
+    // console.info(
+    //   `Successfully fetched users with search string ${searchString}`
+    // );
     return { users, isNext };
   } catch (error: any) {
     console.error(
@@ -255,7 +255,7 @@ export async function updateUser({
 }: MongoUser & { pathname: string; clerkId: string }): Promise<void> {
   connectToDB();
 
-  console.log(`Attempting to update user ${username}`);
+  // console.log(`Attempting to update user ${username}`);
 
   try {
     await UserModel.findOneAndUpdate(

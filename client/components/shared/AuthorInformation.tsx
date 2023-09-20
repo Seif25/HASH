@@ -154,9 +154,11 @@ export default function AuthorInformation({
                 </Link>
               </div>
               {/* BIO, FOLLOWING & FOLLOWERS */}
-              <p className="whitespace-pre-line break-all h-auto w-full text-sm text-white">
-                {author.bio}
-              </p>
+              <div className="max-w-xs lg:max-w-4xl">
+                <p className="hash-text-wrap h-auto text-sm text-white">
+                  {author.bio}
+                </p>
+              </div>
               <div className="grid grid-cols-2 items-center gap-5">
                 <div className="flex items-center gap-2">
                   <span className="text-white font-bold">

@@ -55,6 +55,7 @@ export type Hash = {
   likes: string[];
   reposts: Repost[];
   views: number;
+  tags?: string[]
 };
 
 export type HashCardProps = {

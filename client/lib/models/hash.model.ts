@@ -40,6 +40,13 @@ const hashSchema = new mongoose.Schema({
       quote: { type: String },
     },
   ],
+  tags: [
+    {
+      type: String,
+      ref: "Tag",
+      default: []
+    }
+  ]
 });
 
 const Hash = mongoose.models.Hash || mongoose.model("Hash", hashSchema);

@@ -13,6 +13,7 @@ import { revalidatePath } from "next/cache";
 import mongoose, { MongooseError } from "mongoose";
 import User from "../models/user.model";
 import moment from "moment";
+import Tag from "../models/tag.model";
 // import { logger } from "../logs/logger";
 
 // *SETTING UP LOGGER
@@ -46,7 +47,20 @@ export async function createHash({
   // Connect to DB
   connectToDB();
 
-  console.log(`Creating new hash for: ${username}`);
+  const words = text.split(/\s+/);
+
+  const tags: string [] = []
+  words.forEach((word) => {
+    if (word.startsWith("#")) {
+      tags.push(word)
+    }
+  })
+
+  tags.forEach(async (tag) => {
+    await Tag.findOneAndUpdate({ tag: tag }, { lastUsed: Date.now(), $inc: { count: 1 } }, { upsert: true })
+  })
+
+  // console.log(`Creating new hash for: ${username}`);
 
   /**
    * @type {Hash}
@@ -58,9 +72,10 @@ export async function createHash({
     author: username,
     community: null, //TODO: create community model
     media: media,
+    tags: tags
   })
     .then((newHash: Hash) => {
-      console.info(`New hash created successfully for: ${username}`);
+      // console.info(`New hash created successfully for: ${username}`);
       // Add hash to user's hashes
       User.findOneAndUpdate(
         { username: username },
@@ -69,7 +84,7 @@ export async function createHash({
         }
       )
         .then(() => {
-          console.info(`Updated hashes for: ${username}`);
+          // console.info(`Updated hashes for: ${username}`);
         })
         .catch((error: MongooseError) => {
           console.error(`Error updating ${username}'s hashes: ${error.message}`);
@@ -99,7 +114,7 @@ export async function fetchHashes(
 ): Promise<{ hashes: Hash[]; isNext: boolean }> {
   // Connect to DB
   connectToDB();
-  console.log(`Attempting to Fetch All Hashes`);
+  // console.log(`Attempting to Fetch All Hashes`);
 
   try {
     // Calculate skip and limit
@@ -129,11 +144,11 @@ export async function fetchHashes(
 
     let totalPageCount: number = 0;
     try {
-      console.log(`Attempting to retrieve total page count`);
+      // console.log(`Attempting to retrieve total page count`);
       totalPageCount = await HashModel.countDocuments({
         parentId: { $in: [null, undefined] },
       });
-      console.info(`Total page count retrieved successfully`);
+      // console.info(`Total page count retrieved successfully`);
     } catch (error: any) {
       console.error(`Error retrieving total page count: ${error.message}`);
       revalidatePath(`/`);
@@ -161,7 +176,7 @@ export async function getHash(id: string): Promise<any> {
   // Connect to DB
   connectToDB();
 
-  console.log(`Attempting to Fetch Hash: ${id}`);
+  // console.log(`Attempting to Fetch Hash: ${id}`);
 
   try {
     const hashQuery = HashModel.findById(new mongoose.Types.ObjectId(id))
@@ -182,7 +197,7 @@ export async function getHash(id: string): Promise<any> {
       });
 
     const hash = await hashQuery.exec();
-    console.info(`Fetched Hash: ${id}`);
+    // console.info(`Fetched Hash: ${id}`);
     return hash;
   } catch (error: any) {
     throw new Error(`Error getting hash: ${error.message}`);
@@ -198,12 +213,12 @@ export async function getHash(id: string): Promise<any> {
 export async function deleteHash(id: string): Promise<void> {
   // Connect to DB
   connectToDB();
-  console.log(`Attempting to Delete Hash: ${id}`);
+  // console.log(`Attempting to Delete Hash: ${id}`);
   try {
     // Delete Hash from hash collection
     const deletedHash: Hash | null = await HashModel.findByIdAndDelete(id);
 
-    console.info(`Deleted hash successfully`);
+    // console.info(`Deleted hash successfully`);
 
     if (deletedHash) {
       // Delete Hash from user's hashes
@@ -211,7 +226,7 @@ export async function deleteHash(id: string): Promise<void> {
         { username: deletedHash.author },
         { $pull: { hashes: deletedHash._id } }
       );
-      console.info(`Deleted hash from user's hashes successfully`);
+      // console.info(`Deleted hash from user's hashes successfully`);
 
       // Check if deleted hash was a child
       if (deletedHash.parentId) {
@@ -219,7 +234,7 @@ export async function deleteHash(id: string): Promise<void> {
           { _id: new mongoose.Types.ObjectId(deletedHash.parentId) },
           { $pull: { children: deletedHash._id } }
         );
-        console.info(`Deleted hash from parent's children successfully`);
+        // console.info(`Deleted hash from parent's children successfully`);
       }
     }
   } catch (error: any) {
@@ -243,7 +258,7 @@ export async function addComment({
   // Connect to DB
   connectToDB();
 
-  console.log(`Attempting to Add Comment to Hash: ${parentId}`);
+  // console.log(`Attempting to Add Comment to Hash: ${parentId}`);
 
   // Add comment as new hash to hash collection
   HashModel.create({
@@ -252,13 +267,13 @@ export async function addComment({
     parentId,
     community: null, //TODO: create community model
   }).then((newHash: Hash) => {
-    console.info(`New comment created successfully by: ${author}`);
+    // console.info(`New comment created successfully by: ${author}`);
     // Add comment to parent hash's children
     HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(parentId), {
       $push: { children: newHash._id },
     })
       .then(() => {
-        console.info(`Updated children for: ${parentId}`);
+        // console.info(`Updated children for: ${parentId}`);
         // Add comment to user's hashes
         User.findOneAndUpdate(
           { username: author },
@@ -266,7 +281,7 @@ export async function addComment({
             $push: { hashes: newHash._id },
           }
         )
-          .then(() => console.info(`Updated hashes for: ${author}`))
+          // .then(() => console.info(`Updated hashes for: ${author}`))
           .catch((error: MongooseError) => {
             throw new Error(
               `Error updating ${author}'s hashes: ${error.message}`
@@ -297,14 +312,14 @@ export async function likeHash({
   // Connect to DB
   connectToDB();
 
-  console.log(`Attempting to Like Hash: ${id}`);
+  // console.log(`Attempting to Like Hash: ${id}`);
 
   // Add like to hash
   HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
     $push: { likes: currentUser },
   })
     .then(() => {
-      console.info(`${currentUser} liked hash: ${id}`);
+      // console.info(`${currentUser} liked hash: ${id}`);
       // Add like to user's likes
       User.findOneAndUpdate(
         { username: currentUser },
@@ -313,7 +328,7 @@ export async function likeHash({
         }
       )
         .then(() => {
-          console.info(`Updated likes for: ${currentUser}`);
+          // console.info(`Updated likes for: ${currentUser}`);
         })
         .catch((error: MongooseError) => {
           throw new Error(
@@ -342,14 +357,14 @@ export async function unlikeHash({
   // Connect to DB
   connectToDB();
 
-  console.log(`Attempting to Unlike Hash: ${id}`);
+  // console.log(`Attempting to Unlike Hash: ${id}`);
 
   // Remove like from hash
   HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
     $pull: { likes: currentUser },
   })
     .then(() => {
-      console.info(`${currentUser} unliked hash: ${id}`);
+      // console.info(`${currentUser} unliked hash: ${id}`);
       // Remove like from user's likes
       User.findOneAndUpdate(
         { username: currentUser },
@@ -384,7 +399,7 @@ export async function repostHash({
   // Connect to DB
   connectToDB();
 
-  console.log(`Attempting to Repost Hash: ${id}`);
+  // console.log(`Attempting to Repost Hash: ${id}`);
 
   try {
     const repost = {
