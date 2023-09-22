@@ -23,7 +23,7 @@
 /* NAVIGATION STYLES */
 
 .navbar {
-  @apply z-30 w-full h-auto mb-5 max-w-full mx-auto my-0 flex items-center justify-between p-5 lg:rounded-2xl bg-[#13161a] bg-opacity-100;
+  @apply z-30 w-full h-auto lg:mb-5 max-w-full mx-auto my-0 flex items-center justify-between p-5 lg:rounded-2xl bg-[#13161a] bg-opacity-100;
 }
 
 .left-sidebar {
@@ -51,7 +51,7 @@
 }
 
 .footer {
-  @apply fixed bottom-0 w-full rounded-t-3xl bg-glassmorphism p-4 backdrop-blur-md xs:px-7 md:hidden;
+  @apply fixed bottom-0 w-full bg-accent2 p-2 backdrop-blur-md xs:px-7 md:hidden;
 }
 
 .footer-container {
@@ -91,7 +91,7 @@
 /* COMPONENT STYLES */
 
 .hash-card {
-  @apply flex flex-col gap-5 p-5 w-full bg-accent2 rounded-lg;
+  @apply flex flex-col gap-5 p-5 w-full bg-accent2 lg:rounded-lg;
 }
 
 .banner {
@@ -175,7 +175,7 @@
   --slide-spacing: 5rem;
   --slide-size: 100%;
   --slide-height: 19rem;
-  padding: 1.6rem;
+  @apply lg:p-[1.6rem] py-[1.6rem] px-0
 }
 .embla__viewport {
   overflow: hidden;
@@ -196,52 +196,10 @@
   align-items: center;
 }
 .embla__slide__img {
-  display: block;
-  height: 600;
-  width: 600;
-  max-width: 600;
-  max-height: 600;
-  object-fit: cover;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+  @apply max-w-screen-xs lg:max-w-screen-md w-auto h-[600px] max-h-[600px] object-contain rounded-lg flex items-center justify-center relative
 }
 .embla__slide__img img {
   border-radius: 8px;
-}
-.embla__slide__number {
-  width: 4.6rem;
-  height: 4.6rem;
-  z-index: 1;
-  position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
-  border-radius: 50%;
-  background-color: rgba(var(--background-site-rgb-value), 0.85);
-  line-height: 4.6rem;
-  font-weight: 900;
-  text-align: center;
-  pointer-events: none;
-}
-.embla__slide__number > span {
-  color: var(--brand-primary);
-  background-image: linear-gradient(
-    45deg,
-    var(--brand-primary),
-    var(--brand-secondary)
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-size: 1.6rem;
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 .embla__button {
   -webkit-appearance: none;

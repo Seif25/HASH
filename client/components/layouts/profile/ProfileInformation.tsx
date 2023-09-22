@@ -76,19 +76,23 @@ export default function ProfileInformation({ user }: ProfileInformationProps) {
         </h3>
         <h3 className="text-[16px] font-light text-light-3">{`@${user.username}`}</h3>
         <h3 className="text-[16px] font-light text-white pt-2">{user.bio}</h3>
-        <div className="flex items-center gap-5 pt-2">
+        <div className="flex items-center justify-between gap-5 pt-2">
           {user.website && (
             <Link
               href={user.website}
-              className="text-primary hover:font-bold text-[14px] flex items-center gap-1 hover:underline"
+              className="text-primary hover:font-bold flex items-center gap-1 hover:underline"
             >
-              <LinkIcon fontSize="small" className="text-primary" />
-              {user.website}
+              <LinkIcon className="text-primary" style={{ fontSize: "12px" }} />
+              <h3 className="text-[10px] lg:text-[14px] text-ellipsis">
+                {user.website}
+              </h3>
             </Link>
           )}
-          <h3 className="text-white text-[14px] flex items-center gap-1">
-            <CalendarMonth fontSize="small" className="text-white" />
-            Joined {moment(user.joinedAt).format("MMMM YYYY")}
+          <h3 className="text-white lg:text-[14px] text-[10px] text-ellipsis flex items-center gap-1">
+            <CalendarMonth className="text-white" style={{ fontSize: "12px" }} />
+            <h3 className="text-[10px] lg:text-[14px] text-ellipsis">
+              Joined {moment(user.joinedAt).format("MMMM YYYY")}
+            </h3>
           </h3>
         </div>
         <div className="flex items-start gap-5 pt-2">

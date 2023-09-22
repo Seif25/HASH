@@ -62,21 +62,23 @@ async function ImageDialog({
           <EmblaCarousel
             startIndex={index}
             slides={media.map((image: Media) => (
-              <Image
-                key={image.id}
-                src={image.url}
-                alt={image.alt}
-                width={600}
-                height={400}
-                priority
-                className="object-contain rounded-lg p-2"
-                style={{
-                  width: "auto",
-                  maxWidth: 600,
-                  height: 580,
-                  maxHeight: 580,
-                }}
-              />
+              <div className="bg-pink-300 w-full h-[580px] max-h-[600px] flex items-center justify-center">
+                <Image
+                  key={image.id}
+                  src={image.url}
+                  alt={image.alt}
+                  width={600}
+                  height={400}
+                  priority
+                  className="object-contain rounded-lg p-2 w-full max-w-xs lg:max-w-screen-lg h-[580px] max-h-[600px]"
+                  // style={{
+                  //   width: "auto",
+                  //   maxWidth: 600,
+                  //   height: 580,
+                  //   maxHeight: 580,
+                  // }}
+                />
+              </div>
             ))}
           />
         </div>

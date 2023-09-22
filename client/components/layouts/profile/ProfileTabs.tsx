@@ -16,23 +16,26 @@ export default function ProfileTabs({
   const replies: Hash[] | undefined = posts?.filter(
     (hash: Hash) => hash.parentId !== null
   );
+  const mediaHashes: Hash[] | undefined = posts?.filter(
+    (hash: Hash) => hash.media.length > 0
+  );
   return (
     <div className="lg:p-5">
       <Tabs defaultValue="Posts" className="w-full">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="Posts" className="w-full">
+          <TabsTrigger value="Posts" className="w-full text-[12px] lg:text=[14px]">
             Posts
           </TabsTrigger>
-          <TabsTrigger value="Replies" className="w-full">
+          <TabsTrigger value="Replies" className="w-full text-[12px] lg:text=[14px]">
             Replies
           </TabsTrigger>
-          <TabsTrigger value="Highlights" className="w-full">
+          <TabsTrigger value="Highlights" className="w-full text-[12px] lg:text=[14px]">
             Highlights
           </TabsTrigger>
-          <TabsTrigger value="Media" className="w-full">
+          <TabsTrigger value="Media" className="w-full text-[12px] lg:text=[14px]">
             Media
           </TabsTrigger>
-          <TabsTrigger value="Likes" className="w-full">
+          <TabsTrigger value="Likes" className="w-full text-[12px] lg:text=[14px]">
             Likes
           </TabsTrigger>
         </TabsList>
@@ -66,13 +69,21 @@ export default function ProfileTabs({
         </TabsContent>
         <TabsContent value="Highlights">
           <div className="flex flex-col gap-5 items-center justify-center p-5">
-            <h3>Highlights</h3>
+            <h3 className="text-[12px]">{"You Haven't Highlighted Any Post On Your Profile Yet!"}</h3>
           </div>
         </TabsContent>
         <TabsContent value="Media">
-          <div className="flex flex-col gap-5 items-center justify-center p-5">
-            <h3>Media</h3>
-          </div>
+          {mediaHashes && (
+            <div className="flex flex-col gap-5 items-center justify-center p-5">
+              {mediaHashes.map((hash: Hash) => (
+                <HashCard
+                  key={hash._id}
+                  hash={hash}
+                  currentUser={currentUser}
+                />
+              ))}
+            </div>
+          )}
         </TabsContent>
         <TabsContent value="Likes">
           {likes && (

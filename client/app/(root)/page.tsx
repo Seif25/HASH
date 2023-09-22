@@ -21,10 +21,8 @@ export default async function Home() {
 
   const user = await currentUser();
 
-  const dbUser = await getUserInformation(user?.username ?? "");
-
   return (
-    <main className="flex flex-col flex-1 justify-start gap-10 w-full p-5 lg:p-0">
+    <main className="flex flex-col flex-1 justify-start gap-10 w-full lg:p-0">
       {/* Tabs */}
       {user && (
         <section>
