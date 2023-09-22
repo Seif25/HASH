@@ -5,9 +5,12 @@ import Image from "next/image";
 import HashLinks from "../shared/HashLinks";
 import ShareMenu from "../shared/ShareMenu";
 import { currentUser } from "@clerk/nextjs";
+import { EmblaCarousel } from "../shared/carousel/EmblaCarousel";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 interface ImageDialogProps {
-  media: Media;
+  currentImage: Media;
   commentCount: number;
   likeCount: number;
   viewCount: number;
@@ -17,10 +20,11 @@ interface ImageDialogProps {
   index: number;
   liked: boolean;
   length: number;
+  media: Media[];
 }
 
 async function ImageDialog({
-  media,
+  currentImage,
   commentCount,
   likeCount,
   viewCount,
@@ -30,6 +34,7 @@ async function ImageDialog({
   index,
   liked,
   length,
+  media,
 }: ImageDialogProps) {
   const user = await currentUser();
   return (
@@ -37,9 +42,9 @@ async function ImageDialog({
       <DialogTrigger asChild className="cursor-pointer">
         <AspectRatio ratio={4 / 3}>
           <Image
-            key={media.id}
-            src={media.url}
-            alt={media.alt}
+            key={currentImage.id}
+            src={currentImage.url}
+            alt={currentImage.alt}
             fill
             priority
             className={`object-cover ${
@@ -53,45 +58,29 @@ async function ImageDialog({
         </AspectRatio>
       </DialogTrigger>
       <DialogContent className="w-full h-full flex flex-col gap-5">
-        <div className="h-[90%] flex items-center justify-center p-5">
-          <div className="block lg:hidden">
-            <Image
-              key={media.id}
-              src={media.url}
-              alt={media.alt}
-              fill
-              priority
-              className="object-contain rounded-lg w-auto h-auto"
-            />
-          </div>
-          <div
-            className="hidden lg:block rounded-lg"
-            style={{
-              width: "auto",
-              maxWidth: 600,
-              height: 600,
-              maxHeight: 600,
-            }}
-          >
-            <Image
-              key={media.id}
-              src={media.url}
-              alt={media.alt}
-              width={600}
-              height={400}
-              priority
-              className="object-contain rounded-lg p-2"
-              style={{
-                width: "auto",
-                maxWidth: 600,
-                height: 600,
-                maxHeight: 600,
-                borderRadius: "8px",
-              }}
-            />
-          </div>
+        <div className="flex items-center justify-center w-full h-[90%]">
+          <EmblaCarousel
+            startIndex={index}
+            slides={media.map((image: Media) => (
+              <Image
+                key={image.id}
+                src={image.url}
+                alt={image.alt}
+                width={600}
+                height={400}
+                priority
+                className="object-contain rounded-lg p-2"
+                style={{
+                  width: "auto",
+                  maxWidth: 600,
+                  height: 580,
+                  maxHeight: 580,
+                }}
+              />
+            ))}
+          />
         </div>
-        <div className="flex items-center justify-between h-[10%]">
+        <div className="flex items-center justify-between h-auto pt-5">
           {/* // TODO: PARENT AUTHOR */}
           <HashLinks
             commentCount={commentCount}

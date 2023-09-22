@@ -19,6 +19,7 @@ export type AddCommentParams = {
   text: string;
   community: string | null;
   pathname: string;
+  media: Media[];
 }
 
 // * Types for liking a hash

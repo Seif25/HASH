@@ -74,7 +74,9 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
   };
 
   const onBlur = () => {
-    setFocused(false);
+    setTimeout(() => {
+      setFocused(false);
+    }, 2000)
   };
 
   const onSubmit = async (values: z.infer<typeof HashValidation>) => {

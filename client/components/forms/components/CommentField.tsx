@@ -31,6 +31,7 @@ interface CommentFieldProps {
   loading: boolean;
   length: number;
   parentAuthor: string;
+  handleImageChange: (e: any, onChange: any) => void
 }
 
 export default function CommentField({
@@ -45,7 +46,8 @@ export default function CommentField({
   focused,
   loading,
   length,
-  parentAuthor
+  parentAuthor,
+  handleImageChange
 }: CommentFieldProps) {
   return (
     <FormField
@@ -84,9 +86,9 @@ export default function CommentField({
                 </div>
               )}
               <div className="grid grid-cols-2 gap-10 pl-2">
-                <HashFieldOptions 
+                <HashFieldOptions
                   control={control}
-                  handleImageChange={() => {}}
+                  handleImageChange={handleImageChange}
                 />
                 <div className="flex items-center justify-end">
                   <Button

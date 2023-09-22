@@ -1,3 +1,5 @@
+"use client"
+
 // *ICONS
 import CommentIcon from "@mui/icons-material/Comment";
 
@@ -15,6 +17,7 @@ import CreateComment from "../forms/CreateComment";
 
 // *UTILS
 import { abbreviateNumber } from "@/lib/utils";
+import { useState } from "react";
 
 interface CommentButtonProps {
   commentCount: number;
@@ -31,8 +34,13 @@ export default async function CommentButton({
   image,
   parentAuthor,
 }: CommentButtonProps) {
+  const [open, setOpen] = useState(false)
+
+  const handleClose = () => {
+    setOpen(false)
+  }
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen} >
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -54,7 +62,13 @@ export default async function CommentButton({
         </Tooltip>
       </TooltipProvider>
       <DialogContent className="sm:max-w-[425px] lg:w-full">
-        <CreateComment image={image} currentUser={currentUser} parentId={parentId} parentAuthor={parentAuthor}/>
+        <CreateComment
+          image={image}
+          currentUser={currentUser}
+          parentId={parentId}
+          parentAuthor={parentAuthor}
+          handleDialogClose={handleClose}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -18,5 +18,5 @@ export const CommentValidation = z.object({
     .min(1, { message: "You need to write at least 1 character" })
     .max(280, { message: "Maximum amount of characters reached" })
     .nonempty({ message: "You can't post an empty Hash" }),
-  media: z.array(z.string()),
+  media: z.array(z.any()),
 });

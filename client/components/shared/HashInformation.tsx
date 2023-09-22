@@ -64,7 +64,7 @@ export default function HashInformation({
                 key={image.id}
               >
                 <ImageDialog
-                  media={image}
+                  currentImage={image}
                   commentCount={hash.children?.length ?? 0}
                   likeCount={hash.likes?.length ?? 0}
                   repostCount={hash.reposts?.length ?? 0}
@@ -74,6 +74,7 @@ export default function HashInformation({
                   index={index}
                   liked={hash.likes?.includes(currentUser ?? "") ?? false}
                   length={hash.media?.length ?? 0}
+                  media={hash.media ?? []}
                 />
               </div>
             ))}

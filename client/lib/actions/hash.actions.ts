@@ -254,6 +254,7 @@ export async function addComment({
   text,
   community,
   pathname,
+  media
 }: AddCommentParams): Promise<void> {
   // Connect to DB
   connectToDB();
@@ -265,7 +266,8 @@ export async function addComment({
     text,
     author,
     parentId,
-    community: null, //TODO: create community model
+    community: null, //TODO: create community model,
+    media: media
   }).then((newHash: Hash) => {
     // console.info(`New comment created successfully by: ${author}`);
     // Add comment to parent hash's children
