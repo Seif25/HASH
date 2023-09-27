@@ -10,7 +10,7 @@ import {
 import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 
 // *ICONS
-import ImageIcon from "@mui/icons-material/Image";
+// import ImageIcon from "@mui/icons-material/Image";
 
 // *UTILS
 import { Control } from "react-hook-form";
@@ -18,6 +18,7 @@ import * as z from "zod";
 import { HashValidation } from "@/lib/validations/hash";
 import { useRef } from "react";
 import { Input } from "../ui/input";
+import { Image } from 'lucide-react';
 
 interface MediaButtonProps {
   control: Control<z.infer<typeof HashValidation>> | undefined;
@@ -55,8 +56,8 @@ export default function MediaButton({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <button className="rounded-full" onClick={handleOpenUpload}>
-                      <ImageIcon className="text-primary" fontSize="small" />
+                    <button className="rounded-full flex items-center justify-center" onClick={handleOpenUpload}>
+                      <Image className="text-accent1 hover:text-primary" size={"20px"} />
                     </button>
                   </TooltipTrigger>
                   <TooltipContent>

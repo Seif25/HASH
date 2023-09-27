@@ -19,8 +19,9 @@ import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 import { useUploadThing } from "@/lib/uploadThing";
 import { Media } from "@/utils/types/hash.types";
+import { Tag } from "@/utils/types/tag.types";
+import { suggestTags } from "@/lib/actions/tag.actions";
 
-// TODO: change userId to username
 interface Props {
   username: string;
   image: string | undefined;
@@ -31,7 +32,9 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
   const pathname = usePathname();
   const [focused, setFocused] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [openHashSuggestions, setOpenHashSuggestions] = useState(false);
   const { startUpload } = useUploadThing("hashMedia");
+  const [suggestedTags, setSuggestedTags] = useState<Tag[]>([])
 
   const [hashMedia, setHashMedia] = useState<File[]>([]);
   // *Handle Profile Picture Upload
@@ -60,6 +63,31 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
     }
   };
 
+  // *Handle Text Change
+  const handleTextChange = async (
+    e: ChangeEvent<HTMLTextAreaElement>,
+    fieldChange: (value: string) => void
+  ) => {
+    const text = e.target.value;
+    const matches = text.match(/#\w+\b/g);
+    if (matches !== null) {
+      const lastMatch = matches[matches.length - 1];
+      const words = lastMatch.split(" ");
+      const lastWord = words[words.length - 1];
+      if (lastWord.length > 0) {
+        setOpenHashSuggestions(true);
+        const res = await suggestTags(lastWord)
+        setSuggestedTags(res)
+      } else {
+        setOpenHashSuggestions(false);
+      }
+    } else {
+      setOpenHashSuggestions(false);
+    }
+
+    fieldChange(text);
+  };
+
   const form = useForm({
     resolver: zodResolver(HashValidation),
     defaultValues: {
@@ -76,9 +104,10 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
   const onBlur = () => {
     setTimeout(() => {
       setFocused(false);
-    }, 2000)
+    }, 2000);
   };
 
+  // *Handle Form Submit
   const onSubmit = async (values: z.infer<typeof HashValidation>) => {
     setLoading(true);
 
@@ -112,7 +141,7 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex items-start justify-start gap-5 p-10 bg-accent2 rounded-lg"
+          className="flex items-start justify-start gap-5 rounded-lg"
         >
           <Image
             src={image ?? ""}
@@ -137,26 +166,14 @@ const CreateNewHash: NextPage<Props> = ({ username, image }) => {
               loading={loading}
               length={form.getValues().hash.length}
               handleImageChange={uploadHashMedia}
+              handleTextChange={handleTextChange}
+              openHashSuggestions={openHashSuggestions}
+              setOpenHashSuggestions={setOpenHashSuggestions}
+              suggestedTags={suggestedTags}
             />
           </div>
         </form>
       </Form>
-      {/* <pre className="flex flex-col gap-5 items-center justify-center">
-        <code className="text-red-500">{JSON.stringify(form.formState.errors, null, 2)}</code>
-        <code>{JSON.stringify(form.getValues().hash.length)}</code>
-        <code>{JSON.stringify(form.getValues().hash)}</code> */}
-        {/* <code className="flex flex-col gap-5 items-center justify-center">
-          {
-            form.getValues().media.map((img: any) => (
-              <h3>
-                {
-                  JSON.stringify(img, null, 2)
-                }
-              </h3>
-            ))
-          }
-        </code> */}
-      {/* </pre> */}
     </>
   );
 };

@@ -6,6 +6,7 @@ import Logout from "@mui/icons-material/Logout";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import PersonIcon from "@mui/icons-material/Person";
+import { LogOut, User2 } from "lucide-react";
 
 interface LeftSidebarContentProps {
   username: string;
@@ -20,7 +21,7 @@ export default function LeftSidebarContent({
   const pathname = usePathname();
   return (
     <section
-      className={`custom-scrollbar ${type === "left" && "left-sidebar"}`}
+      className={`group custom-scrollbar ${type === "left" && "left-sidebar"}`}
     >
       {type === "left" ? (
         <div className="flex flex-1 flex-col gap-6 px-6 pt-12">
@@ -37,7 +38,7 @@ export default function LeftSidebarContent({
                 }`}
               >
                 {link.icon}
-                <p className="max-lg:hidden">{link.label}</p>
+                <p className="max-lg:hidden hidden group-hover:flex">{link.label}</p>
               </Link>
             );
           })}
@@ -50,8 +51,8 @@ export default function LeftSidebarContent({
                 : "left-sidebar-link"
             }`}
           >
-            <PersonIcon fontSize="medium" sx={{ color: "#fff" }} />
-            <p className="max-lg:hidden">Profile</p>
+            <User2 />
+            <p className="max-lg:hidden hidden group-hover:flex">Profile</p>
           </Link>
         </div>
       ) : (
@@ -91,9 +92,9 @@ export default function LeftSidebarContent({
         <div className="mt-10 px-6">
           <SignedIn>
             <SignOutButton signOutCallback={() => router.push("sign-in")}>
-              <div className="flex cursor-pointer gap-1 left-sidebar-link">
-                <Logout fontSize="medium" sx={{ color: "#fff" }} />
-                <p className="text-accent1 max-lg:hidden">Logout</p>
+              <div className="flex cursor-pointer gap-1 logout-link">
+                <LogOut />
+                <p className="text-accent1 max-lg:hidden hidden group-hover:flex">Logout</p>
               </div>
             </SignOutButton>
           </SignedIn>

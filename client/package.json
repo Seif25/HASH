@@ -36,7 +36,9 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "@uploadthing/react": "^5.6.0",
+    "ably": "^1.2.44",
     "autoprefixer": "10.4.15",
+    "bufferutil": "^4.0.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
@@ -58,6 +60,7 @@
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2",
     "uploadthing": "^5.6.0",
+    "utf-8-validate": "^6.0.3",
     "winston": "^3.10.0",
     "zod": "^3.22.2"
   },

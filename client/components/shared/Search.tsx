@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import AccountResultCard from "../cards/AccountResultCard";
 import { User } from "@/utils/types/user.types";
 import { fetchUsers } from "@/lib/actions/user.actions";
+import { SearchIcon } from "lucide-react";
 
 interface SearchProps {
   currentUser: string;
@@ -35,15 +36,18 @@ export default function Search({ currentUser }: SearchProps) {
   };
   return (
     <div className="flex flex-1 flex-col justify-start w-full gap-2">
-      <input
-        type="text"
-        name="search"
-        id="search"
-        placeholder="Search for people, lists, or keywords"
-        className="rounded-full bg-accent2 border-none outline-none ring-0 focus:outline-none focus:border-none focus:ring-0 p-2 pl-4 placeholder:text-[14px]"
-        onChange={handleChange}
-        autoComplete="off"
-      />
+      <div className="w-full flex items-center justify-between bg-accent2 rounded-2xl px-2">
+        <input
+          type="text"
+          name="search"
+          id="search"
+          placeholder="Search for people, lists, or keywords"
+          className="rounded-full bg-transparent border-none outline-none ring-0 focus:outline-none focus:border-none focus:ring-0 p-2 placeholder:text-[14px]"
+          onChange={handleChange}
+          autoComplete="off"
+        />
+        <SearchIcon color="#fff" />
+      </div>
       {results && (
         <>
           {results.length === 0 && (

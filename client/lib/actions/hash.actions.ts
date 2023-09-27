@@ -12,7 +12,6 @@ import HashModel from "../models/hash.model";
 import { revalidatePath } from "next/cache";
 import mongoose, { MongooseError } from "mongoose";
 import User from "../models/user.model";
-import moment from "moment";
 import Tag from "../models/tag.model";
 // import { logger } from "../logs/logger";
 
@@ -25,9 +24,9 @@ import Tag from "../models/tag.model";
 /**
  * Try connecting to the database if not already connected
  */
-function connectToDB() {
+async function connectToDB() {
   if (!isConnected) {
-    initializeMongoConnection();
+    await initializeMongoConnection();
   }
 }
 

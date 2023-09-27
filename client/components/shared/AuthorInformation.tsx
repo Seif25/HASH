@@ -13,15 +13,14 @@ import Link from "next/link";
 import Image from "next/image";
 
 // *ICONS
-import VerifiedIcon from "@mui/icons-material/Verified";
+import { BadgeCheck } from "lucide-react";
 
 // *COMPONENTS
 import UserHoverContent from "./UserHoverContent";
 
 // *UTILS
 import moment from "moment";
-import AuthorMoreMenu from "./AuthorMoreMenu";
-import ViewerMoreMenu from "./ViewerMoreMenu";
+
 
 // MODIFY MOMENT LOCALE -> fromNow()
 moment.updateLocale("en", {
@@ -71,32 +70,23 @@ export default function AuthorInformation({
                 <Image
                   src={author.image || "/assets/profile-pic.png"}
                   alt={author.username}
-                  width={42}
-                  height={42}
+                  width={52}
+                  height={52}
                   className="rounded-full"
                   priority
                   placeholder="blur"
                   blurDataURL="/assets/profile-pic.png"
                 />
-                <div
-                  className={`flex ${
-                    isComment
-                      ? "flex-col gap-0 items-start"
-                      : "flex-row gap-1 items-center"
-                  }`}
-                >
-                  <span className="font-extrabold truncate w-20 lg:w-auto text-white flex items-center gap-1">
+                <div className={`flex flex-col items-start gap-0`}>
+                  <span className="font-extrabold truncate w-20 lg:w-auto text-accent1 flex items-center gap-1">
                     {author.name}
                     {author.verified && (
                       <span className="flex items-center justify-center">
-                        <VerifiedIcon
-                          className="text-amber-400"
-                          fontSize="small"
-                        />
+                        <BadgeCheck className="text-primary" fontSize={14} />
                       </span>
                     )}
                   </span>
-                  <span className="font-light text-white truncate w-16 lg:w-auto">
+                  <span className="font-light text-accent1/50 truncate w-16 lg:w-auto">
                     {"@"}
                     {author.username}
                   </span>
@@ -138,10 +128,7 @@ export default function AuthorInformation({
                     </span>
                     {author.verified && (
                       <span className="flex items-center justify-center">
-                        <VerifiedIcon
-                          className="text-amber-400"
-                          fontSize="small"
-                        />
+                        <BadgeCheck className="text-primary" fontSize={14} />
                       </span>
                     )}
                   </div>
@@ -176,22 +163,13 @@ export default function AuthorInformation({
             </div>
           </HoverCardContent>
         </HoverCard>
-        {!isComment && (
-          <span className="font-light text-white ml-1">
-            • {moment(createdAt).fromNow()}
-          </span>
-        )}
       </div>
-      {/* MORE INFORMATION */}
+      {/* DURATION */}
       <div className="w-auto flex items-center justify-end">
-        {currentUser === author.username ? (
-          <AuthorMoreMenu hashId={hashId} currentUser={currentUser} />
-        ) : (
-          <ViewerMoreMenu
-            currentUser={currentUser}
-            author={author.username}
-            isFollowing={isFollowing ?? false}
-          />
+        {!isComment && (
+          <span className="font-bold text-accent1/50 ml-1">
+            {moment(createdAt).fromNow()}
+          </span>
         )}
       </div>
     </div>

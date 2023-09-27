@@ -13,7 +13,7 @@
 }
 
 .app {
-  @apply bg-gradient-to-b from-[#070f16] via-[#000a13] to-black text-accent1 lg:p-10;
+  @apply bg-gradient-to-b from-[#070f16] via-[#000a13] to-black text-accent1 pr-10;
 }
 
 .main {
@@ -23,11 +23,11 @@
 /* NAVIGATION STYLES */
 
 .navbar {
-  @apply z-30 w-full h-auto lg:mb-5 max-w-full mx-auto my-0 flex items-center justify-between p-5 lg:rounded-2xl bg-[#13161a] bg-opacity-100;
+  @apply z-30 w-full h-auto px-0 my-0 flex items-center justify-between p-5 bg-[#13161a] bg-opacity-0;
 }
 
 .left-sidebar {
-  @apply sticky left-0 top-0 z-20 flex h-screen w-[20%] flex-col justify-between overflow-auto rounded-2xl p-5 max-md:hidden bg-[#13161a] bg-opacity-100;
+  @apply sticky left-0 top-0 z-20 flex h-screen w-[15%] hover:w-[20%] flex-col hover:items-start items-center justify-between overflow-auto py-5 pr-5 max-md:hidden bg-[#13161a] bg-opacity-0;
 }
 
 .right-sidebar-component {
@@ -43,11 +43,18 @@
 }
 
 .left-sidebar-active-link {
-  @apply relative flex justify-start gap-4 rounded-full p-4 text-white bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] font-bold;
+  @apply relative flex justify-start gap-4 rounded-full p-4 text-primary font-bold;
 }
 
 .left-sidebar-link:hover {
   @apply bg-primary bg-opacity-10;
+}
+
+.logout-link {
+  @apply relative flex justify-start items-center gap-4 rounded-full p-4 text-white;
+}
+.logout-link:hover {
+  @apply bg-red-600 bg-opacity-10;
 }
 
 .footer {
@@ -91,7 +98,7 @@
 /* COMPONENT STYLES */
 
 .hash-card {
-  @apply flex flex-col gap-5 p-5 w-full bg-accent2 lg:rounded-lg;
+  @apply flex flex-col gap-2 p-5 w-full bg-accent2 lg:rounded-lg;
 }
 
 .banner {
@@ -106,7 +113,7 @@
   overflow: auto;
   outline: none;
   position: relative;
-
+  background: rgb(19 22 26);
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -128,7 +135,7 @@
 .bubble {
   height: 100%;
   width: 100%;
-  background: white;
+  background: rgb(19 22 26);
   position: relative;
   padding: 10px;
 }
@@ -142,12 +149,12 @@
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   transform: rotate(135deg) translate(-50%);
-  border-right: 10px solid white;
+  border-right: 10px solid rgb(19 22 26);
 }
 .bubble-foc {
   height: 100%;
   width: 100%;
-  background: white;
+  background: rgb(19 22 26);
   position: relative;
   padding: 10px;
 }
@@ -161,7 +168,7 @@
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   transform: rotate(135deg) translate(-50%);
-  border-right: 10px solid white;
+  border-right: 10px solid rgb(19 22 26);
 }
 
 .btn {
@@ -175,7 +182,7 @@
   --slide-spacing: 5rem;
   --slide-size: 100%;
   --slide-height: 19rem;
-  @apply lg:p-[1.6rem] py-[1.6rem] px-0
+  @apply lg:p-[1.6rem] py-[1.6rem] px-0;
 }
 .embla__viewport {
   overflow: hidden;
@@ -196,7 +203,7 @@
   align-items: center;
 }
 .embla__slide__img {
-  @apply max-w-screen-xs lg:max-w-screen-md w-auto h-[600px] max-h-[600px] object-contain rounded-lg flex items-center justify-center relative
+  @apply max-w-screen-xs lg:max-w-screen-md w-auto h-[600px] max-h-[600px] object-contain rounded-lg flex items-center justify-center relative;
 }
 .embla__slide__img img {
   border-radius: 8px;
@@ -236,4 +243,8 @@
 .embla__button__svg {
   width: 65%;
   height: 65%;
+}
+
+.icons {
+  @apply bg-white hover:bg-primary;
 }

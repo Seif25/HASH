@@ -1,5 +1,5 @@
 // * ICONS
-import BarChartIcon from "@mui/icons-material/BarChart";
+import { BarChart2 } from "lucide-react";
 
 // * SHADCN COMPONENTS
 import {
@@ -55,14 +55,14 @@ export default function HashLinks({
       {/* Like */}
       <LikeButton liked={liked} likeCount={likeCount} hashId={hashId} currentUser={currentUser} />
       {/* Views */}
-      <div className="flex items-center gap-1">
+      <div className="flex flex-col items-center gap-">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <button className="w-5 h-5 p-3 flex items-center justify-center">
-                <BarChartIcon
+              <button className="flex items-center justify-center">
+                <BarChart2
                   className="text-white hover:text-amber-500"
-                  fontSize="small"
+                  size="20px"
                 />
               </button>
             </TooltipTrigger>

@@ -44,12 +44,14 @@ export default function HashCard({ hash, currentUser }: HashCardProps) {
         />
 
         {/* HASH INFORMATION */}
-        <HashInformation
-          hash={hash}
-          currentUser={currentUser}
-          profilePicture={hash.author.image}
-          reposted={reposted}
-        />
+        <div>
+          <HashInformation
+            hash={hash}
+            currentUser={currentUser}
+            profilePicture={hash.author.image}
+            reposted={reposted}
+          />
+        </div>
       </div>
     </article>
   );

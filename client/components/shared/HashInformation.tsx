@@ -11,6 +11,9 @@ import ShareMenu from "./ShareMenu";
 import FormattedWord from "./FormattedWord";
 import moment from "moment";
 import HashText from "../text/HashText";
+import { User } from "@/utils/types/user.types";
+import AuthorMoreMenu from "./AuthorMoreMenu";
+import ViewerMoreMenu from "./ViewerMoreMenu";
 
 interface HashInformationProps {
   hash: Hash;
@@ -18,6 +21,7 @@ interface HashInformationProps {
   profilePicture: string | undefined;
   reposted: boolean;
   isComment?: boolean;
+  isChild?: boolean
 }
 
 export default function HashInformation({
@@ -26,13 +30,21 @@ export default function HashInformation({
   profilePicture,
   reposted,
   isComment,
+  isChild = false
 }: HashInformationProps) {
+  const isFollowing = hash.author.followers?.includes(currentUser); //TODO: Remove ? after making followers required: [] by default
+  const gridSizes = ["grid-cols-1","grid-cols-2", "grid-cols-3", "grid-cols-4"]
+
   return (
-    <div className="flex flex-col gap-3 justify-center w-full">
+    <div
+      className={`flex flex-col gap-2 justify-center w-full ${
+        !isComment && !isChild && "pl-5"
+      }`}
+    >
       {/* HASH TEXT */}
       <div className="max-w-xs lg:max-w-4xl">
         {!isComment ? (
-          <Link href={`/hash/${hash._id.toString()}`} className="px-10">
+          <Link href={`/hash/${hash._id.toString()}`} className="">
             <HashText text={hash.text} />
           </Link>
         ) : (
@@ -42,25 +54,18 @@ export default function HashInformation({
         )}
       </div>
       {/* HASH IMAGES, GIFs or VIDEOS */}
-      <div className="px-10">
-        {hash.media && (
+      {hash.media?.length > 0 && (
+        <div className="px-10">
           <div
             className={`${
               hash.media?.length > 1
-                ? "grid grid-cols-2 items-center justify-center h-auto border border-light-1 rounded-lg"
+                ? `grid ${gridSizes[hash.media.length-1]} items-center justify-center h-[250px] w-full bg-purple-500 rounded-lg gap-5`
                 : "flex items-center justify-center"
             }`}
           >
             {hash.media.map((image: Media, index: number) => (
               <div
-                className={`${
-                  hash.media?.length > 1
-                    && `w-auto h-auto object-cover ${
-                        index === 0 && "rounded-tl-lg"
-                      } ${index === 1 && "rounded-tr-lg"} ${
-                        index === 2 && "rounded-bl-lg"
-                      } ${index === 3 && "rounded-br-lg"}`
-                } ${hash.media?.length === 1 && "w-full h-full rounded-lg"}`}
+                className={`rounded-lg w-full h-full object-cover`}
                 key={image.id}
               >
                 <ImageDialog
@@ -79,12 +84,12 @@ export default function HashInformation({
               </div>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* HASH METADATA IF DISPLAYING HASH PAGE */}
       {isComment && (
-        <div className="flex items-center gap-2 text-light-3 text-small-semibold px-10">
+        <div className="flex items-center gap-2 text-accent1/50 text-small-semibold px-10">
           <span className="uppercase">
             {moment(hash.createdAt).format("hh:mm a")}
           </span>
@@ -109,8 +114,20 @@ export default function HashInformation({
           reposted={reposted}
           parentAuthor={hash.author.username}
         />
-        <div className="w-[5%] flex items-center justify-end">
+        <div className="w-[5%] flex items-center justify-end gap-5">
           <ShareMenu id={hash._id.toString()} authorId={currentUser} />
+          {currentUser === hash.author.username ? (
+            <AuthorMoreMenu
+              hashId={hash._id.toString()}
+              currentUser={currentUser}
+            />
+          ) : (
+            <ViewerMoreMenu
+              currentUser={currentUser}
+              author={hash.author.username}
+              isFollowing={isFollowing ?? false}
+            />
+          )}
         </div>
       </div>
     </div>

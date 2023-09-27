@@ -17,8 +17,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "../ui/button";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PushPinIcon from "@mui/icons-material/PushPin";
@@ -30,17 +28,23 @@ import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
 import { deleteHash } from "@/lib/actions/hash.actions";
 
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, MoreVertical } from "lucide-react";
 
-function AuthMoreMenu({ hashId, currentUser }: { hashId: string; currentUser: string }) {
+function AuthMoreMenu({
+  hashId,
+  currentUser,
+}: {
+  hashId: string;
+  currentUser: string;
+}) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    setLoading(true)
+    setLoading(true);
     await deleteHash(hashId);
 
-    setLoading(false)
+    setLoading(false);
     router.refresh();
   };
 
@@ -48,9 +52,9 @@ function AuthMoreMenu({ hashId, currentUser }: { hashId: string; currentUser: st
     <div className="w-full">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant={"ghost"} className="rounded-full w-5 h-5 p-3 flex items-center justify-center">
-            <MoreVertIcon className="text-white" fontSize="small"/>
-          </Button>
+          <button className="rounded-full flex items-center justify-center">
+            <MoreVertical className="text-accent1 hover:text-primary" size={"20px"} />
+          </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-full flex flex-col gap-2 p-2">
           <AlertDialog>

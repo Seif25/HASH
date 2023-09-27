@@ -1,13 +1,7 @@
-import SearchPage from "@/app/(root)/search/page";
-import Search from "./Search";
-
 function RightSidebar() {
   return (
     <div className="right-sidebar-component">
-      <section className="search-box">
-        <SearchPage />
-      </section>
-      <section className="custom-scrollbar right-sidebar">
+      {/* <section className="custom-scrollbar right-sidebar">
         <div className="flex flex-1 flex-col justify-start">
           <h3 className="text-heading4-medium text-light-1">
             Suggested Communities
@@ -16,7 +10,7 @@ function RightSidebar() {
         <div className="flex flex-1 flex-col justify-start">
           <h3 className="text-heading4-medium text-light-1">Suggested Users</h3>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

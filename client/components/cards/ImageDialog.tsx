@@ -45,15 +45,10 @@ async function ImageDialog({
             key={currentImage.id}
             src={currentImage.url}
             alt={currentImage.alt}
-            fill
+            width={120}
+            height={180}
             priority
-            className={`object-cover ${
-              index === 0 && length > 1 && "rounded-tl-lg"
-            } ${index === 1 && "rounded-tr-lg"} ${
-              index === 2 && "rounded-bl-lg"
-            } ${index === 3 && "rounded-br-lg"} ${
-              length === 1 && "rounded-lg"
-            }`}
+            className={`object-fill rounded-lg`}
           />
         </AspectRatio>
       </DialogTrigger>
@@ -62,7 +57,7 @@ async function ImageDialog({
           <EmblaCarousel
             startIndex={index}
             slides={media.map((image: Media) => (
-              <div className="bg-pink-300 w-full h-[580px] max-h-[600px] flex items-center justify-center">
+              <div className="w-full h-[580px] max-h-[600px] flex items-center justify-center">
                 <Image
                   key={image.id}
                   src={image.url}

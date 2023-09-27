@@ -5,7 +5,11 @@ import {
   FormField,
   FormItem,
 } from "@/components/ui/form";
-import { HashFieldProps } from "@/utils/types/user.types";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { HashTextarea } from "@/components/ui/hashtextarea";
 import { FocusEventHandler } from "react";
 import { Button } from "@/components/ui/button";
@@ -13,12 +17,31 @@ import PublicIcon from "@mui/icons-material/Public";
 
 import { Loader2 } from "lucide-react";
 import HashFieldOptions from "@/components/shared/HashFieldOptions";
+import { Control } from "react-hook-form";
+import { HashValidation } from "@/lib/validations/hash";
+import * as z from "zod";
+import { Tag } from "@/utils/types/tag.types";
 
-const HashField: NextPage<
-  HashFieldProps & { handleFocus: FocusEventHandler<HTMLTextAreaElement> } & {
-    handleBlur: FocusEventHandler<HTMLTextAreaElement>;
-  } & { focused: boolean, loading: boolean, length: number, handleImageChange: (e: any, onChange: any) => void }
-> = ({
+interface HashFieldProps {
+  control: Control<z.infer<typeof HashValidation>> | undefined;
+  name: any;
+  label?: string;
+  maxLength?: number;
+  rows?: number;
+  placeholder?: string;
+  handleFocus: FocusEventHandler<HTMLTextAreaElement>;
+  handleBlur: FocusEventHandler<HTMLTextAreaElement>;
+  focused: boolean;
+  loading: boolean;
+  length: number;
+  handleImageChange: (e: any, onChange: any) => void;
+  handleTextChange: (e: any, onChange: any) => void;
+  openHashSuggestions: boolean;
+  setOpenHashSuggestions: (value: boolean) => void;
+  suggestedTags: Tag[]
+}
+
+export default function HashField({
   control,
   name,
   label,
@@ -30,8 +53,12 @@ const HashField: NextPage<
   focused,
   loading,
   length,
-  handleImageChange
-}) => {
+  handleImageChange,
+  handleTextChange,
+  openHashSuggestions,
+  setOpenHashSuggestions,
+  suggestedTags = []
+}: HashFieldProps) {
   return (
     <FormField
       control={control}
@@ -57,25 +84,44 @@ const HashField: NextPage<
                   </Button>
                 </div>
               )}
-              <HashTextarea
-                placeholder={placeholder || label}
-                {...field}
-                className="bg-transparent text-black w-full pl-2 textarea"
-                maxLength={maxLength}
-                onChange={field.onChange}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                rows={focused ? rows : 1}
-              />
+              <Popover
+                open={openHashSuggestions}
+                onOpenChange={setOpenHashSuggestions}
+              >
+                <PopoverTrigger asChild>
+                  <HashTextarea
+                    placeholder={placeholder || label}
+                    {...field}
+                    className="text-accent1 w-full pl-2 textarea"
+                    maxLength={maxLength}
+                    onChange={(e) => handleTextChange(e, field.onChange)}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    rows={focused ? rows : 1}
+                  />
+                </PopoverTrigger>
+                <PopoverContent className="w-80 flex flex-col gap-2">
+                  {
+                    suggestedTags.map((tag) => (
+                      <h3 key={tag.tag}>{tag.tag}</h3>
+                    ))
+                  }
+                </PopoverContent>
+              </Popover>
               {focused && (
-                <div className={`flex items-center justify-end w-full px-5 pt-2`}>
+                <div
+                  className={`flex items-center justify-end w-full px-5 pt-2`}
+                >
                   <span className="text-light-3 text-[12px]">
                     {field.value.length}/280
                   </span>
                 </div>
               )}
               <div className="grid grid-cols-2 gap-10 pl-2">
-                <HashFieldOptions control={control} handleImageChange={handleImageChange}/>
+                <HashFieldOptions
+                  control={control}
+                  handleImageChange={handleImageChange}
+                />
                 <div className="flex items-center justify-end">
                   <Button
                     className="rounded-full w-20"
@@ -98,6 +144,4 @@ const HashField: NextPage<
       )}
     />
   );
-};
-
-export default HashField;
+}

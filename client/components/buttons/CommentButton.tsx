@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 // *ICONS
 import CommentIcon from "@mui/icons-material/Comment";
@@ -18,6 +18,7 @@ import CreateComment from "../forms/CreateComment";
 // *UTILS
 import { abbreviateNumber } from "@/lib/utils";
 import { useState } from "react";
+import { MessageCircle } from "lucide-react";
 
 interface CommentButtonProps {
   commentCount: number;
@@ -34,25 +35,25 @@ export default async function CommentButton({
   image,
   parentAuthor,
 }: CommentButtonProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
   return (
-    <Dialog open={open} onOpenChange={setOpen} >
+    <Dialog open={open} onOpenChange={setOpen}>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <DialogTrigger asChild>
-              <div className="flex items-center gap-1">
-                <button className="w-5 h-5 p-3 flex items-center justify-center">
-                  <CommentIcon
-                    className="text-white hover:text-primary"
-                    fontSize="small"
+              <div className="flex flex-col items-center gap-0">
+                <button className="rounded-full flex items-center justify-center">
+                  <MessageCircle
+                    className="text-accent1 hover:text-primary"
+                    size={"20px"}
                   />
                 </button>
-                <span>{abbreviateNumber(commentCount)}</span>
+                <span className="font-bold">{abbreviateNumber(commentCount)}</span>
               </div>
             </DialogTrigger>
           </TooltipTrigger>

@@ -6,8 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import BlockIcon from "@mui/icons-material/Block";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
@@ -17,6 +15,7 @@ import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDiss
 import PersonRemoveAlt1Icon from "@mui/icons-material/PersonRemoveAlt1";
 import { followUser } from "@/lib/actions/user.actions";
 import { usePathname } from "next/navigation";
+import { MoreVertical } from "lucide-react";
 
 function ViewerMoreMenu({
   author,
@@ -43,12 +42,12 @@ function ViewerMoreMenu({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant={"ghost"}
-            className="rounded-full w-5 h-5 p-3 flex items-center justify-center"
-          >
-            <MoreVertIcon className="text-white" fontSize="small" />
-          </Button>
+          <button className="rounded-full flex items-center justify-center">
+            <MoreVertical
+              className="text-accent1 hover:text-primary"
+              size={"20px"}
+            />
+          </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64 flex flex-col gap-2 p-2">
           <DropdownMenuItem>

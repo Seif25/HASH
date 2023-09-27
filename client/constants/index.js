@@ -1,33 +1,32 @@
-import Home from "@mui/icons-material/Home"
-import Search from "@mui/icons-material/Search"
 import Favorite from "@mui/icons-material/Favorite"
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PeopleIcon from '@mui/icons-material/People';
+import { Activity, Hash, Home, Search, Users2 } from "lucide-react";
 
 export const sidebarLinks = [
   {
-    icon: <Home fontSize="medium" sx={{ color: "#fff" }}/>,
-    // icon: <Home className="w-[20px] h-[20px] text-white" size="small"/>,
+    // icon: <Home fontSize="medium" sx={{ color: "#fff" }}/>,
+    icon: <Home />,
     route: "/",
     label: "Home",
   },
   {
-    icon: <Search fontSize="medium" sx={{ color: "#fff" }} />,
+    icon: <Search />,
     route: "/search",
     label: "Search",
   },
   {
-    icon: <Favorite fontSize="medium" sx={{ color: "#fff" }}/>,
+    icon: <Activity />,
     route: "/activity",
     label: "Activity",
   },
   {
-    icon: <AddPhotoAlternateIcon fontSize="medium" sx={{ color: "#fff" }}/>,
+    icon: <Hash />,
     route: "/create-hash",
     label: "Create Hash",
   },
   {
-    icon: <PeopleIcon fontSize="medium" sx={{ color: "#fff" }}/>,
+    icon: <Users2 />,
     route: "/communities",
     label: "Communities",
   },

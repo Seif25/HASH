@@ -1,11 +1,7 @@
-import {
-  UserButton,
-  currentUser,
-  SignedIn,
-} from "@clerk/nextjs";
+import { UserButton, currentUser, SignedIn } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import { dark } from "@clerk/themes";
+import SearchPage from "@/app/(root)/search/page";
 
 import {
   Sheet,
@@ -18,25 +14,17 @@ import {
 import { getUserInformation } from "@/lib/actions/user.actions";
 import { Separator } from "../ui/separator";
 import Logout from "./profile/Logout";
+import Search from "./Search";
 
 async function Navbar() {
   const user = await currentUser();
   const dbUser = await getUserInformation(user?.username ?? "");
   return (
     <nav className="navbar">
-      <Link href="/" className="flex items-center gap-2">
-        <Image
-          src="/LogoName.png"
-          alt="Hash Logo"
-          width={128}
-          height={128}
-          className="object-cover"
-        />
-      </Link>
       <SignedIn>
         {dbUser && (
           <Sheet>
-            <SheetTrigger className="flex items-center justify-center">
+            <SheetTrigger className="flex items-center justify-center w-[15%]">
               <Image
                 src={dbUser.image ?? "/assets/profile-pic.png"}
                 alt={dbUser.username}
@@ -46,7 +34,7 @@ async function Navbar() {
                 priority
               />
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent side={"left"}>
               <SheetHeader>
                 <SheetTitle className="flex flex-col justify-start items-start pt-5">
                   <Link href={`/profile/${dbUser.username}`}>
@@ -87,6 +75,20 @@ async function Navbar() {
           </Sheet>
         )}
       </SignedIn>
+      <div className="w-[65%] flex items-center justify-center">
+        <Link href="/" className="flex items-center justify-center gap-2 w-44">
+          <Image
+            src="/LogoName.png"
+            alt="Hash Logo"
+            width={128}
+            height={128}
+            className="object-cover"
+          />
+        </Link>
+      </div>
+      <div className="w-[20%] flex items-center justify-center">
+        <SearchPage />
+      </div>
     </nav>
   );
 }

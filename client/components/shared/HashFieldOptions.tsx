@@ -10,6 +10,7 @@ import {
 import GifBoxIcon from "@mui/icons-material/GifBox";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import MediaButton from "../buttons/MediaButtons";
+import { Smile } from "lucide-react";
 
 interface HashFieldOptionsProps {
   control: any;
@@ -30,23 +31,23 @@ export default function HashFieldOptions({
         placeholder="Upload Image"
         handleImageChange={handleImageChange}
       />
-      <TooltipProvider>
+      {/* <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <button className="rounded-full">
-              <GifBoxIcon className="text-primary" fontSize="small" />
+              <GifBoxIcon className="text-accent1" fontSize="small" />
             </button>
           </TooltipTrigger>
           <TooltipContent>
             <p>GIF</p>
           </TooltipContent>
         </Tooltip>
-      </TooltipProvider>
+      </TooltipProvider> */}
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <button className="rounded-full">
-              <InsertEmoticonIcon className="text-primary" fontSize="small" />
+            <button className="rounded-full flex items-center justify-center">
+              <Smile className="text-accent1 hover:text-primary" size={"20px"} />
             </button>
           </TooltipTrigger>
           <TooltipContent>

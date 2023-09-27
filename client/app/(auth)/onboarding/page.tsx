@@ -29,7 +29,7 @@ async function Profile() {
     joinedAt: userInfo?.joinedAt || new Date(),
   };
   return (
-    <main className="mx-auto flex max-w-4xl flex-col justify-start lg:px-10 py-20 bg-dark-2 my-10 rounded-lg">
+    <main className="mx-auto flex max-w-4xl flex-col justify-start lg:px-10 py-20 bg-accent2/50 my-10 rounded-lg">
       <h1 className="text-heading1-bold px-5 lg:px-0">Profile</h1>
       <p className="mt-1 text-light-2 px-5 lg:px-0">
         Complete your profile to start using Hash

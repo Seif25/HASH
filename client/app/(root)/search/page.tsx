@@ -27,7 +27,7 @@ export default async function SearchPage() {
 //   };
 
   return (
-    <section className="search-box">
+    <section className="w-full">
       <Search currentUser={userInfo.username} />
     </section>
   );

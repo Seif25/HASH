@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description: "An app for sharing your thoughts with the world.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;

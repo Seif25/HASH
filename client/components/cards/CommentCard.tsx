@@ -98,6 +98,7 @@ export default async function CommentCard({
               profilePicture={dbUser.image}
               reposted={reposted}
               isComment={isComment}
+              isChild={isChild}
             />
           ) : (
             <HashInformationSkeleton />

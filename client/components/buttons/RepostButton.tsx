@@ -10,6 +10,7 @@ import {
 import { repostHash } from "@/lib/actions/hash.actions";
 import { abbreviateNumber } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { Repeat2 } from "lucide-react";
 
 interface RepostButtonProps {
   repostCount: number;
@@ -36,21 +37,21 @@ export default function RepostButton({
     }
   };
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex flex-col items-center">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className="w-5 h-5 p-3 flex items-center justify-center"
+              className="flex items-center justify-center"
               onClick={handleRepost}
             >
-              <CachedIcon
+              <Repeat2
                 className={`${
                   reposted
                     ? "text-green-500 hover:text-white"
                     : "text-white hover:text-green-500"
                 }`}
-                fontSize="small"
+                size={"20px"}
               />
             </button>
           </TooltipTrigger>

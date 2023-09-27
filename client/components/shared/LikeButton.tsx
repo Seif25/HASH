@@ -16,9 +16,7 @@ import { abbreviateNumber } from "@/lib/utils";
 import { likeHash, unlikeHash } from "@/lib/actions/hash.actions";
 
 // *ICONS
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-
+import { Heart } from "lucide-react"
 interface LikeButtonProps {
   liked: boolean;
   hashId: string;
@@ -46,31 +44,31 @@ export default function LikeButton({
     }
   };
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex flex-col items-center gap-0">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className="w-5 h-5 p-3 flex items-center justify-center"
+              className="flex items-center justify-center"
               onClick={handleLike}
             >
               {liked ? (
-                <FavoriteIcon
+                <Heart
                   className={`${
                     liked
                       ? "text-red-600 hover:text-white"
                       : "text-white hover:text-red-600"
                   }`}
-                  fontSize="small"
+                  size={"20px"}
                 />
               ) : (
-                <FavoriteBorderIcon
+                <Heart
                   className={`${
                     liked
                       ? "text-red-600 hover:text-white"
                       : "text-white hover:text-red-600"
                   }`}
-                  fontSize="small"
+                  size={"20px"}
                 />
               )}
             </button>
