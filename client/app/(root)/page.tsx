@@ -18,7 +18,7 @@ export default async function Home() {
   const user = await currentUser();
 
   return (
-    <main className="flex flex-col flex-1 justify-start gap-10 w-full lg:p-0">
+    <main className="flex flex-col flex-1 justify-start gap-10 w-full lg:px-0 lg:pt-0 pb-10">
       {/* Tabs */}
       {user && (
         <section>

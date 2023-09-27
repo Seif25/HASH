@@ -55,17 +55,17 @@ export default function HashInformation({
       </div>
       {/* HASH IMAGES, GIFs or VIDEOS */}
       {hash.media?.length > 0 && (
-        <div className="px-10">
+        <div className="w-full pl-10">
           <div
             className={`${
               hash.media?.length > 1
-                ? `grid ${gridSizes[hash.media.length-1]} items-center justify-center h-[250px] w-full bg-purple-500 rounded-lg gap-5`
-                : "flex items-center justify-center"
+                ? `grid ${gridSizes[hash.media.length-1]} rounded-lg gap-5 w-full h-full`
+                : "flex items-start w-full h-full rounded-lg"
             }`}
           >
             {hash.media.map((image: Media, index: number) => (
               <div
-                className={`rounded-lg w-full h-full object-cover`}
+                className={`rounded-lg w-full max-w-[180px] h-[300px]`}
                 key={image.id}
               >
                 <ImageDialog

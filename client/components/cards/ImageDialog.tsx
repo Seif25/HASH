@@ -48,7 +48,7 @@ async function ImageDialog({
             width={120}
             height={180}
             priority
-            className={`object-fill rounded-lg`}
+            className={`object-cover rounded-lg w-[180px] h-[300px]`}
           />
         </AspectRatio>
       </DialogTrigger>
