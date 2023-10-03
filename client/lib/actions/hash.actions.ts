@@ -48,16 +48,20 @@ export async function createHash({
 
   const words = text.split(/\s+/);
 
-  const tags: string [] = []
+  const tags: string[] = [];
   words.forEach((word) => {
     if (word.startsWith("#")) {
-      tags.push(word)
+      tags.push(word);
     }
-  })
+  });
 
   tags.forEach(async (tag) => {
-    await Tag.findOneAndUpdate({ tag: tag }, { lastUsed: Date.now(), $inc: { count: 1 } }, { upsert: true })
-  })
+    await Tag.findOneAndUpdate(
+      { tag: tag },
+      { lastUsed: Date.now(), $inc: { count: 1 } },
+      { upsert: true }
+    );
+  });
 
   // console.log(`Creating new hash for: ${username}`);
 
@@ -71,7 +75,7 @@ export async function createHash({
     author: username,
     community: null, //TODO: create community model
     media: media,
-    tags: tags
+    tags: tags,
   })
     .then((newHash: Hash) => {
       // console.info(`New hash created successfully for: ${username}`);
@@ -86,7 +90,9 @@ export async function createHash({
           // console.info(`Updated hashes for: ${username}`);
         })
         .catch((error: MongooseError) => {
-          console.error(`Error updating ${username}'s hashes: ${error.message}`);
+          console.error(
+            `Error updating ${username}'s hashes: ${error.message}`
+          );
           throw new Error(
             `Error updating ${username}'s hashes: ${error.message}`
           );
@@ -253,7 +259,7 @@ export async function addComment({
   text,
   community,
   pathname,
-  media
+  media,
 }: AddCommentParams): Promise<void> {
   // Connect to DB
   connectToDB();
@@ -266,7 +272,7 @@ export async function addComment({
     author,
     parentId,
     community: null, //TODO: create community model,
-    media: media
+    media: media,
   }).then((newHash: Hash) => {
     // console.info(`New comment created successfully by: ${author}`);
     // Add comment to parent hash's children
@@ -431,6 +437,41 @@ export async function repostHash({
     }
   } catch (error: any) {
     throw new Error(`Error reposting hash: ${error.message}`);
+  }
+}
+
+/**
+ * Unrepost a Hash
+ * @param {RepostHashParams} {id, currentUser, pathname}
+ * @returns
+ * @throws {MongooseError}
+ */
+export async function unrepostHash({
+  id,
+  currentUser,
+  pathname,
+}: RepostHashParams) {
+  // Connect to DB
+  connectToDB();
+
+  try {
+    await HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
+      $pull: {
+        reposts: {
+          user: currentUser,
+        },
+      },
+    });
+    // await User.findOneAndUpdate(
+    //   { username: currentUser },
+    //   {
+    //     $pull: { hashes: new mongoose.Types.ObjectId(id) },
+    //   }
+    // );
+
+    revalidatePath(pathname);
+  } catch (error: any) {
+    throw new Error(`Error un-reposting hash: ${error.message}`);
   }
 }
 

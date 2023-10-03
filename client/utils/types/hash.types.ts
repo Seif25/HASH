@@ -33,7 +33,7 @@ export type LikeHashParams = {
 export type RepostHashParams = {
   id: string;
   currentUser: string;
-  quote: string;
+  quote?: string;
   pathname: string;
 }
 

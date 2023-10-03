@@ -24,7 +24,7 @@ async function Navbar() {
       <SignedIn>
         {dbUser && (
           <Sheet>
-            <SheetTrigger className="flex items-center justify-center w-[15%]">
+            <SheetTrigger className="flex items-center justify-center lg:w-[15%]">
               <Image
                 src={dbUser.image ?? "/assets/profile-pic.png"}
                 alt={dbUser.username}
@@ -75,7 +75,7 @@ async function Navbar() {
           </Sheet>
         )}
       </SignedIn>
-      <div className="w-[65%] flex items-center justify-center">
+      <div className="w-full lg:w-[65%] flex items-center justify-center">
         <Link href="/" className="flex items-center justify-center gap-2 w-44">
           <Image
             src="/LogoName.png"
@@ -86,7 +86,7 @@ async function Navbar() {
           />
         </Link>
       </div>
-      <div className="w-[20%] flex items-center justify-center">
+      <div className="w-[0%] lg:w-[20%] hidden lg:flex items-center justify-center">
         <SearchPage />
       </div>
     </nav>

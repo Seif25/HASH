@@ -21,6 +21,7 @@ interface ImageDialogProps {
   liked: boolean;
   length: number;
   media: Media[];
+  size?: "xs" | "lg";
 }
 
 async function ImageDialog({
@@ -35,21 +36,56 @@ async function ImageDialog({
   liked,
   length,
   media,
+  size = "lg",
 }: ImageDialogProps) {
   const user = await currentUser();
+  const rounded = [
+    ["rounded-lg"],
+    ["rounded-l-lg", "rounded-r-lg"],
+    ["rounded-l-lg", "", "rounded-r-lg"],
+    ["rounded-l-lg", "", "", "rounded-r-lg"],
+  ];
+  const rounded_sm = [
+    ["rounded-lg"],
+    ["rounded-l-lg", "rounded-r-lg"],
+    ["rounded-tl-lg", "rounded-r-lg", "rounded-b-lg", ""],
+    ["rounded-tl-lg", "rounded-tr-lg", "rounded-bl-lg", "rounded-br-lg"],
+  ];
   return (
     <Dialog>
       <DialogTrigger asChild className="cursor-pointer">
         <AspectRatio ratio={4 / 3}>
-          <Image
-            key={currentImage.id}
-            src={currentImage.url}
-            alt={currentImage.alt}
-            width={120}
-            height={180}
-            priority
-            className={`object-cover rounded-lg w-[180px] h-[300px]`}
-          />
+          {size === "lg" ? (
+            <Image
+              key={currentImage.id}
+              src={currentImage.url}
+              alt={currentImage.alt}
+              width={120}
+              height={180}
+              priority
+              className={`object-cover ${
+                index > 0 && "border-l border-accent2"
+              } ${rounded[length - 1][index]} ${
+                length > 1
+                  ? "w-full max-w-[180px] h-[180px]"
+                  : "w-full max-w-[360px] h-[360px]"
+              }`}
+            />
+          ) : (
+            <Image
+              key={currentImage.id}
+              src={currentImage.url}
+              alt={currentImage.alt}
+              width={120}
+              height={180}
+              priority
+              className={`object-cover ${rounded_sm[length - 1][index]} ${
+                length > 1
+                  ? "w-full max-w-[180px] h-[180px]"
+                  : "w-full max-w-[360px] h-[360px]"
+              }`}
+            />
+          )}
         </AspectRatio>
       </DialogTrigger>
       <DialogContent className="w-full h-full flex flex-col gap-5">

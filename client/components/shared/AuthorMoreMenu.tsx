@@ -39,18 +39,21 @@ function AuthMoreMenu({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false)
 
   const handleDelete = async () => {
     setLoading(true);
+    setOpen(false);
+    const hash = document.getElementById(hashId);
+    hash?.classList.add("animate-pulse")
     await deleteHash(hashId);
-
     setLoading(false);
-    router.refresh();
+    hash?.remove()
   };
 
   return (
     <div className="w-full">
-      <DropdownMenu>
+      <DropdownMenu open={open} onOpenChange={setOpen} >
         <DropdownMenuTrigger asChild>
           <button className="rounded-full flex items-center justify-center">
             <MoreVertical className="text-accent1 hover:text-primary" size={"20px"} />

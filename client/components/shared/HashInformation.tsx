@@ -8,10 +8,8 @@ import Link from "next/link";
 import ImageDialog from "../cards/ImageDialog";
 import HashLinks from "./HashLinks";
 import ShareMenu from "./ShareMenu";
-import FormattedWord from "./FormattedWord";
 import moment from "moment";
 import HashText from "../text/HashText";
-import { User } from "@/utils/types/user.types";
 import AuthorMoreMenu from "./AuthorMoreMenu";
 import ViewerMoreMenu from "./ViewerMoreMenu";
 
@@ -21,7 +19,7 @@ interface HashInformationProps {
   profilePicture: string | undefined;
   reposted: boolean;
   isComment?: boolean;
-  isChild?: boolean
+  isChild?: boolean;
 }
 
 export default function HashInformation({
@@ -30,10 +28,9 @@ export default function HashInformation({
   profilePicture,
   reposted,
   isComment,
-  isChild = false
+  isChild = false,
 }: HashInformationProps) {
   const isFollowing = hash.author.followers?.includes(currentUser); //TODO: Remove ? after making followers required: [] by default
-  const gridSizes = ["grid-cols-1","grid-cols-2", "grid-cols-3", "grid-cols-4"]
 
   return (
     <div
@@ -59,29 +56,59 @@ export default function HashInformation({
           <div
             className={`${
               hash.media?.length > 1
-                ? `grid ${gridSizes[hash.media.length-1]} rounded-lg gap-5 w-full h-full`
+                ? `grid grid-cols-2 lg:grid-cols-4 rounded-lg w-full h-full gap-0`
                 : "flex items-start w-full h-full rounded-lg"
             }`}
           >
             {hash.media.map((image: Media, index: number) => (
-              <div
-                className={`rounded-lg w-full max-w-[180px] h-[300px]`}
-                key={image.id}
-              >
-                <ImageDialog
-                  currentImage={image}
-                  commentCount={hash.children?.length ?? 0}
-                  likeCount={hash.likes?.length ?? 0}
-                  repostCount={hash.reposts?.length ?? 0}
-                  viewCount={hash.views ?? 0}
-                  id={hash._id.toString()}
-                  currentUserId={currentUser}
-                  index={index}
-                  liked={hash.likes?.includes(currentUser ?? "") ?? false}
-                  length={hash.media?.length ?? 0}
-                  media={hash.media ?? []}
-                />
-              </div>
+              <>
+                <div
+                  className={`lg:hidden w-full ${
+                    hash.media?.length > 1
+                      ? "max-w-[180px] h-[180px]"
+                      : "max-w-[360px] h-[360px]"
+                  }`}
+                  key={image.id}
+                >
+                  <ImageDialog
+                    currentImage={image}
+                    commentCount={hash.children?.length ?? 0}
+                    likeCount={hash.likes?.length ?? 0}
+                    repostCount={hash.reposts?.length ?? 0}
+                    viewCount={hash.views ?? 0}
+                    id={hash._id.toString()}
+                    currentUserId={currentUser}
+                    index={index}
+                    liked={hash.likes?.includes(currentUser ?? "") ?? false}
+                    length={hash.media?.length ?? 0}
+                    media={hash.media ?? []}
+                    size="xs"
+                  />
+                </div>
+                <div
+                  className={`hidden lg:flex w-full ${
+                    hash.media?.length > 1
+                      ? "max-w-[180px] h-[180px]"
+                      : "max-w-[360px] h-[360px]"
+                  }`}
+                  key={image.id}
+                >
+                  <ImageDialog
+                    currentImage={image}
+                    commentCount={hash.children?.length ?? 0}
+                    likeCount={hash.likes?.length ?? 0}
+                    repostCount={hash.reposts?.length ?? 0}
+                    viewCount={hash.views ?? 0}
+                    id={hash._id.toString()}
+                    currentUserId={currentUser}
+                    index={index}
+                    liked={hash.likes?.includes(currentUser ?? "") ?? false}
+                    length={hash.media?.length ?? 0}
+                    media={hash.media ?? []}
+                    size="lg"
+                  />
+                </div>
+              </>
             ))}
           </div>
         </div>
@@ -95,7 +122,7 @@ export default function HashInformation({
           </span>
           <span>• {moment(hash.createdAt).format("MMM D, YYYY")}</span>
           <span>
-            • {hash.views} {hash.views > 1 ? "views" : "view"}
+            • {hash.views} views
           </span>
         </div>
       )}

@@ -55,7 +55,7 @@ export default function CommentField({
       name={name}
       render={({ field }) => (
         <FormItem className="flex flex-col justify-start items-start gap-0 w-full">
-          <FormControl className="no-focus text-black">
+          <FormControl className="no-focus text-accent1">
             <div
               className={`w-full flex flex-col ${
                 focused ? "bubble-foc" : "bubble"
@@ -69,7 +69,7 @@ export default function CommentField({
               <HashTextarea
                 placeholder={placeholder || label}
                 {...field}
-                className="bg-transparent text-black w-full pl-2 textarea"
+                className="bg-transparent text-accent1 w-full pl-2 textarea"
                 maxLength={maxLength}
                 onChange={field.onChange}
                 onFocus={handleFocus}

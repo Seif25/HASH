@@ -1,5 +1,5 @@
 // *TYPES
-import { DetailedUser, User } from "@/utils/types/user.types";
+import { User } from "@/utils/types/user.types";
 
 // *SHADCN COMPONENTS
 import {
@@ -82,7 +82,7 @@ export default function AuthorInformation({
                     {author.name}
                     {author.verified && (
                       <span className="flex items-center justify-center">
-                        <BadgeCheck className="text-primary" fontSize={14} />
+                        <BadgeCheck className="text-primary" size={"16px"} />
                       </span>
                     )}
                   </span>
@@ -128,7 +128,7 @@ export default function AuthorInformation({
                     </span>
                     {author.verified && (
                       <span className="flex items-center justify-center">
-                        <BadgeCheck className="text-primary" fontSize={14} />
+                        <BadgeCheck className="text-primary" size={"16px"} />
                       </span>
                     )}
                   </div>

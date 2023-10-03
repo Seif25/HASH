@@ -22,7 +22,7 @@ export default function HashCard({ hash, currentUser }: HashCardProps) {
     reposts: hash.reposts,
   });
   return (
-    <article className="w-full">
+    <article className="w-full ease-out" id={hash._id.toString()}>
       <div className="hash-card">
         {/* CHECK IF USER REPOSTED THIS HASH */}
         {reposted && (

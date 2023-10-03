@@ -234,6 +234,30 @@ export async function fetchUsers({
   }
 }
 
+/**
+ * Get Recommended Users for current user
+ * @param username {string}
+ * @returns {Promise<User[] | undefined>}
+ * @throws {MongooseError}
+ */
+export async function getRecommendedUsers(
+  username: string
+): Promise<User[] | undefined> {
+  // Connect to MongoDB
+  connectToDB();
+
+  try {
+    return await UserModel.find({
+      $and: [
+        { followers: { $nin: [username] } }, // exclude users that have the username in their followers list
+        { username: { $ne: username } }, // exclude the username itself
+      ],
+    }).select("name username following followers image verified").limit(5);
+  } catch (error: any) {
+    throw new Error(`Error getting recommended users: ${error.message}`);
+  }
+}
+
 /*
     ! ################################### !
     ! NOT UPDATED FOR NEW CONVENTIONS YET !

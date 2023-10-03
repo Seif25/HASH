@@ -13,7 +13,7 @@
 }
 
 .app {
-  @apply bg-gradient-to-b from-[#070f16] via-[#000a13] to-black text-accent1 pr-10;
+  @apply bg-gradient-to-b from-[#070f16] via-[#000a13] to-black text-accent1 lg:pr-10;
 }
 
 .main {
@@ -23,7 +23,7 @@
 /* NAVIGATION STYLES */
 
 .navbar {
-  @apply z-30 w-full h-auto px-0 my-0 flex items-center justify-between p-5 bg-[#13161a] bg-opacity-0;
+  @apply z-30 w-full h-auto px-5 lg:px-0 my-0 flex items-center justify-between p-5 bg-[#13161a] bg-opacity-0;
 }
 
 .left-sidebar {
@@ -31,11 +31,11 @@
 }
 
 .right-sidebar-component {
-  @apply sticky right-0 top-0 z-20 flex h-screen w-[20%] flex-col gap-2 overflow-auto rounded-2xl max-xl:hidden;
+  @apply sticky right-0 top-0 z-20 flex h-screen w-[20%] flex-col gap-5 overflow-auto rounded-2xl max-xl:hidden pb-5;
 }
 
 .right-sidebar {
-  @apply z-20 flex h-screen w-full flex-col justify-between gap-12 overflow-auto rounded-2xl p-5 max-xl:hidden bg-[#13161a] bg-opacity-100;
+  @apply z-20 flex h-full w-full flex-col justify-between gap-12 overflow-auto rounded-2xl p-5 max-xl:hidden bg-[#13161a] bg-opacity-100;
 }
 
 .left-sidebar-link {
@@ -173,6 +173,10 @@
 
 .btn {
   @apply rounded-full p-2 bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb];
+}
+
+.follow-btn{
+  @apply rounded-full text-[14px] p-1 w-20 bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] hover:bg-opacity-50
 }
 
 .hash-text-wrap {

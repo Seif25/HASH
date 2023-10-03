@@ -47,7 +47,7 @@ export default function HashLinks({
 }: HashLinksProps) {
 
   return (
-    <div className="flex items-center gap-5 w-[95%]">
+    <div className="flex items-center justify-between gap-5 w-[70%]">
       {/* Comment */}
       <CommentButton commentCount={commentCount} currentUser={currentUser} parentId={hashId} image={image} parentAuthor={parentAuthor}/>
       {/* Re-post */}
@@ -55,7 +55,7 @@ export default function HashLinks({
       {/* Like */}
       <LikeButton liked={liked} likeCount={likeCount} hashId={hashId} currentUser={currentUser} />
       {/* Views */}
-      <div className="flex flex-col items-center gap-">
+      <div className="flex flex-row items-center gap-2">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

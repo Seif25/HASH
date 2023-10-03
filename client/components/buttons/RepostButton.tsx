@@ -7,10 +7,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { repostHash } from "@/lib/actions/hash.actions";
+import { repostHash, unrepostHash } from "@/lib/actions/hash.actions";
 import { abbreviateNumber } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { Repeat2 } from "lucide-react";
+import { useState } from "react";
 
 interface RepostButtonProps {
   repostCount: number;
@@ -26,6 +27,7 @@ export default function RepostButton({
   reposted,
 }: RepostButtonProps) {
   const pathname = usePathname();
+  const [repostState, setRepostState] = useState<boolean | undefined>(reposted)
   const handleRepost = async () => {
     if (!reposted) {
       await repostHash({
@@ -34,10 +36,18 @@ export default function RepostButton({
         pathname,
         quote: "",
       });
+      setRepostState(true)
+    } else {
+      await unrepostHash({
+        id: hashId,
+        currentUser: currentUser,
+        pathname,
+      });
+      setRepostState(false)
     }
   };
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-row items-center gap-2">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -47,7 +57,7 @@ export default function RepostButton({
             >
               <Repeat2
                 className={`${
-                  reposted
+                  repostState
                     ? "text-green-500 hover:text-white"
                     : "text-white hover:text-green-500"
                 }`}
@@ -56,7 +66,7 @@ export default function RepostButton({
             </button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Repost</p>
+            <p>{repostState ? "UnRepost" : "Repost"}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

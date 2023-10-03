@@ -46,7 +46,7 @@ export default async function CommentButton({
         <Tooltip>
           <TooltipTrigger asChild>
             <DialogTrigger asChild>
-              <div className="flex flex-col items-center gap-0">
+              <div className="flex flex-row items-center gap-2">
                 <button className="rounded-full flex items-center justify-center">
                   <MessageCircle
                     className="text-accent1 hover:text-primary"
