@@ -39,7 +39,6 @@ export default async function NewConversation({
       messages: [],
     };
     const { data, error } = await supabase.from("Chats").upsert(info).select();
-    setOpen(false);
     if (data) router.push(`/messages/${data[0].id}`);
     if (error) console.log(error);
   }
