@@ -5,8 +5,14 @@ import supabase from "@/utils/supabase/supabase";
 import { getRecipients } from "@/lib/actions/user.actions";
 import dynamic from "next/dynamic";
 import { currentUser } from "@clerk/nextjs";
-const Conversations = dynamic(() => import("@/app/(messages)/components/Conversations"), { ssr: false});
-const ConversationWindow = dynamic(() => import("@/app/(messages)/components/ConversationWindow"), { ssr: false })
+const Conversations = dynamic(
+  () => import("@/app/(messages)/components/Conversations"),
+  { ssr: false }
+);
+const ConversationWindow = dynamic(
+  () => import("@/app/(messages)/components/ConversationWindow"),
+  { ssr: false }
+);
 
 type Props = {
   params: { conversationId: string };
@@ -20,7 +26,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const user = await currentUser()  
+  const user = await currentUser();
   return {
     title: `@${user?.username} / Messages on Hash`,
   };
@@ -31,9 +37,10 @@ export default async function Conversation({
 }: {
   params: { conversationId: string };
 }) {
-  const user = await currentUser()
+  const user = await currentUser();
 
   const { data: chats, error } = await supabase.from("Chats").select();
+  if (error) console.log(error);
   let _recipients: UserSummary[] | undefined;
   let _chats: ConversationsType[] | undefined;
 
@@ -53,11 +60,19 @@ export default async function Conversation({
   }
   return (
     <div className="flex w-full bg-accent2 lg:rounded-xl mb-5">
+      {process.env.NODE_ENV === "development" && <p className="text-red-500">{error?.message}</p>}
       <div className="hidden lg:flex lg:w-[30%] p-5 rounded-l-xl">
-        <Conversations initialConversations={_chats ?? []} selectedConversation={params.conversationId} username={user?.username ?? ""} />
+        <Conversations
+          initialConversations={_chats ?? []}
+          selectedConversation={params.conversationId}
+          username={user?.username ?? ""}
+        />
       </div>
       <div className="w-full lg:w-[70%] lg:border-l border-accent1/10 lg:rounded-r-xl">
-        <ConversationWindow id={params.conversationId} sender={user?.username ?? ""} />
+        <ConversationWindow
+          id={params.conversationId}
+          sender={user?.username ?? ""}
+        />
       </div>
     </div>
   );

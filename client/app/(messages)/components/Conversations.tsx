@@ -142,11 +142,8 @@ export default function Conversations({
               ))}
             </div>
           ) : (
-            <p className="mt-5 text-[16px]">
-              No Conversations Yet!{" "}
-              <span className="font-bold text-accent1/50 text-[14px] bg-primary rounded-full p-2">
-                New Conversation.
-              </span>
+            <p className="p-5 text-[16px]">
+              {"No Conversations Yet!"}
             </p>
           )}
         </>

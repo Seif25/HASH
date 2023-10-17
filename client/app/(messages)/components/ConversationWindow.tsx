@@ -81,11 +81,16 @@ export default function ConversationWindow({
         message,
         timestamp: moment(),
       };
-      const data = [...conversation.messages, newMessage];
+      let _data;
+      if(conversation.messages) {
+        _data = [...conversation.messages, newMessage];
+      } else {
+        _data = [newMessage];
+      }
       setMessage("");
       const { error } = await supabase
         .from("Chats")
-        .update({ messages: data })
+        .update({ messages: _data })
         .eq("id", id);
       if (error) throw new Error(error.message);
     }
