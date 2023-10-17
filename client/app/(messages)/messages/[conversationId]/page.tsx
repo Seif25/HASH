@@ -54,7 +54,7 @@ export default async function Conversation({
   return (
     <div className="flex w-full bg-accent2 lg:rounded-xl mb-5">
       <div className="hidden lg:flex lg:w-[30%] p-5 rounded-l-xl">
-        <Conversations initialConversations={_chats ?? []} selectedConversation={params.conversationId} />
+        <Conversations initialConversations={_chats ?? []} selectedConversation={params.conversationId} username={user?.username ?? ""} />
       </div>
       <div className="w-full lg:w-[70%] lg:border-l border-accent1/10 lg:rounded-r-xl">
         <ConversationWindow id={params.conversationId} sender={user?.username ?? ""} />

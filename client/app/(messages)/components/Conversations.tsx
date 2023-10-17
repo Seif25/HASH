@@ -3,15 +3,17 @@
 import { getRecipient } from "@/lib/actions/user.actions";
 import supabase from "@/utils/supabase/supabase";
 import { ConversationsType } from "@/utils/types/messages.types";
-import { BadgeCheck, MessageSquarePlus } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import NewConversation from "./NewConversation";
 
 interface ConversationsProps {
   initialConversations: ConversationsType[];
   selectedConversation?: string;
+  username: string
 }
 
 moment.updateLocale("en", {
@@ -38,6 +40,7 @@ export const revalidate = 0;
 export default function Conversations({
   initialConversations,
   selectedConversation = "",
+  username
 }: ConversationsProps) {
   const [conversations, setConversations] =
     useState<ConversationsType[]>(initialConversations);
@@ -74,9 +77,7 @@ export default function Conversations({
     <div className="w-full">
       <div className="flex items-center justify-between px-5 w-full">
         <h1 className="font-bold text-[20px] text-primary">Conversations</h1>
-        <button className="flex items-center justify-center hover:bg-primary/10 rounded-full p-2">
-          <MessageSquarePlus size={"24px"} className="text-accent1" />
-        </button>
+        <NewConversation username={username} />
       </div>
       {conversations && (
         <>
@@ -132,7 +133,7 @@ export default function Conversations({
                       </div>
                       {!selectedConversation && (
                         <h3 className="text-accent1/50 text-[14px] text-ellipsis w-44 truncate">
-                          {conversation.messages.at(-1)?.message ?? ""}
+                          {conversation.messages?.at(-1)?.message ?? ""}
                         </h3>
                       )}
                     </div>

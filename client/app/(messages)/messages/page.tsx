@@ -1,13 +1,16 @@
 import { getRecipients } from "@/lib/actions/user.actions";
 import { UserSummary } from "@/utils/types/user.types";
-import supabase from "@/utils/supabase/supabase"
+import supabase from "@/utils/supabase/supabase";
 import Conversations from "../components/Conversations";
 import { ConversationsType } from "@/utils/types/messages.types";
 import { MessageSquarePlus } from "lucide-react";
+import { currentUser } from "@clerk/nextjs";
+import NewConversation from "../components/NewConversation";
 
-export const revalidate = 0
+export const revalidate = 0;
 
 export default async function Messages() {
+  const user = await currentUser();
 
   const { data: chats, error } = await supabase.from("Chats").select();
   let _recipients: UserSummary[] | undefined;
@@ -31,13 +34,14 @@ export default async function Messages() {
   return (
     <div className="flex w-full bg-accent2 lg:rounded-xl">
       <div className="w-full lg:w-[40%] p-5 rounded-l-xl">
-        <Conversations initialConversations={_chats ?? []} />
+        <Conversations
+          initialConversations={_chats ?? []}
+          username={user?.username ?? ""}
+        />
       </div>
       <div className="hidden lg:w-[60%] lg:flex items-center justify-center h-auto gap-2 font-bold text-[20px] p-5 rounded-r-xl">
         Start a New Conversation
-        <button className="flex items-center justify-center hover:bg-primary/10 rounded-full p-2">
-          <MessageSquarePlus size={"24px"} className="text-accent1" />
-        </button>
+        <NewConversation username={user?.username ?? ""} />
       </div>
     </div>
   );
