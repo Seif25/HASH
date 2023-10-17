@@ -5,7 +5,6 @@ import { Activity, Bell, Bookmark, Hash, Home, Mail, Search, Users2 } from "luci
 
 export const sidebarLinks = [
   {
-    // icon: <Home fontSize="medium" sx={{ color: "#fff" }}/>,
     icon: <Home />,
     route: "/",
     label: "Home",
@@ -16,14 +15,14 @@ export const sidebarLinks = [
     label: "Search",
   },
   {
-    icon: <Activity />,
-    route: "/activity",
-    label: "Activity",
-  },
-  {
     icon: <Hash />,
     route: "/create-hash",
     label: "Create Hash",
+  },
+  {
+    icon: <Mail />,
+    route: "/messages",
+    label: "Messages",
   },
   {
     icon: <Users2 />,

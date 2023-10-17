@@ -3,7 +3,7 @@
 import { getRecipient } from "@/lib/actions/user.actions";
 import supabase from "@/utils/supabase/supabase";
 import { ConversationsType } from "@/utils/types/messages.types";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, MessageSquarePlus } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
@@ -71,12 +71,17 @@ export default function Conversations({
   }, [supabase, conversations, setConversations]);
 
   return (
-    <div>
-      <h1 className="font-bold text-[20px] text-primary">Conversation</h1>
+    <div className="w-full">
+      <div className="flex items-center justify-between px-5 w-full">
+        <h1 className="font-bold text-[20px] text-primary">Conversations</h1>
+        <button className="flex items-center justify-center hover:bg-primary/10 rounded-full p-2">
+          <MessageSquarePlus size={"24px"} className="text-accent1" />
+        </button>
+      </div>
       {conversations && (
         <>
           {conversations.length > 0 ? (
-            <div className="flex flex-col gap-5 mt-5">
+            <div className="flex flex-col gap-5 mt-5 w-full">
               {conversations.map((conversation, index) => (
                 <Link
                   href={`/messages/${conversation.id}`}
@@ -86,7 +91,7 @@ export default function Conversations({
                     className={`flex items-center gap-5 hover:bg-primary/10 rounded-xl p-3 cursor-pointer ${
                       selectedConversation === conversation.id &&
                       "bg-primary/10"
-                    }`}
+                    } w-full`}
                   >
                     <Link
                       href={`/profile/${conversation.recipient.username}`}

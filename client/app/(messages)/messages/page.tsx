@@ -3,6 +3,7 @@ import { UserSummary } from "@/utils/types/user.types";
 import supabase from "@/utils/supabase/supabase"
 import Conversations from "../components/Conversations";
 import { ConversationsType } from "@/utils/types/messages.types";
+import { MessageSquarePlus } from "lucide-react";
 
 export const revalidate = 0
 
@@ -28,12 +29,15 @@ export default async function Messages() {
   }
 
   return (
-    <div className="flex w-full bg-accent2 rounded-xl">
-      <div className="w-[40%] p-5 rounded-l-xl">
+    <div className="flex w-full bg-accent2 lg:rounded-xl">
+      <div className="w-full lg:w-[40%] p-5 rounded-l-xl">
         <Conversations initialConversations={_chats ?? []} />
       </div>
-      <div className="w-[60%] flex items-center justify-center font-bold text-[20px] p-5 rounded-r-xl">
+      <div className="hidden lg:w-[60%] lg:flex items-center justify-center h-auto gap-2 font-bold text-[20px] p-5 rounded-r-xl">
         Start a New Conversation
+        <button className="flex items-center justify-center hover:bg-primary/10 rounded-full p-2">
+          <MessageSquarePlus size={"24px"} className="text-accent1" />
+        </button>
       </div>
     </div>
   );

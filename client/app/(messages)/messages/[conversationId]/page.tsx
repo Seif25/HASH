@@ -4,6 +4,7 @@ import { UserSummary } from "@/utils/types/user.types";
 import supabase from "@/utils/supabase/supabase";
 import { getRecipients } from "@/lib/actions/user.actions";
 import dynamic from "next/dynamic";
+import { currentUser } from "@clerk/nextjs";
 const Conversations = dynamic(() => import("@/app/(messages)/components/Conversations"), { ssr: false});
 const ConversationWindow = dynamic(() => import("@/app/(messages)/components/ConversationWindow"), { ssr: false })
 
@@ -19,10 +20,9 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const conversationId = params.conversationId;
-
+  const user = await currentUser()  
   return {
-    title: `Conversation on Hash: ${conversationId}`,
+    title: `@${user?.username} / Messages on Hash`,
   };
 }
 
@@ -31,6 +31,8 @@ export default async function Conversation({
 }: {
   params: { conversationId: string };
 }) {
+  const user = await currentUser()
+
   const { data: chats, error } = await supabase.from("Chats").select();
   let _recipients: UserSummary[] | undefined;
   let _chats: ConversationsType[] | undefined;
@@ -50,12 +52,12 @@ export default async function Conversation({
     });
   }
   return (
-    <div className="flex w-full bg-accent2 rounded-xl">
-      <div className="w-[30%] p-5 rounded-l-xl">
+    <div className="flex w-full bg-accent2 lg:rounded-xl mb-5">
+      <div className="hidden lg:flex lg:w-[30%] p-5 rounded-l-xl">
         <Conversations initialConversations={_chats ?? []} selectedConversation={params.conversationId} />
       </div>
-      <div className="w-[70%] border-l border-accent1/10 rounded-r-xl">
-        <ConversationWindow id={params.conversationId} />
+      <div className="w-full lg:w-[70%] lg:border-l border-accent1/10 lg:rounded-r-xl">
+        <ConversationWindow id={params.conversationId} sender={user?.username ?? ""} />
       </div>
     </div>
   );
