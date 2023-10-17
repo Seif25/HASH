@@ -5,6 +5,7 @@ import {
   FetchAllUsersParams,
   MongoUser,
   User,
+  UserSummary,
 } from "@/utils/types/user.types";
 import UserModel from "../models/user.model";
 import { initializeMongoConnection, isConnected } from "../mongoose.middleware";
@@ -255,6 +256,42 @@ export async function getRecommendedUsers(
     }).select("name username following followers image verified").limit(5);
   } catch (error: any) {
     throw new Error(`Error getting recommended users: ${error.message}`);
+  }
+}
+
+/**
+ * Get Recipients
+ * @param Recipients {string[]}
+ * @returns {Promise<User[] | undefined>}
+ * @throws {MongooseError} 
+ */
+export async function getRecipients(
+  recipients: string[]
+): Promise<UserSummary[] | undefined>{
+  // Connect to MongoDB
+  connectToDB();
+
+  try {
+    return await UserModel.find({
+      username: { $in: recipients }
+    }).select("name username following followers image verified");
+  } catch (error: any) {
+    throw new Error(`Error getting recipients: ${error.message}`);
+  }
+}
+
+export async function getRecipient(
+  recipient: string
+): Promise<UserSummary | undefined>{
+  // Connect to MongoDB
+  connectToDB();
+
+  try {
+    return await UserModel.findOne({
+      username: recipient
+    }).select("name username following followers image verified") as UserSummary;
+  } catch (error: any) {
+    throw new Error(`Error getting recipient: ${error.message}`);
   }
 }
 

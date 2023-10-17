@@ -23,7 +23,7 @@
 /* NAVIGATION STYLES */
 
 .navbar {
-  @apply z-30 w-full h-auto px-5 lg:px-0 my-0 flex items-center justify-between p-5 bg-[#13161a] bg-opacity-0;
+  @apply z-30 w-full h-24 px-5 lg:px-0 my-0 flex items-center justify-between p-5 bg-[#13161a] bg-opacity-0;
 }
 
 .left-sidebar {
@@ -251,4 +251,8 @@
 
 .icons {
   @apply bg-white hover:bg-primary;
+}
+
+.carousel-item{
+  @apply box-content flex grow items-center justify-self-center lg:mr-[100%] w-auto max-w-screen-sm h-full max-h-[36rem] rounded-lg object-contain
 }

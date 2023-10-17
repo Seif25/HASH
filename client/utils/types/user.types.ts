@@ -49,6 +49,17 @@ export type DetailedUser = {
   joinedAt: Date;
 }
 
+// *Types for returning a Summary for a User
+export type UserSummary = {
+  _id: string;
+  name: string
+  username: string;
+  image: string
+  verified: boolean;
+  following: string[];
+  followers: string[];
+}
+
 // *Types for uploading an image
 export type ImageFieldProps = {
   control: Control<z.infer<typeof UserValidation>> | undefined;

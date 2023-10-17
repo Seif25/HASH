@@ -1,7 +1,7 @@
 import Favorite from "@mui/icons-material/Favorite"
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PeopleIcon from '@mui/icons-material/People';
-import { Activity, Hash, Home, Search, Users2 } from "lucide-react";
+import { Activity, Bell, Bookmark, Hash, Home, Mail, Search, Users2 } from "lucide-react";
 
 export const sidebarLinks = [
   {
@@ -24,6 +24,45 @@ export const sidebarLinks = [
     icon: <Hash />,
     route: "/create-hash",
     label: "Create Hash",
+  },
+  {
+    icon: <Users2 />,
+    route: "/communities",
+    label: "Communities",
+  },
+];
+
+export const sidebarLinksLg = [
+  {
+    // icon: <Home fontSize="medium" sx={{ color: "#fff" }}/>,
+    icon: <Home />,
+    route: "/",
+    label: "Home",
+  },
+  {
+    icon: <Search />,
+    route: "/search",
+    label: "Search",
+  },
+  {
+    icon: <Bell />,
+    route: "/notifications",
+    label: "Notifications",
+  },
+  {
+    icon: <Mail />,
+    route: "/messages",
+    label: "Messages",
+  },
+  {
+    icon: <Activity />,
+    route: "/activity",
+    label: "Activity",
+  },
+  {
+    icon: <Bookmark />,
+    route: "/bookmarks",
+    label: "Bookmarks",
   },
   {
     icon: <Users2 />,

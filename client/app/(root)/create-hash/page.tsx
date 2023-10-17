@@ -5,26 +5,29 @@ import { getUserInformation } from "@/lib/actions/user.actions";
 import CreateNewHash from "@/components/forms/CreateHash";
 
 export const metadata: Metadata = {
-    title: 'Create Hash / Hash',
-    description: 'Create a new hash',
-  }
+  title: "Create Hash / Hash",
+  description: "Create a new hash",
+};
 
 const CreateHash: NextPage = async () => {
-    const user = await currentUser();
+  const user = await currentUser();
 
-    if (!user) {
-        redirect('/sign-in');
-    }
+  if (!user) {
+    redirect("/sign-in");
+  }
 
-    const userInfo = await getUserInformation(user.username ?? "");
+  const userInfo = await getUserInformation(user.username ?? "");
 
-    if (!userInfo?.onBoarded) redirect('/onboarding');
+  if (!userInfo?.onBoarded) redirect("/onboarding");
 
-    return (
-        <>
-            <CreateNewHash username={userInfo.username ?? ""} image={userInfo.image}/>
-        </>
-    )
-}
+  return (
+    <div className="px-5 py-10 lg:p-0">
+      <CreateNewHash
+        username={userInfo.username ?? ""}
+        image={userInfo.image}
+      />
+    </div>
+  );
+};
 
 export default CreateHash;

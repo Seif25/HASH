@@ -24,7 +24,7 @@ async function Navbar() {
       <SignedIn>
         {dbUser && (
           <Sheet>
-            <SheetTrigger className="flex items-center justify-center lg:w-[15%]">
+            <SheetTrigger className="flex items-center justify-center lg:w-[15%] lg:-ml-2">
               <Image
                 src={dbUser.image ?? "/assets/profile-pic.png"}
                 alt={dbUser.username}

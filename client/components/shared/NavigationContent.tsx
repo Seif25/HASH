@@ -1,6 +1,6 @@
 "use client";
 
-import { sidebarLinks } from "@/constants/index";
+import { sidebarLinks, sidebarLinksLg } from "@/constants/index";
 import { SignOutButton, SignedIn } from "@clerk/nextjs";
 import Logout from "@mui/icons-material/Logout";
 import Link from "next/link";
@@ -25,7 +25,7 @@ export default function LeftSidebarContent({
     >
       {type === "left" ? (
         <div className="flex flex-1 flex-col gap-6 px-6 pt-12">
-          {sidebarLinks.map((link) => {
+          {sidebarLinksLg.map((link) => {
             const isActive =
               (pathname.includes(link.route) && link.route.length > 1) ||
               pathname === link.route;

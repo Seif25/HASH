@@ -8,6 +8,8 @@ import { currentUser } from "@clerk/nextjs";
 import { EmblaCarousel } from "../shared/carousel/EmblaCarousel";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import dynamic from "next/dynamic";
+import { DaisyCarousel } from "../shared/carousel/DaisyCarousel";
 
 interface ImageDialogProps {
   currentImage: Media;
@@ -90,7 +92,7 @@ async function ImageDialog({
       </DialogTrigger>
       <DialogContent className="w-full h-full flex flex-col gap-5">
         <div className="flex items-center justify-center w-full h-[90%]">
-          <EmblaCarousel
+          {/* <EmblaCarousel
             startIndex={index}
             slides={media.map((image: Media) => (
               <div className="w-full h-[580px] max-h-[600px] flex items-center justify-center">
@@ -102,18 +104,24 @@ async function ImageDialog({
                   height={400}
                   priority
                   className="object-contain rounded-lg p-2 w-full max-w-xs lg:max-w-screen-lg h-[580px] max-h-[600px]"
-                  // style={{
-                  //   width: "auto",
-                  //   maxWidth: 600,
-                  //   height: 580,
-                  //   maxHeight: 580,
-                  // }}
                 />
               </div>
             ))}
+          /> */}
+          <DaisyCarousel
+            slides={media.map((image: Media) => (
+              <Image
+                src={image.url}
+                alt={image.alt}
+                width={600}
+                height={400}
+                className="rounded-lg object-contain max-w-screen-xs lg:max-w-screen-md w-full h-auto max-h-[36rem]"
+              />
+            ))}
+            startIndex={index}
           />
         </div>
-        <div className="flex items-center justify-between h-auto pt-5">
+        <div className="flex items-center justify-between h-auto pt-5 px-5">
           {/* // TODO: PARENT AUTHOR */}
           <HashLinks
             commentCount={commentCount}

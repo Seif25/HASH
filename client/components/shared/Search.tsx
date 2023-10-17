@@ -35,8 +35,8 @@ export default function Search({ currentUser }: SearchProps) {
     setSearchString(e.target.value);
   };
   return (
-    <div className="flex flex-1 flex-col justify-start w-full gap-2">
-      <div className="w-full flex items-center justify-between bg-accent2 rounded-2xl px-2">
+    <div className="absolute top-0 right-0 m-10 flex flex-1 flex-col justify-start w-[19.5%] gap-2">
+      <div className="w-full flex items-center justify-between bg-accent2 rounded-xl px-2">
         <input
           type="text"
           name="search"
@@ -48,26 +48,24 @@ export default function Search({ currentUser }: SearchProps) {
         />
         <SearchIcon color="#fff" />
       </div>
-      {results && (
-        <>
-          {results.length === 0 && (
-            <div className="bg-accent2 rounded-2xl w-full flex flex-col gap-2 p-5">
-              {"No Results Found"}
-            </div>
-          )}
-          {results.length > 0 && (
-            <div className="bg-accent2 rounded-2xl w-full flex flex-col gap-2">
-              {results.map((result, index) => (
-                <AccountResultCard
-                  key={index}
-                  user={result}
-                  currentUser={currentUser}
-                />
-              ))}
-            </div>
-          )}
-        </>
-      )}
+      <div className={`relative top-0 z-40 ${searchString.length > 0 ? "visible" : "hidden"}`} id="navbar-search-results">
+        {results?.length === 0 && (
+          <div className="bg-accent2 rounded-2xl w-full flex flex-col gap-2 p-5">
+            {"No Results Found"}
+          </div>
+        )}
+        {results && results.length > 0 && (
+          <div className="bg-accent2 rounded-2xl w-full flex flex-col gap-2">
+            {results?.map((result, index) => (
+              <AccountResultCard
+                key={index}
+                user={result}
+                currentUser={currentUser}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
