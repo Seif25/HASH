@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 
 type FollowingType = {
   following: UserSummary[];
-}
+};
 
 export default async function NewConversation({
   username,
@@ -42,14 +42,31 @@ export default async function NewConversation({
       sender: username,
       messages: [],
     };
-    const { data, error } = await supabase.from("Chats").insert(info).select();
-    if (data) router.push(`/messages/${data[0].id}`);
-    if (error) {
-      console.log(error)
-      if (error.code === "23505"){
-        setOpen(false)
+    const { data: exists, error: existsError } = await supabase
+      .from("Chats")
+      .select()
+      .or(
+        `sender.in.(${username},${recipient}),recipient.in.(${username},${recipient})`
+      );
+    if (existsError) {
+      console.log(existsError)
+      throw new Error(existsError.message)
+    } ;
+    if (exists) {
+      router.push(`/messages/${exists[0].id}`);
+    } else {
+      const { data, error } = await supabase
+        .from("Chats")
+        .insert(info)
+        .select();
+      if (data) router.push(`/messages/${data[0].id}`);
+      if (error) {
+        console.log(error);
+        if (error.code === "23505") {
+          setOpen(false);
+        }
       }
-    };
+    }
   }
 
   return (

@@ -14,7 +14,7 @@ export const revalidate = 0;
 export default async function Messages() {
   const user = await currentUser();
 
-  const { data: chats, error } = await supabase.from("Chats").select();
+  const { data: chats, error } = await supabase.from("Chats").select().or(`sender.eq.${user?.username},recipient.eq.${user?.username}`);
   if (error) console.log(error)
   let _recipients: UserSummary[] | undefined;
   let _chats: ConversationsType[] | undefined;

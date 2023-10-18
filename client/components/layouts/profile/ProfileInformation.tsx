@@ -12,12 +12,16 @@ import CalendarMonth from "@mui/icons-material/CalendarMonth";
 
 // *UTILS
 import moment from "moment";
+import { currentUser } from "@clerk/nextjs";
 
 interface ProfileInformationProps {
   user: DetailedUser;
 }
 
-export default function ProfileInformation({ user }: ProfileInformationProps) {
+export default async function ProfileInformation({
+  user,
+}: ProfileInformationProps) {
+  const loggedUser = await currentUser();
   return (
     <>
       {/* BANNER */}
@@ -57,11 +61,13 @@ export default function ProfileInformation({ user }: ProfileInformationProps) {
           placeholder="blur"
           blurDataURL="/assets/profile-pic.png"
         />
-        <Link href={"/onboarding"} className="pt-2 px-5">
-          <button className="bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] rounded-full text-white p-2">
-            Edit Profile
-          </button>
-        </Link>
+        {loggedUser?.username === user.username && (
+          <Link href={"/onboarding"} className="pt-2 px-5">
+            <button className="bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] rounded-full text-white p-2">
+              Edit Profile
+            </button>
+          </Link>
+        )}
       </div>
 
       {/* USER INFORMATION */}
@@ -89,7 +95,10 @@ export default function ProfileInformation({ user }: ProfileInformationProps) {
             </Link>
           )}
           <h3 className="text-white lg:text-[14px] text-[10px] text-ellipsis flex items-center gap-1">
-            <CalendarMonth className="text-white" style={{ fontSize: "12px" }} />
+            <CalendarMonth
+              className="text-white"
+              style={{ fontSize: "12px" }}
+            />
             <h3 className="text-[10px] lg:text-[14px] text-ellipsis">
               Joined {moment(user.joinedAt).format("MMMM YYYY")}
             </h3>

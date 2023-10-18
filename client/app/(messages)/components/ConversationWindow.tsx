@@ -138,7 +138,7 @@ export default function ConversationWindow({
             </Link>
           </div>
           {/* Messages */}
-          <div className="overflow-y-scroll custom-scrollbar h-[80vh] max-h-[80vh] lg:h-[75vh] lg:max-h-[75vh] bg-[#000a13] border-b border-accent1/10">
+          <div className="overflow-y-scroll custom-scrollbar h-[70vh] max-h-[70vh] lg:h-[75vh] lg:max-h-[75vh] bg-[#000a13] border-b border-accent1/10">
             {conversation.messages?.map((message, index) => (
               <div
                 className={`flex flex-col justify-center px-5 py-2 w-full rounded-2xl ${
