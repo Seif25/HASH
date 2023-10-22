@@ -17,9 +17,10 @@ interface MessageProps {
     timestamp: string;
   };
   sender: string;
+  ref: any;
 }
 
-export default function Message({ message, sender }: MessageProps) {
+export default function Message({ message, sender, ref }: MessageProps) {
   const [text, copy] = useClipboard();
 
   const handleReplyDetails = () => {
@@ -37,25 +38,30 @@ export default function Message({ message, sender }: MessageProps) {
     }
   };
 
-  function handleSwipe() {
-    // define the minimum distance to trigger the action
-    const container = document.querySelector(".swipe-container");
+  function handleTouchStart(e: React.TouchEvent<HTMLDivElement>) {
+    // get the initial touch position
+    const touch = e.touches[0];
+    const startX = touch.clientX;
+    e.currentTarget.dataset.startX = startX.toString();
+  }
 
-    if (container) {
-      if (container.scrollLeft !== 0) {
-        handleReplyDetails();
-      }
-      // get the distance the user swiped
-      // const swipeDistance = container.scrollLeft - container.clientWidth;
-      // console.log(container.scrollLeft, container.clientWidth, swipeDistance);
-      // if (swipeDistance < -20 || swipeDistance > 20) {
-      // }
-      // if (swipeDistance < minDistance * -1) {
-      // } else if (swipeDistance > minDistance) {
-      //   handleReplyDetails();
-      // }
+  function handleTouchMove(e: React.TouchEvent<HTMLDivElement>) {
+    // calculate the distance the user swiped in the x-axis only
+    const touch = e.touches[0];
+    const startX = parseInt(e.currentTarget.dataset.startX || "0");
+    const deltaX = touch.clientX - startX;
+    e.currentTarget.dataset.deltaX = deltaX.toString();
+  }
+
+  function handleTouchEnd(e: React.TouchEvent<HTMLDivElement>) {
+    // get the distance the user swiped in the x-axis only
+    const deltaX = parseInt(e.currentTarget.dataset.deltaX || "0");
+    const distance = Math.abs(deltaX);
+    if (distance >= 150) {
+      handleReplyDetails();
     }
   }
+
   return (
     <ContextMenu>
       <ContextMenuTrigger>
@@ -63,8 +69,14 @@ export default function Message({ message, sender }: MessageProps) {
           className={`flex flex-col justify-center px-5 py-2 w-full rounded-2xl ${
             message.sender === sender ? "items-end" : "items-start"
           }`}
+          ref={ref}
         >
-          <div className="swipe-container" onTouchMove={handleSwipe}>
+          <div
+            className="swipe-container"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             {/* Reply from Left */}
             <div className={`action left px-5`}>
               <Reply size={"20px"} className="text-primary" />
@@ -84,8 +96,8 @@ export default function Message({ message, sender }: MessageProps) {
               <Reply size={"20px"} className="text-primary" />
             </div>
           </div>
-          <p className="font-bold text-accent1/50 text-[12px]">
-            {moment().calendar(message.timestamp)}
+          <p className="font-bold text-accent1/50 text-[12px] select-none">
+            {moment(message.timestamp).format("ddd hh:mm A")}
           </p>
         </div>
       </ContextMenuTrigger>

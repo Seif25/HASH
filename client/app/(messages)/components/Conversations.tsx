@@ -76,7 +76,7 @@ export default function Conversations({
   return (
     <div className="w-full">
       <div className="flex items-center justify-between px-5 w-full">
-        <h1 className="font-bold text-[20px] text-primary">Conversations</h1>
+        <h1 className="font-bold text-[20px] text-accent1">Conversations</h1>
         <NewConversation username={username} />
       </div>
       {conversations && (

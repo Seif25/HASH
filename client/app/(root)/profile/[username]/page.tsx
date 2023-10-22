@@ -1,6 +1,7 @@
 import ProfileInformation from "@/components/layouts/profile/ProfileInformation";
 import ProfileTabs from "@/components/layouts/profile/ProfileTabs";
 import { fetchUser } from "@/lib/actions/user.actions";
+import { currentUser } from "@clerk/nextjs/server";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -18,31 +19,40 @@ export async function generateMetadata(
 
   // fetch data
   const user = await fetchUser(username);
-  
-  if(!user) {
+
+  if (!user) {
     return {
-      title: "User not found"
-    }
+      title: "User not found",
+    };
   }
   return {
     title: `${user?.name} (@${username}) / Hash`,
   };
 }
 
-export default async function Profile({ params }: { params: { username: string } }) {
+export default async function Profile({
+  params,
+}: {
+  params: { username: string };
+}) {
   const user = await fetchUser(params.username);
+  const loggedUser = await currentUser();
 
   if (!user) {
-    notFound()
+    notFound();
   }
-  
+
   return (
     <div className="bg-accent2 bg-opacity-50 lg:rounded-lg">
       {user && (
         <>
           <ProfileInformation user={user} />
 
-          <ProfileTabs posts={user.hashes} likes={user.likes} currentUser={params.username} />
+          <ProfileTabs
+            posts={user.hashes}
+            likes={user.likes}
+            currentUser={loggedUser?.username ?? ""}
+          />
         </>
       )}
     </div>
