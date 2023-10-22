@@ -23,19 +23,34 @@ export default function ProfileTabs({
     <div className="lg:p-5">
       <Tabs defaultValue="Posts" className="w-full">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="Posts" className="w-full text-[12px] lg:text=[14px]">
+          <TabsTrigger
+            value="Posts"
+            className="w-full text-[12px] lg:text=[14px]"
+          >
             Posts
           </TabsTrigger>
-          <TabsTrigger value="Replies" className="w-full text-[12px] lg:text=[14px]">
+          <TabsTrigger
+            value="Replies"
+            className="w-full text-[12px] lg:text=[14px]"
+          >
             Replies
           </TabsTrigger>
-          <TabsTrigger value="Highlights" className="w-full text-[12px] lg:text=[14px]">
+          <TabsTrigger
+            value="Highlights"
+            className="w-full text-[12px] lg:text=[14px]"
+          >
             Highlights
           </TabsTrigger>
-          <TabsTrigger value="Media" className="w-full text-[12px] lg:text=[14px]">
+          <TabsTrigger
+            value="Media"
+            className="w-full text-[12px] lg:text=[14px]"
+          >
             Media
           </TabsTrigger>
-          <TabsTrigger value="Likes" className="w-full text-[12px] lg:text=[14px]">
+          <TabsTrigger
+            value="Likes"
+            className="w-full text-[12px] lg:text=[14px]"
+          >
             Likes
           </TabsTrigger>
         </TabsList>
@@ -69,7 +84,9 @@ export default function ProfileTabs({
         </TabsContent>
         <TabsContent value="Highlights">
           <div className="flex flex-col gap-5 items-center justify-center p-5">
-            <h3 className="text-[12px]">{"You Haven't Highlighted Any Post On Your Profile Yet!"}</h3>
+            <h3 className="text-[12px]">
+              {"You Haven't Highlighted Any Post On Your Profile Yet!"}
+            </h3>
           </div>
         </TabsContent>
         <TabsContent value="Media">

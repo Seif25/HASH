@@ -121,9 +121,7 @@ export default function HashInformation({
             {moment(hash.createdAt).format("hh:mm a")}
           </span>
           <span>• {moment(hash.createdAt).format("MMM D, YYYY")}</span>
-          <span>
-            • {hash.views} views
-          </span>
+          <span>• {hash.views} views</span>
         </div>
       )}
 
@@ -142,7 +140,11 @@ export default function HashInformation({
           parentAuthor={hash.author.username}
         />
         <div className="w-[5%] flex items-center justify-end gap-5">
-          <ShareMenu id={hash._id.toString()} authorId={currentUser} />
+          <ShareMenu
+            id={hash._id.toString()}
+            authorId={hash.author.username}
+            content={hash.text}
+          />
           {currentUser === hash.author.username ? (
             <AuthorMoreMenu
               hashId={hash._id.toString()}

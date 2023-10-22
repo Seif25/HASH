@@ -6,21 +6,30 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
+import EmojiPicker, {
+  EmojiClickData,
+  EmojiStyle,
+  Theme,
+} from "emoji-picker-react";
 import { getRecipient } from "@/lib/actions/user.actions";
 import supabase from "@/utils/supabase/supabase";
 import { ConversationsType } from "@/utils/types/messages.types";
 import {
   ArrowLeft,
   BadgeCheck,
+  ImageIcon,
   MoreVertical,
-  Phone,
-  PhoneMissed,
   Reply,
   SendHorizontal,
+  Smile,
   Video,
   X,
 } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
@@ -40,6 +49,14 @@ export default function ConversationWindow({
   const [conversation, setConversation] = useState<ConversationsType>();
   const [message, setMessage] = useState<string>("");
   const replySection = useRef<HTMLParagraphElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // scroll to the end of the messages section
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [conversation]);
 
   useEffect(() => {
     supabase
@@ -127,6 +144,10 @@ export default function ConversationWindow({
     if (replySection.current) {
       replySection.current.classList.add("hidden");
     }
+  };
+
+  const handleEmojiClick = (emoji: EmojiClickData) => {
+    setMessage(message + emoji.emoji);
   };
 
   return (
@@ -233,19 +254,28 @@ export default function ConversationWindow({
             </div>
           </div>
           {/* Messages */}
-          <div className="overflow-y-scroll custom-scrollbar h-[70vh] max-h-[70vh] lg:h-[75vh] lg:max-h-[75vh] bg-[#000a13] border-b border-accent1/10">
+          <div
+            id="messages-section"
+            className="overflow-y-scroll custom-scrollbar h-[70vh] max-h-[70vh] lg:h-[75vh] lg:max-h-[75vh] bg-[#000a13] border-b border-accent1/10"
+          >
             {conversation.messages?.map((message, index) => (
               <Message
                 key={`message-${index}`}
                 message={message}
                 sender={sender}
+                ref={
+                  index === conversation.messages.length - 1
+                    ? messagesEndRef
+                    : null
+                }
               />
             ))}
+            <div ref={messagesEndRef} />
           </div>
           {/* Reply Section */}
           <div
             id="reply-section"
-            className={`hidden w-full h-[10vh] lg:h-[8vh] bg-primary/10 text-accent1 px-5`}
+            className={`hidden fixed bottom-[65px] z-50 lg:z-0 lg:relative lg:bottom-0 w-full h-[15vh] lg:h-[8vh] bg-primary/10 text-accent1 px-5`}
             ref={replySection}
           >
             <div className="flex items-center justify-between">
@@ -263,10 +293,29 @@ export default function ConversationWindow({
           </div>
           {/* Message Text Area */}
           <div
-            className={`fixed bottom-[70px] z-50 bg-accent2 lg:bg-transparent lg:z-0 lg:relative lg:bottom-0 flex flex-col items-center justify-center gap-2 w-full h-[10vh] max-h-[10vh]`}
+            className={`fixed bottom-[70px] z-50 bg-accent2 lg:bg-transparent lg:z-0 lg:relative lg:bottom-0 flex flex-col items-center justify-center gap-2 w-full h-[8vh] lg:h-[10vh] max-h-[10vh]`}
           >
             <div className="w-full px-5">
               <div className="flex items-center justify-between px-3 gap-2 bg-accent3/10 w-full rounded-2xl">
+                <div className="flex items-center gap-2">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="text-accent1 hover:text-primary">
+                        <Smile size={"16px"} className="text-inherit" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 flex items-center justify-center bg-transparent border-none p-0">
+                      <EmojiPicker
+                        theme={Theme.DARK}
+                        emojiStyle={EmojiStyle.NATIVE}
+                        onEmojiClick={(emoji) => handleEmojiClick(emoji)}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <button className="text-accent1 hover:text-primary">
+                    <ImageIcon size={"16px"} className="text-inherit" />
+                  </button>
+                </div>
                 <textarea
                   name="message"
                   id="message"

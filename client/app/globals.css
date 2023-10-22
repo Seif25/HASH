@@ -271,7 +271,7 @@
 /* main element should always snap into view */
 .swipe-element {
   scroll-snap-align: start;
-  padding: 16px;
+  /* padding: 16px; */
 }
 /* actions and element should be 100% wide */
 .action,

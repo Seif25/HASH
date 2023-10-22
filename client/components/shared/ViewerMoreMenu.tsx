@@ -6,16 +6,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import BlockIcon from "@mui/icons-material/Block";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import FlagIcon from "@mui/icons-material/Flag";
-import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
-import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import PersonRemoveAlt1Icon from "@mui/icons-material/PersonRemoveAlt1";
 import { followUser } from "@/lib/actions/user.actions";
 import { usePathname } from "next/navigation";
-import { MoreVertical } from "lucide-react";
+import {
+  Ban,
+  Flag,
+  Frown,
+  MailQuestion,
+  MailX,
+  MoreVertical,
+  UserMinus2,
+  UserPlus2,
+  VolumeX,
+} from "lucide-react";
 
 function ViewerMoreMenu({
   author,
@@ -51,37 +54,40 @@ function ViewerMoreMenu({
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64 flex flex-col gap-2 p-2">
           <DropdownMenuItem>
-            <SentimentVeryDissatisfiedIcon className="mr-2 h-4 w-4" />
+            <Frown size={"20px"} className="mr-2" />
             <span className="">Not interested in this post</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleFollow}>
             {isFollowing ? (
-              <PersonRemoveAlt1Icon className="mr-2 h-4 w-4 text-primary" />
+              <UserMinus2 className="text-primary mr-2" size={"24px"} />
             ) : (
-              <PersonAddAlt1Icon className="mr-2 h-4 w-4" />
+              <UserPlus2
+                className="text-accent1 hover:text-primary mr-2"
+                size={"24px"}
+              />
             )}
             <span className="">
               {isFollowing ? "Unfollow" : "Follow"} @{author}
             </span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <VolumeOffIcon className="mr-2 h-4 w-4" />
+            <VolumeX size={"20px"} className="mr-2" />
             <span className="">Mute @{author}</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <VolumeOffIcon className="mr-2 h-4 w-4" />
+            <MailX size={"20px"} className="mr-2" />
             <span className="">Mute conversation</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <BlockIcon className="mr-2 h-4 w-4" />
+            <Ban size={"20px"} className="mr-2" />
             <span className="">Block @{author}</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <FlagIcon className="mr-2 h-4 w-4" />
+            <Flag size={"20px"} className="mr-2" />
             <span className="">Report post</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <CommentsDisabledIcon className="mr-2 h-4 w-4" />
+            <MailQuestion size={"20px"} className="mr-2" />
             <span className="">View hidden replies</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
