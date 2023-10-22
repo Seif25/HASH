@@ -256,3 +256,33 @@
 .carousel-item{
   @apply box-content flex grow items-center justify-self-center lg:mr-[100%] w-auto max-w-screen-sm h-full max-h-[36rem] rounded-lg object-contain
 }
+
+/* scroll snap takes care of restoring scroll position */
+.swipe-container {
+  display: flex;
+  overflow: auto;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+}
+/* scrollbar should be hidden */
+.swipe-container::-webkit-scrollbar {
+  display: none;
+}
+/* main element should always snap into view */
+.swipe-element {
+  scroll-snap-align: start;
+  padding: 16px;
+}
+/* actions and element should be 100% wide */
+.action,
+.swipe-element {
+  min-width: 100%;
+}
+.action {
+  display: flex;
+  align-items: center;
+}
+/* icon should remain sticky */
+.right {
+  justify-content: flex-end;
+}

@@ -1,13 +1,32 @@
 "use client";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import { getRecipient } from "@/lib/actions/user.actions";
 import supabase from "@/utils/supabase/supabase";
 import { ConversationsType } from "@/utils/types/messages.types";
-import { BadgeCheck, MessagesSquare, SendHorizontal } from "lucide-react";
+import {
+  ArrowLeft,
+  BadgeCheck,
+  MoreVertical,
+  Phone,
+  PhoneMissed,
+  Reply,
+  SendHorizontal,
+  Video,
+  X,
+} from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Message from "./Message";
+import PhoneCall from "./PhoneCall";
 
 export const revalidate = 0;
 
@@ -20,6 +39,7 @@ export default function ConversationWindow({
 }) {
   const [conversation, setConversation] = useState<ConversationsType>();
   const [message, setMessage] = useState<string>("");
+  const replySection = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     supabase
@@ -82,7 +102,7 @@ export default function ConversationWindow({
         timestamp: moment(),
       };
       let _data;
-      if(conversation.messages) {
+      if (conversation.messages) {
         _data = [...conversation.messages, newMessage];
       } else {
         _data = [newMessage];
@@ -103,12 +123,35 @@ export default function ConversationWindow({
     }
   }
 
+  const handleCloseReply = () => {
+    if (replySection.current) {
+      replySection.current.classList.add("hidden");
+    }
+  };
+
   return (
-    <div className="h-[90vh] max-h-[90vh] lg:h-screen lg:max-h-screen custom-scrollbar">
+    <div className="h-[90vh] max-h-[90vh] lg:h-full lg:min-h-screen lg:max-h-full custom-scrollbar">
       {conversation && (
         <div className="flex flex-col">
           {/* Recipient Information */}
           <div className="flex items-center justify-between border-b border-accent1/10 h-[10vh] max-h-[10vh] lg:h-[15vh] lg:max-h-[15vh]">
+            {/* Back Button */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link href={`/messages`} className="px-5">
+                    <ArrowLeft
+                      size={"20px"}
+                      className="text-accent1 hover:text-primary"
+                    />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent className="text-[12px] font-bold bg-accent2 border-none text-accent1">
+                  Conversations
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            {/* Recipient Information */}
             <Link href={`/profile/${conversation.recipient.username}`}>
               <div className="flex gap-2 items-center p-5">
                 <Image
@@ -133,55 +176,116 @@ export default function ConversationWindow({
                 </div>
               </div>
             </Link>
-            <Link href={`/messages`} className="px-5 lg:hidden">
-              <MessagesSquare size={"32px"} className="text-accent1" />
-            </Link>
+            {/* Phone, Video */}
+            <div className="flex items-center gap-5 px-5">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <PhoneCall />
+                  </TooltipTrigger>
+                  <TooltipContent className="text-[12px] font-bold bg-accent2 border-none text-accent1">
+                    {`Call @${conversation.recipient.username}`}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              {/* <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button id="leave">
+                      <PhoneMissed size={"20px"} className="text-red-500" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="text-[12px] font-bold bg-accent2 border-none text-accent1">
+                    {`Call @${conversation.recipient.username}`}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider> */}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button id="join-video-call">
+                      <Video
+                        size={"20px"}
+                        className="text-accent1 hover:text-primary"
+                      />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="text-[12px] font-bold bg-accent2 border-none text-accent1">
+                    {`Video Call @${conversation.recipient.username}`}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button>
+                      <MoreVertical
+                        size={"20px"}
+                        className="text-accent1 hover:text-primary"
+                      />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="text-[12px] font-bold bg-accent2 border-none text-accent1">
+                    {`More`}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </div>
           {/* Messages */}
           <div className="overflow-y-scroll custom-scrollbar h-[70vh] max-h-[70vh] lg:h-[75vh] lg:max-h-[75vh] bg-[#000a13] border-b border-accent1/10">
             {conversation.messages?.map((message, index) => (
-              <div
-                className={`flex flex-col justify-center px-5 py-2 w-full rounded-2xl ${
-                  message.sender === sender ? "items-end" : "items-start"
-                }`}
-              >
-                <div
-                  className={`${
-                    message.sender === sender
-                      ? "bg-primary rounded-l-2xl rounded-tr-2xl rounded-br-sm"
-                      : "bg-accent3/25 rounded-r-2xl rounded-tl-2xl rounded-bl-sm"
-                  } py-2 px-5 w-auto max-w-xs h-auto text-accent1`}
-                  key={`message-${index}`}
-                >
-                  <h3>{message.message}</h3>
-                </div>
-                <p className="font-bold text-accent1/50 text-[12px]">
-                  {moment().calendar(message.timestamp)}
-                </p>
-              </div>
+              <Message
+                key={`message-${index}`}
+                message={message}
+                sender={sender}
+              />
             ))}
           </div>
-          {/* Message Text Area */}
-          <div className="fixed bottom-[70px] z-50 bg-accent2 lg:bg-transparent lg:z-0 lg:relative lg:bottom-0 flex items-center justify-center w-full h-[10vh] max-h-[10vh]">
-            <div className="flex items-center justify-between px-3 gap-2 bg-accent3/10 w-[80%] rounded-2xl">
-              <textarea
-                name="message"
-                id="message"
-                rows={1}
-                onChange={handleMessageChange}
-                onKeyUp={handleAreaHeight}
-                onKeyDown={handleKeyDown}
-                placeholder="Send a new message"
-                value={message}
-                className="bg-transparent min-h-8 h-full w-full py-2 px-3 ring-0 focus:ring-0 outline-none resize-none whitespace-pre-wrap break-words overflow-auto custom-scrollbar"
-              />
-              <button
-                onClick={sendMessage}
-                disabled={message.length === 0}
-                className="text-primary disabled:text-accent1/50"
-              >
-                <SendHorizontal size={"16px"} className="text-inherit" />
+          {/* Reply Section */}
+          <div
+            id="reply-section"
+            className={`hidden w-full h-[10vh] lg:h-[8vh] bg-primary/10 text-accent1 px-5`}
+            ref={replySection}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Reply size={"16px"} className="text-primary" />
+                <h3 id="reply-recipient" className="font-bold text-[14px]">
+                  Replying to <span id="reply-to"></span>
+                </h3>
+              </div>
+              <button onClick={handleCloseReply}>
+                <X size={"16px"} className="text-accent1/10" />
               </button>
+            </div>
+            <h3 id="reply-message" className="w-full truncate"></h3>
+          </div>
+          {/* Message Text Area */}
+          <div
+            className={`fixed bottom-[70px] z-50 bg-accent2 lg:bg-transparent lg:z-0 lg:relative lg:bottom-0 flex flex-col items-center justify-center gap-2 w-full h-[10vh] max-h-[10vh]`}
+          >
+            <div className="w-full px-5">
+              <div className="flex items-center justify-between px-3 gap-2 bg-accent3/10 w-full rounded-2xl">
+                <textarea
+                  name="message"
+                  id="message"
+                  rows={1}
+                  onChange={handleMessageChange}
+                  onKeyUp={handleAreaHeight}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Send a new message"
+                  value={message}
+                  className="bg-transparent min-h-8 h-full w-full py-2 px-3 ring-0 focus:ring-0 outline-none resize-none whitespace-pre-wrap break-words overflow-auto custom-scrollbar"
+                />
+                <button
+                  onClick={sendMessage}
+                  disabled={message.length === 0}
+                  className="text-primary disabled:text-accent1/50"
+                >
+                  <SendHorizontal size={"16px"} className="text-inherit" />
+                </button>
+              </div>
             </div>
           </div>
         </div>

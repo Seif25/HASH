@@ -59,20 +59,25 @@ export default async function Conversation({
     });
   }
   return (
-    <div className="flex w-full bg-accent2 lg:rounded-xl mb-5">
-      {process.env.NODE_ENV === "development" && <p className="text-red-500">{error?.message}</p>}
-      <div className="hidden lg:flex lg:w-[30%] p-5 rounded-l-xl">
-        <Conversations
-          initialConversations={_chats ?? []}
-          selectedConversation={params.conversationId}
-          username={user?.username ?? ""}
-        />
-      </div>
-      <div className="w-full lg:w-[70%] lg:border-l border-accent1/10 lg:rounded-r-xl">
-        <ConversationWindow
-          id={params.conversationId}
-          sender={user?.username ?? ""}
-        />
+    <div className="mb-5">
+      <div className="flex w-full bg-accent2 h-full lg:rounded-xl pb-2">
+        {process.env.NODE_ENV === "development" && (
+          <p className="text-red-500">{error?.message}</p>
+        )}
+        <div className="hidden lg:flex lg:w-[30%] p-5 rounded-l-xl">
+          <Conversations
+            initialConversations={_chats ?? []}
+            selectedConversation={params.conversationId}
+            username={user?.username ?? ""}
+          />
+        </div>
+        <div className="w-full lg:w-[70%] h-full lg:border-l border-accent1/10 lg:rounded-r-xl">
+          <ConversationWindow
+            id={params.conversationId}
+            sender={user?.username ?? ""}
+          />
+          {/* <p id="phone-message">message:</p> */}
+        </div>
       </div>
     </div>
   );

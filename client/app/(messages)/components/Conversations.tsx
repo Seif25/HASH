@@ -13,7 +13,7 @@ import NewConversation from "./NewConversation";
 interface ConversationsProps {
   initialConversations: ConversationsType[];
   selectedConversation?: string;
-  username: string
+  username: string;
 }
 
 moment.updateLocale("en", {
@@ -40,7 +40,7 @@ export const revalidate = 0;
 export default function Conversations({
   initialConversations,
   selectedConversation = "",
-  username
+  username,
 }: ConversationsProps) {
   const [conversations, setConversations] =
     useState<ConversationsType[]>(initialConversations);
@@ -142,9 +142,7 @@ export default function Conversations({
               ))}
             </div>
           ) : (
-            <p className="p-5 text-[16px]">
-              {"No Conversations Yet!"}
-            </p>
+            <p className="p-5 text-[16px]">{"No Conversations Yet!"}</p>
           )}
         </>
       )}
