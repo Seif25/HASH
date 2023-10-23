@@ -2,20 +2,23 @@
 
 import { sidebarLinks, sidebarLinksLg } from "@/constants/index";
 import { SignOutButton, SignedIn } from "@clerk/nextjs";
-import Logout from "@mui/icons-material/Logout";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import PersonIcon from "@mui/icons-material/Person";
 import { LogOut, User2 } from "lucide-react";
+import { Badge } from "@mui/material";
+import { NotificationType } from "@/utils/types/notification.types";
 
 interface LeftSidebarContentProps {
   username: string;
   type: "left" | "bottom";
+  notifications: NotificationType[];
 }
 
 export default function LeftSidebarContent({
   username,
   type,
+  notifications,
 }: LeftSidebarContentProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -31,14 +34,41 @@ export default function LeftSidebarContent({
               pathname === link.route;
             return (
               <Link
-                href={link.route}
+                href={
+                  link.label === "Notifications"
+                    ? `/notifications/${username}`
+                    : link.route
+                }
                 key={link.label}
                 className={`${
                   isActive ? "left-sidebar-active-link" : "left-sidebar-link"
                 }`}
               >
-                {link.icon}
-                <p className="max-lg:hidden hidden group-hover:flex">{link.label}</p>
+                {link.label === "Notifications" ? (
+                  <>
+                    <Badge
+                      badgeContent={notifications.length}
+                      sx={{
+                        "& .MuiBadge-badge": {
+                          color: "#E6EBF0",
+                          backgroundColor: "red",
+                        },
+                      }}
+                    >
+                      {link.icon}
+                    </Badge>
+                    <p className="max-lg:hidden hidden group-hover:flex">
+                      {link.label}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    {link.icon}
+                    <p className="max-lg:hidden hidden group-hover:flex">
+                      {link.label}
+                    </p>
+                  </>
+                )}
               </Link>
             );
           })}
@@ -57,7 +87,7 @@ export default function LeftSidebarContent({
         </div>
       ) : (
         <div className="footer-container">
-          {sidebarLinks.slice(0,4).map((link) => {
+          {sidebarLinks.slice(0, 4).map((link) => {
             const isActive =
               (pathname.includes(link.route) && link.route.length > 1) ||
               pathname === link.route;
@@ -94,7 +124,9 @@ export default function LeftSidebarContent({
             <SignOutButton signOutCallback={() => router.push("sign-in")}>
               <div className="flex cursor-pointer gap-1 logout-link">
                 <LogOut />
-                <p className="text-accent1 max-lg:hidden hidden group-hover:flex">Logout</p>
+                <p className="text-accent1 max-lg:hidden hidden group-hover:flex">
+                  Logout
+                </p>
               </div>
             </SignOutButton>
           </SignedIn>

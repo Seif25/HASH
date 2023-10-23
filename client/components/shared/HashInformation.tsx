@@ -83,6 +83,7 @@ export default function HashInformation({
                     length={hash.media?.length ?? 0}
                     media={hash.media ?? []}
                     size="xs"
+                    author={hash.author.username}
                   />
                 </div>
                 <div
@@ -106,6 +107,7 @@ export default function HashInformation({
                     length={hash.media?.length ?? 0}
                     media={hash.media ?? []}
                     size="lg"
+                    author={hash.author.username}
                   />
                 </div>
               </>

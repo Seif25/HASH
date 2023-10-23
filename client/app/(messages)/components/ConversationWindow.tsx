@@ -155,7 +155,7 @@ export default function ConversationWindow({
       {conversation && (
         <div className="flex flex-col">
           {/* Recipient Information */}
-          <div className="flex items-center justify-between border-b border-accent1/10 h-[10vh] max-h-[10vh] lg:h-[15vh] lg:max-h-[15vh]">
+          <div className="fixed top-0 lg:relative bg-accent2 w-full flex items-center justify-between border-b border-accent1/10 h-[10vh] max-h-[10vh] lg:h-[15vh] lg:max-h-[15vh]">
             {/* Back Button */}
             <TooltipProvider>
               <Tooltip>
@@ -256,7 +256,7 @@ export default function ConversationWindow({
           {/* Messages */}
           <div
             id="messages-section"
-            className="overflow-y-scroll custom-scrollbar h-[70vh] max-h-[70vh] lg:h-[75vh] lg:max-h-[75vh] bg-[#000a13] border-b border-accent1/10"
+            className="overflow-y-scroll custom-scrollbar mt-[12vh] lg:mt-0 h-[75vh] max-h-[75vh] bg-[#000a13] border-b border-accent1/10"
           >
             {conversation.messages?.map((message, index) => (
               <Message

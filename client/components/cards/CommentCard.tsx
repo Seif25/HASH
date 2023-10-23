@@ -1,6 +1,6 @@
 // *ACTIONS
 import { getHash } from "@/lib/actions/hash.actions";
-import {  getUserInformation } from "@/lib/actions/user.actions";
+import { getUserInformation } from "@/lib/actions/user.actions";
 
 // *TYPES
 import { Hash } from "@/utils/types/hash.types";
@@ -11,7 +11,6 @@ import { checkReposted } from "@/utils/functions/hash.functions";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-
 // *COMPONENTS
 import CreateComment from "@/components/forms/CreateComment";
 import { User } from "@/utils/types/user.types";
@@ -19,7 +18,6 @@ import RepostedLabel from "../shared/RepostedLabel";
 import AuthorInformationSkeleton from "../skeletons/AuthorInformationSkeleton";
 import HashInformationSkeleton from "../skeletons/HashInformationSkeleton";
 import { notFound } from "next/navigation";
-
 
 const AuthorInformation = dynamic(() => import("../shared/AuthorInformation"), {
   ssr: false, // This ensures the component is only rendered on the client-side
@@ -75,7 +73,7 @@ export default async function CommentCard({
         {/* AUTHOR INFORMATION */}
         {dbUser !== null ? (
           <AuthorInformation
-            author={dbUser}
+            author={hash.author}
             createdAt={hash.createdAt}
             currentUser={dbUser.username ?? ""}
             hashId={hash._id.toString()}

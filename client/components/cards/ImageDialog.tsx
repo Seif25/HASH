@@ -24,6 +24,7 @@ interface ImageDialogProps {
   length: number;
   media: Media[];
   size?: "xs" | "lg";
+  author: string;
 }
 
 async function ImageDialog({
@@ -39,6 +40,7 @@ async function ImageDialog({
   length,
   media,
   size = "lg",
+  author,
 }: ImageDialogProps) {
   const user = await currentUser();
   const rounded = [
@@ -129,7 +131,7 @@ async function ImageDialog({
             viewCount={viewCount}
             repostCount={repostCount}
             currentUser={user?.username ?? ""}
-            parentAuthor=""
+            parentAuthor={author}
             hashId={id}
             liked={liked}
             image={user?.imageUrl ?? ""}
