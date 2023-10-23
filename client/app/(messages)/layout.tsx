@@ -3,7 +3,6 @@ import "../globals.css";
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import LeftSidebar from "@/components/shared/LeftSidebar";
-import RightSidebar from "@/components/shared/RightSidebar";
 import Footer from "@/components/shared/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 
@@ -30,7 +29,9 @@ export default async function MessagesLayout({
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </head>
         <body className={`${lato.className} app`}>
-          <Navbar />
+          <div className="hidden lg:flex">
+            <Navbar />
+          </div>
           <main className="flex flex-row w-full justify-between">
             <LeftSidebar />
             <section className="main lg:pl-5 pb-20 lg:pb-0">

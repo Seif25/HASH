@@ -16,12 +16,14 @@ import { abbreviateNumber } from "@/lib/utils";
 import { likeHash, unlikeHash } from "@/lib/actions/hash.actions";
 
 // *ICONS
-import { Heart } from "lucide-react"
+import { Heart } from "lucide-react";
+import { createNotification } from "@/lib/actions/notification.actions";
 interface LikeButtonProps {
   liked: boolean;
   hashId: string;
   currentUser: string;
   likeCount: number;
+  author: string;
 }
 
 export default function LikeButton({
@@ -29,6 +31,7 @@ export default function LikeButton({
   likeCount,
   hashId,
   currentUser,
+  author,
 }: LikeButtonProps) {
   // Get current pathname
   const pathname = usePathname();
@@ -41,6 +44,15 @@ export default function LikeButton({
       await unlikeHash({ id: hashId, currentUser, pathname });
     } else {
       await likeHash({ id: hashId, currentUser, pathname });
+      if (author !== currentUser) {
+        await createNotification({
+          user: author,
+          message: `@${currentUser} liked your post`,
+          type: "like",
+          link: `/hash/${hashId}`,
+          source: currentUser,
+        });
+      }
     }
   };
   return (

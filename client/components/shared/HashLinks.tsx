@@ -45,15 +45,31 @@ export default function HashLinks({
   reposted,
   parentAuthor,
 }: HashLinksProps) {
-
   return (
     <div className="flex items-center justify-between gap-5 w-[70%]">
       {/* Comment */}
-      <CommentButton commentCount={commentCount} currentUser={currentUser} parentId={hashId} image={image} parentAuthor={parentAuthor}/>
+      <CommentButton
+        commentCount={commentCount}
+        currentUser={currentUser}
+        parentId={hashId}
+        image={image}
+        parentAuthor={parentAuthor}
+      />
       {/* Re-post */}
-      <RepostButton repostCount={repostCount} hashId={hashId} currentUser={currentUser} reposted={reposted} />
+      <RepostButton
+        repostCount={repostCount}
+        hashId={hashId}
+        currentUser={currentUser}
+        reposted={reposted}
+      />
       {/* Like */}
-      <LikeButton liked={liked} likeCount={likeCount} hashId={hashId} currentUser={currentUser} />
+      <LikeButton
+        liked={liked}
+        likeCount={likeCount}
+        hashId={hashId}
+        currentUser={currentUser}
+        author={parentAuthor}
+      />
       {/* Views */}
       <div className="flex flex-row items-center gap-2">
         <TooltipProvider>

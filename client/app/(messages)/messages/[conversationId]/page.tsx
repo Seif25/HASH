@@ -60,7 +60,7 @@ export default async function Conversation({
   }
   return (
     <div className="mb-5">
-      <div className="flex w-full bg-accent2 h-full lg:rounded-xl pb-2">
+      <div className="flex w-full bg:transparent lg:bg-accent2 h-full lg:rounded-xl pb-2">
         {process.env.NODE_ENV === "development" && (
           <p className="text-red-500">{error?.message}</p>
         )}
