@@ -12,7 +12,7 @@ import { NotificationType } from "@/utils/types/notification.types";
 interface LeftSidebarContentProps {
   username: string;
   type: "left" | "bottom";
-  notifications: NotificationType[];
+  notifications?: NotificationType[];
 }
 
 export default function LeftSidebarContent({
