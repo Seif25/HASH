@@ -47,7 +47,7 @@ export default function LeftSidebarContent({
                 {link.label === "Notifications" ? (
                   <>
                     <Badge
-                      badgeContent={notifications.length}
+                      badgeContent={notifications?.length ?? 0}
                       sx={{
                         "& .MuiBadge-badge": {
                           color: "#E6EBF0",
