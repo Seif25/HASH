@@ -10,10 +10,6 @@ const Conversations = dynamic(
   () => import("@/app/(messages)/components/Conversations"),
   { ssr: false }
 );
-// const NewConversation = dynamic(
-//   () => import("@/app/(messages)/components/NewConversation"),
-//   { ssr: false }
-// );
 
 export const revalidate = 0;
 

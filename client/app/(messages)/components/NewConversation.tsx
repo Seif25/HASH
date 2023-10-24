@@ -46,13 +46,13 @@ export default async function NewConversation({
       .from("Chats")
       .select()
       .or(
-        `sender.in.(${username},${recipient}),recipient.in.(${username},${recipient})`
+        `sender.eq.${username}.and.recipient.eq.${recipient},sender.eq.${recipient}.and.recipient.eq.${username}`
       );
     if (existsError) {
-      console.log(existsError)
-      throw new Error(existsError.message)
-    } ;
-    if (exists) {
+      console.log(existsError);
+      throw new Error(existsError.message);
+    }
+    if (exists.length > 0) {
       router.push(`/messages/${exists[0].id}`);
     } else {
       const { data, error } = await supabase

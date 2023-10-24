@@ -98,7 +98,7 @@
 /* COMPONENT STYLES */
 
 .hash-card {
-  @apply flex flex-col gap-2 p-5 w-full bg-accent2 lg:rounded-lg;
+  @apply flex flex-col gap-2 p-5 w-full bg-accent2 lg:rounded-2xl;
 }
 
 .banner {

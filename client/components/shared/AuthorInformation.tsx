@@ -21,7 +21,6 @@ import UserHoverContent from "./UserHoverContent";
 // *UTILS
 import moment from "moment";
 
-
 // MODIFY MOMENT LOCALE -> fromNow()
 moment.updateLocale("en", {
   relativeTime: {

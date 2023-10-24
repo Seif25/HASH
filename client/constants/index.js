@@ -53,21 +53,21 @@ export const sidebarLinksLg = [
     route: "/messages",
     label: "Messages",
   },
-  {
-    icon: <Activity />,
-    route: "/activity",
-    label: "Activity",
-  },
+  // {
+  //   icon: <Activity />,
+  //   route: "/activity",
+  //   label: "Activity",
+  // },
   {
     icon: <Bookmark />,
     route: "/bookmarks",
     label: "Bookmarks",
   },
-  {
-    icon: <Users2 />,
-    route: "/communities",
-    label: "Communities",
-  },
+  // {
+  //   icon: <Users2 />,
+  //   route: "/communities",
+  //   label: "Communities",
+  // },
 ];
 
 export const profileTabs = [

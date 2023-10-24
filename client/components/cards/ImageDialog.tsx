@@ -5,10 +5,6 @@ import Image from "next/image";
 import HashLinks from "../shared/HashLinks";
 import ShareMenu from "../shared/ShareMenu";
 import { currentUser } from "@clerk/nextjs";
-import { EmblaCarousel } from "../shared/carousel/EmblaCarousel";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import dynamic from "next/dynamic";
 import { DaisyCarousel } from "../shared/carousel/DaisyCarousel";
 
 interface ImageDialogProps {
@@ -42,7 +38,6 @@ async function ImageDialog({
   size = "lg",
   author,
 }: ImageDialogProps) {
-  const user = await currentUser();
   const rounded = [
     ["rounded-lg"],
     ["rounded-l-lg", "rounded-r-lg"],
@@ -130,11 +125,11 @@ async function ImageDialog({
             likeCount={likeCount}
             viewCount={viewCount}
             repostCount={repostCount}
-            currentUser={user?.username ?? ""}
+            currentUser={currentUserId ?? ""}
             parentAuthor={author}
             hashId={id}
             liked={liked}
-            image={user?.imageUrl ?? ""}
+            image={"/assets/profile-pic.png" ?? ""} //TODO: CURRENT USER IMAGE
           />
           <div className="w-[10%] flex items-center justify-end">
             <ShareMenu
