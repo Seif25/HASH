@@ -134,7 +134,7 @@ export async function fetchHashes(
         path: "author",
         model: "User",
         foreignField: "username",
-        select: "_id id name username verified image bio following followers",
+        select: "name username verified image bio following followers",
       })
       .populate({
         path: "children",
@@ -143,9 +143,9 @@ export async function fetchHashes(
           model: "User",
           foreignField: "username",
           select:
-            "_id id name parentId image verified username bio following followers",
+            "name image verified username bio following followers",
         },
-      });
+      }).lean()
 
     let totalPageCount: number = 0;
     try {
