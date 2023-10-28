@@ -1,0 +1,288 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] */
+
+/* APP STYLES */
+
+.auth {
+  background: #101010;
+  /* background: #008e8b; */
+  color: #fff;
+}
+
+.app {
+  @apply bg-gradient-to-b from-[#070f16] via-[#000a13] to-black text-accent1 lg:pr-10;
+}
+
+.main {
+  @apply flex min-h-screen flex-1 flex-col items-center;
+}
+
+/* NAVIGATION STYLES */
+
+.navbar {
+  @apply z-30 w-full h-24 px-5 lg:px-0 my-0 flex items-center justify-between p-5 bg-[#13161a] bg-opacity-0;
+}
+
+.left-sidebar {
+  @apply sticky left-0 top-0 z-20 flex h-screen w-[15%] hover:w-[20%] flex-col hover:items-start items-center justify-between overflow-auto py-5 pr-5 max-md:hidden bg-[#13161a] bg-opacity-0;
+}
+
+.right-sidebar-component {
+  @apply sticky right-0 top-0 z-20 flex h-screen w-[20%] flex-col gap-5 overflow-auto rounded-2xl max-xl:hidden pb-5;
+}
+
+.right-sidebar {
+  @apply z-20 flex h-full w-full flex-col justify-between gap-12 overflow-auto rounded-2xl p-5 max-xl:hidden bg-[#13161a] bg-opacity-100;
+}
+
+.left-sidebar-link {
+  @apply relative flex justify-start items-center gap-4 rounded-full p-4 text-white;
+}
+
+.left-sidebar-active-link {
+  @apply relative flex justify-start gap-4 rounded-full p-4 text-primary font-bold;
+}
+
+.left-sidebar-link:hover {
+  @apply bg-primary bg-opacity-10;
+}
+
+.logout-link {
+  @apply relative flex justify-start items-center gap-4 rounded-full p-4 text-white;
+}
+.logout-link:hover {
+  @apply bg-red-600 bg-opacity-10;
+}
+
+.footer {
+  @apply fixed bottom-0 w-full bg-accent2 p-2 backdrop-blur-md xs:px-7 md:hidden;
+}
+
+.footer-container {
+  @apply flex items-center justify-between gap-3 xs:gap-5;
+}
+
+.footer-link {
+  @apply relative flex flex-col items-center gap-2 rounded-full p-2 sm:flex-1 sm:px-2 sm:py-2.5 text-accent1;
+}
+
+.footer-active-link {
+  @apply relative flex flex-col items-center gap-2 rounded-full p-2 sm:flex-1 sm:px-2 sm:py-2.5 bg-accent2 font-bold;
+}
+
+.footer-link:hover {
+  @apply bg-accent2 bg-opacity-10;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #09090a;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #6a8181;
+  border-radius: 50px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #345b91;
+}
+
+/* COMPONENT STYLES */
+
+.hash-card {
+  @apply flex flex-col gap-2 p-5 w-full bg-accent2 lg:rounded-2xl;
+}
+
+.banner {
+  background-image: url("/assets/utopia-banner.png");
+  background-size: cover;
+  width: "100%";
+  height: auto;
+}
+
+.textarea {
+  border: none;
+  overflow: auto;
+  outline: none;
+  position: relative;
+  background: rgb(19 22 26);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+
+  resize: none; /*remove the resize handle on the bottom right*/
+}
+
+/* .textarea::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10px;
+  width: 25px;
+  height: 15px;
+  background-color: red;
+  z-index: 1;
+} */
+
+.bubble {
+  height: 100%;
+  width: 100%;
+  background: rgb(19 22 26);
+  position: relative;
+  padding: 10px;
+}
+.bubble:before {
+  content: "";
+  position: absolute;
+  top: -3%;
+  left: -11px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  transform: rotate(135deg) translate(-50%);
+  border-right: 10px solid rgb(19 22 26);
+}
+.bubble-foc {
+  height: 100%;
+  width: 100%;
+  background: rgb(19 22 26);
+  position: relative;
+  padding: 10px;
+}
+.bubble-foc::before {
+  content: "";
+  position: absolute;
+  top: -1.25%;
+  left: -11px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  transform: rotate(135deg) translate(-50%);
+  border-right: 10px solid rgb(19 22 26);
+}
+
+.btn {
+  @apply rounded-full p-2 bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb];
+}
+
+.follow-btn{
+  @apply rounded-full text-[14px] p-1 w-20 bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] hover:bg-opacity-50
+}
+
+.hash-text-wrap {
+  @apply flex flex-wrap whitespace-pre-wrap;
+}
+.embla {
+  --slide-spacing: 5rem;
+  --slide-size: 100%;
+  --slide-height: 19rem;
+  @apply lg:p-[1.6rem] py-[1.6rem] px-0;
+}
+.embla__viewport {
+  overflow: hidden;
+}
+.embla__container {
+  backface-visibility: hidden;
+  display: flex;
+  touch-action: pan-y;
+  margin-left: calc(var(--slide-spacing) * -1);
+}
+.embla__slide {
+  flex: 0 0 var(--slide-size);
+  min-width: 0;
+  /* padding-left: var(--slide-spacing); */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.embla__slide__img {
+  @apply max-w-screen-xs lg:max-w-screen-md w-auto h-[600px] max-h-[600px] object-contain rounded-lg flex items-center justify-center relative;
+}
+.embla__slide__img img {
+  border-radius: 8px;
+}
+.embla__button {
+  -webkit-appearance: none;
+  background-color: transparent;
+  touch-action: manipulation;
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.embla__buttons {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1.6rem;
+}
+.embla__button {
+  z-index: 1;
+  color: var(--background-site);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 4rem;
+  height: 4rem;
+}
+.embla__button:disabled {
+  opacity: 0.3;
+}
+.embla__button__svg {
+  width: 65%;
+  height: 65%;
+}
+
+.icons {
+  @apply bg-white hover:bg-primary;
+}
+
+.carousel-item{
+  @apply box-content flex grow items-center justify-self-center lg:mr-[100%] w-auto max-w-screen-sm h-full max-h-[36rem] rounded-lg object-contain
+}
+
+/* scroll snap takes care of restoring scroll position */
+.swipe-container {
+  display: flex;
+  overflow: auto;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+}
+/* scrollbar should be hidden */
+.swipe-container::-webkit-scrollbar {
+  display: none;
+}
+/* main element should always snap into view */
+.swipe-element {
+  scroll-snap-align: start;
+  /* padding: 16px; */
+}
+/* actions and element should be 100% wide */
+.action,
+.swipe-element {
+  min-width: 100%;
+}
+.action {
+  display: flex;
+  align-items: center;
+}
+/* icon should remain sticky */
+.right {
+  justify-content: flex-end;
+}

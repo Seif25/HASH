@@ -16,160 +16,41 @@ module.exports = {
       },
     },
     fontSize: {
-      "heading1-bold": [
+      "title": [
+        "54px",
+        {
+          lineHeight: "140%",
+          fontWeight: "700",
+        }
+      ],
+      "title-sm": [
         "36px",
         {
           lineHeight: "140%",
           fontWeight: "700",
-        },
+        }
       ],
-      "heading1-semibold": [
-        "36px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
-      "heading2-bold": [
-        "30px",
+      "heading": [
+        "16px",
         {
           lineHeight: "140%",
           fontWeight: "700",
         },
       ],
-      "heading2-semibold": [
-        "30px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
-      "heading3-bold": [
-        "24px",
-        {
-          lineHeight: "140%",
-          fontWeight: "700",
-        },
-      ],
-      "heading4-medium": [
-        "20px",
-        {
-          lineHeight: "140%",
-          fontWeight: "500",
-        },
-      ],
-      "body-bold": [
-        "18px",
-        {
-          lineHeight: "140%",
-          fontWeight: "700",
-        },
-      ],
-      "body-semibold": [
-        "18px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
-      "body-medium": [
-        "18px",
-        {
-          lineHeight: "140%",
-          fontWeight: "500",
-        },
-      ],
-      "body-normal": [
-        "18px",
-        {
-          lineHeight: "140%",
-          fontWeight: "400",
-        },
-      ],
-      "body1-bold": [
-        "18px",
-        {
-          lineHeight: "140%",
-          fontWeight: "700",
-        },
-      ],
-      "base-regular": [
-        "16px",
-        {
-          lineHeight: "140%",
-          fontWeight: "400",
-        },
-      ],
-      "base-medium": [
-        "16px",
-        {
-          lineHeight: "140%",
-          fontWeight: "500",
-        },
-      ],
-      "base-semibold": [
-        "16px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
-      "base1-semibold": [
-        "16px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
-      "small-regular": [
+      "body": [
         "14px",
         {
           lineHeight: "140%",
           fontWeight: "400",
         },
       ],
-      "small-medium": [
+      "paragraph": [
         "14px",
         {
           lineHeight: "140%",
-          fontWeight: "500",
+          fontWeight: "700",
         },
-      ],
-      "small-semibold": [
-        "14px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
-      "subtle-medium": [
-        "12px",
-        {
-          lineHeight: "16px",
-          fontWeight: "500",
-        },
-      ],
-      "subtle-semibold": [
-        "12px",
-        {
-          lineHeight: "16px",
-          fontWeight: "600",
-        },
-      ],
-      "tiny-medium": [
-        "10px",
-        {
-          lineHeight: "140%",
-          fontWeight: "500",
-        },
-      ],
-      "x-small-semibold": [
-        "7px",
-        {
-          lineHeight: "9.318px",
-          fontWeight: "600",
-        },
-      ],
+      ]
     },
     extend: {
       colors: {
@@ -177,20 +58,10 @@ module.exports = {
         "accent1": "#E6EBF0",
         "accent2": "#13161a",
         "accent3": "#0671cb",
+        "dark": "#070f16",
         "logout-btn": "#FF5A5A",
         "navbar-menu": "rgba(240, 245, 255, 0.6)",
-        "dark-1": "#000000",
-        "light-1": "#FFFFFF",
-        "light-2": "#EFEFEF",
-        "light-3": "#7878A3",
         glassmorphism: "rgba(240, 245, 255, 0.60)",
-      },
-      boxShadow: {
-        "count-badge": "0px 0px 6px 2px rgba(219, 188, 159, 0.30)",
-        "groups-sidebar": "-30px 0px 60px 0px rgba(28, 28, 31, 0.50)",
-      },
-      screens: {
-        xs: "400px",
       },
       keyframes: {
         "accordion-down": {

@@ -22,7 +22,7 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/Links.js", "app/components/home/MediaCard.jsx"],
   "exclude": ["node_modules"],
   "resolve": {
     "alias": {

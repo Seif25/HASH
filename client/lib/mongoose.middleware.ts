@@ -13,7 +13,7 @@ export const initializeMongoConnection = async () => {
   if (isConnected) return;
 
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    const connection = await mongoose.connect(process.env.MONGO_URI);
 
     isConnected = true;
 

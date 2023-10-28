@@ -1,46 +1,52 @@
-import Navbar from "@/components/shared/Navbar";
-import "../globals.css";
+import Navbar from "../components/navigation/Navbar";
+import RightSidebar from "../components/navigation/RightSidebar";
 import type { Metadata } from "next";
-import { Lato } from "next/font/google";
-import LeftSidebar from "@/components/shared/LeftSidebar";
-import RightSidebar from "@/components/shared/RightSidebar";
-import Footer from "@/components/shared/Footer";
-import { ClerkProvider } from "@clerk/nextjs";
-
-const lato = Lato({
-  weight: ["300", "400", "700", "900"],
-  style: ["italic", "normal"],
-  subsets: ["latin"],
-});
+import LeftSidebar from "../components/navigation/LeftSidebar";
+import { Suspense } from "react";
+import LeftSidebarSkeleton from "../components/navigation/LeftSidebarSkeleton";
 
 export const metadata: Metadata = {
-  title: "Hash",
-  description: "An app for sharing your thoughts with the world.",
+  title: "/ Hash",
+  description:
+    "From breaking news and entertainment to sports and politics, get the full story with all the live commentary.",
+  appleWebApp: true,
+  applicationName: "Hash",
+  creator: "Seif Ahmed",
+  publisher: "Vercel",
 };
 
-export default async function RootLayout({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const dummy = {
+    username: "dummy",
+    image: "/assets/profile-pic.png",
+    name: "Lord Dummy",
+    following: [],
+    followers: [],
+    verified: true,
+    bio: "I'm a dummy account.",
+    location: "Dummyville, Dummyland",
+    website: "https://dummy.com",
+    createdAt: Date.now().toString(),
+  };
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-        </head>
-        <body className={`${lato.className} app`}>
-          <Navbar />
-          <main className="flex flex-row w-full justify-between">
-            <LeftSidebar />
-            <section className="main lg:px-5 pb-20 lg:pb-0">
-              <div className="w-full max-w-4xl">{children}</div>
-            </section>
-            <RightSidebar />
-          </main>
-          <Footer />
-        </body>
-      </html>
-    </ClerkProvider>
+    // TODO: Bottom Navigation
+    <div>
+      <Navbar loggedUser={dummy} />
+      <section className="app">
+        <main className="flex flex-row w-full justify-between">
+          <Suspense fallback={<LeftSidebarSkeleton />}>
+            <LeftSidebar username={dummy.username} />
+          </Suspense>
+          <section className="main">
+            <div className="w-full max-w-4xl">{children}</div>
+          </section>
+          <RightSidebar />
+        </main>
+      </section>
+    </div>
   );
 }
