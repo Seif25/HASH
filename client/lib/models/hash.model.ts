@@ -56,6 +56,11 @@ const hashSchema = new mongoose.Schema({
       default: [],
     },
   ],
+  restriction: {
+    type: String,
+    enum: ["everyone", "followers only", "followed by me"],
+    default: "everyone",
+  },
 });
 
 const Hash = mongoose.models.Hash || mongoose.model("Hash", hashSchema);

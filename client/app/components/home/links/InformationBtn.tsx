@@ -14,6 +14,7 @@ import {
 import { SummarizedUserType } from "@/lib/types/user.types";
 import ViewerMoreInformation from "./information/ViewerMoreInformation";
 import AuthorMoreInformation from "./information/AuthorMoreInformation";
+import { useState } from "react";
 
 interface InformationBtnProps {
   loggedInUser: string;
@@ -21,6 +22,7 @@ interface InformationBtnProps {
   hashId: string;
   pinned: boolean;
   highlighted: boolean;
+  restriction: "everyone" | "followers only" | "followed by me";
 }
 
 export default function InformationBtn({
@@ -29,21 +31,23 @@ export default function InformationBtn({
   hashId,
   pinned,
   highlighted,
+  restriction,
 }: InformationBtnProps) {
+  const [open, setOpen] = useState<boolean>(false);
   return (
     <TooltipProvider>
       <Tooltip>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="group flex items-center gap-1">
+        <DropdownMenu open={open} onOpenChange={setOpen}>
+          <div className="group flex items-center gap-1">
+            <DropdownMenuTrigger>
               <TooltipTrigger>
                 <MoreVertical
                   size={"24px"}
                   className="text-accent1 group-hover:text-primary"
                 />
               </TooltipTrigger>
-            </div>
-          </DropdownMenuTrigger>
+            </DropdownMenuTrigger>
+          </div>
           {loggedInUser !== hashAuthor.username ? (
             <ViewerMoreInformation
               loggedInUser={loggedInUser}
@@ -54,6 +58,8 @@ export default function InformationBtn({
               hashId={hashId}
               pinned={pinned}
               highlighted={highlighted}
+              restriction={restriction}
+              closeDropdown={setOpen}
             />
           )}
         </DropdownMenu>

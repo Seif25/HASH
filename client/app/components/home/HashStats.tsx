@@ -21,6 +21,7 @@ interface HashStatsProps {
   pinned: boolean;
   highlighted: boolean;
   bookmarked: boolean;
+  restriction: "everyone" | "followers only" | "followed by me";
 }
 
 export default function HashStats({
@@ -37,6 +38,7 @@ export default function HashStats({
   pinned,
   highlighted,
   bookmarked,
+  restriction,
 }: HashStatsProps) {
   return (
     <div className="flex items-center justify-between w-full">
@@ -69,6 +71,7 @@ export default function HashStats({
           hashId={hashId}
           pinned={pinned}
           highlighted={highlighted}
+          restriction={restriction}
         />
       </div>
     </div>

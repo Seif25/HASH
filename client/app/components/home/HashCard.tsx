@@ -115,6 +115,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
         pinned={hash.pinned}
         highlighted={hash.highlighted}
         bookmarked={bookmarked}
+        restriction={hash.restriction ?? ""}
       />
     </div>
   );

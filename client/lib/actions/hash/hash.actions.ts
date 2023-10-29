@@ -213,3 +213,24 @@ export async function unBookmarkHashAction({
 
   revalidatePath(pathname);
 }
+
+export async function changeRestrictionAction({
+  hashId,
+  restriction,
+  pathname,
+}: {
+  hashId: string;
+  restriction: string;
+  pathname: string;
+}) {
+  HashModel.findByIdAndUpdate({ _id: hashId }, { restriction })
+    .then(() => {
+      console.log("HASH Restriction Changed Successfully");
+    })
+    .catch((error: MongooseError) => {
+      console.error(error.name + ": " + error.message);
+      throw new Error(error.message);
+    });
+
+  revalidatePath(pathname);
+}
