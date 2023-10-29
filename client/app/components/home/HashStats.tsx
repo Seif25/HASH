@@ -5,8 +5,10 @@ import LikeBtn from "./links/LikeBtn";
 import RepostBtn from "./links/RepostBtn";
 import ShareBtn from "./links/ShareBtn";
 import Views from "./links/Views";
+import { SummarizedUserType } from "@/lib/types/user.types";
 
 interface HashStatsProps {
+  hashId: string;
   commentCount: number;
   likeCount: number;
   repostCount: number;
@@ -14,17 +16,15 @@ interface HashStatsProps {
   loggedInUser: string;
   hashMedia: MediaType[];
   hashText: string;
-  hashAuthor: AuthorType;
+  hashAuthor: SummarizedUserType;
+  hashLikes: string[];
+  pinned: boolean;
+  highlighted: boolean;
+  bookmarked: boolean;
 }
 
-type AuthorType = {
-  name: string;
-  username: string;
-  image: string;
-  verified: boolean;
-};
-
 export default function HashStats({
+  hashId,
   commentCount,
   likeCount,
   repostCount,
@@ -33,6 +33,10 @@ export default function HashStats({
   hashMedia,
   hashText,
   hashAuthor,
+  hashLikes,
+  pinned,
+  highlighted,
+  bookmarked,
 }: HashStatsProps) {
   return (
     <div className="flex items-center justify-between w-full">
@@ -44,13 +48,28 @@ export default function HashStats({
           hashText={hashText}
           commenter={loggedInUser}
         />
-        <LikeBtn count={likeCount} />
+        <LikeBtn
+          count={likeCount}
+          loggedInUser={loggedInUser}
+          likes={hashLikes}
+        />
         <RepostBtn count={repostCount} />
         <Views count={viewCount} />
       </div>
       <div className="flex items-center justify-evenly w-[20%]">
-        <ShareBtn />
-        <InformationBtn />
+        <ShareBtn
+          hashId={hashId}
+          author={hashAuthor.username}
+          hashText={hashText}
+          bookmarked={bookmarked}
+        />
+        <InformationBtn
+          loggedInUser={loggedInUser}
+          hashAuthor={hashAuthor}
+          hashId={hashId}
+          pinned={pinned}
+          highlighted={highlighted}
+        />
       </div>
     </div>
   );

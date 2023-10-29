@@ -1,89 +1,215 @@
-"use server"
+"use server";
 
+import Hash from "@/app/(root)/page";
 import clientPromise from "@/lib/database/mongodb";
-import { Document, WithId } from "mongodb";
 import HashModel from "@/lib/models/hash.model";
+import UserModel from "@/lib/models/user.model";
+import {
+  CreateHashParams,
+  DeleteHashParams,
+} from "@/lib/types/hash.actions.types";
+import { MediaType } from "@/lib/types/hash.types";
+import { MongooseError } from "mongoose";
+import { revalidatePath } from "next/cache";
 
-export async function fetchHashesAction<T extends Document | WithId<Document>>(
-    pageNumber: number = 1,
-    pageSize: number = 10,
-    user: string = ""
-): Promise<{ hashes: T[], isNext: boolean} | null> {
-    const client = await clientPromise
+/**
+ * CREATE HASH ACTION
+ * @param { author, text, media, pathname }: CreateHashParams
+ * @returns void
+ * @throws MongooseError
+ */
+export async function createHashAction({
+  author,
+  text,
+  media,
+  pathname,
+}: CreateHashParams) {
+  HashModel.create({
+    author,
+    text,
+    media,
+    community: null,
+  })
+    .then(() => {
+      console.log("New HASH Created Successfully");
+    })
+    .catch((error: MongooseError) => {
+      console.error(error.name + ": " + error.message);
+      throw new Error(error.message);
+    });
 
-      // Populate the author field.
-  const pipeline = [
-    {
-        $lookup: {
-          from: 'users',
-          localField: 'author',
-          foreignField: 'username',
-          as: 'author',
-        },
-      },
-      {
-        $lookup: {
-          from: 'hashes',
-          localField: 'children',
-          foreignField: '_id',
-          as: 'children',
-        },
-      },
-      {
-        $project: {
-          author: {
-            username: 1,
-            name: 1,
-            image: 1,
-            verified: 1,
-            following: 1,
-            followers: 1,
-          },
-          children: {
-            // Populate the author field in the children documents.
-            $lookup: {
-              from: 'users',
-              localField: 'author',
-              foreignField: 'username',
-              as: 'author',
-            },
-            $project: {
-                author: {
-                  username: 1,
-                  name: 1,
-                  image: 1,
-                  verified: 1,
-                  following: 1,
-                  followers: 1,
-                },
-            }
-          },
-        },
-      },
-    ]
+  revalidatePath(pathname);
+}
 
-    const collection = client.db('test').collection('hashes')
-    collection.aggregate(pipeline)
+/**
+ * DELETE HASH ACTION
+ * @param { hashId, pathname }: DeleteHashParams
+ * @returns void
+ * @throws MongooseError
+ */
+export async function deleteHashAction({ hashId, pathname }: DeleteHashParams) {
+  HashModel.findByIdAndDelete({ _id: hashId })
+    .then(() => {
+      console.log("HASH Deleted Successfully");
+    })
+    .catch((error: MongooseError) => {
+      console.error(error.name + ": " + error.message);
+      throw new Error(error.message);
+    });
 
-    // Query Options
-    const skip = (pageNumber - 1) * pageSize
-    const limit = pageSize
+  revalidatePath(pathname);
+}
 
-    const query = {
-        parentId: { $in: [null, undefined] },
-        // author: { $neq: user }
-    }
+/**
+ * PIN HASH ACTION
+ * @param { hashId, pathname }: { hashId: string, pathname: string }
+ * @returns void
+ * @throws MongooseError
+ */
+export async function pinHashAction({
+  hashId,
+  pathname,
+}: {
+  hashId: string;
+  pathname: string;
+}) {
+  HashModel.findByIdAndUpdate({ _id: hashId }, { pinned: true })
+    .then(() => {
+      console.log("HASH Pinned Successfully");
+    })
+    .catch((error: MongooseError) => {
+      console.error(error.name + ": " + error.message);
+      throw new Error(error.message);
+    });
 
-  const results = await collection.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).toArray()
-  const JsonResults = JSON.parse(JSON.stringify(results))
-  console.log(JsonResults)
+  revalidatePath(pathname);
+}
 
-    if (results) {
-        return {
-            hashes: JsonResults as T[],
-            isNext: false
-        }
-    } else {
-        return null
-    }
+/**
+ * UNPIN HASH ACTION
+ * @param { hashId, pathname }: { hashId: string, pathname: string }
+ * @returns void
+ * @throws MongooseError
+ */
+export async function unpinHashAction({
+  hashId,
+  pathname,
+}: {
+  hashId: string;
+  pathname: string;
+}) {
+  HashModel.findByIdAndUpdate({ _id: hashId }, { pinned: false })
+    .then(() => {
+      console.log("HASH Unpinned Successfully");
+    })
+    .catch((error: MongooseError) => {
+      console.error(error.name + ": " + error.message);
+      throw new Error(error.message);
+    });
+
+  revalidatePath(pathname);
+}
+
+/**
+ * HIGHLIGHT HASH ACTION
+ * @param { hashId, pathname }: { hashId: string, pathname: string }
+ * @returns void
+ * @throws MongooseError
+ */
+export async function highlightHashAction({
+  hashId,
+  pathname,
+}: {
+  hashId: string;
+  pathname: string;
+}) {
+  HashModel.findByIdAndUpdate({ _id: hashId }, { highlighted: true })
+    .then(() => {
+      console.log("HASH Highlighted Successfully");
+    })
+    .catch((error: MongooseError) => {
+      console.error(error.name + ": " + error.message);
+      throw new Error(error.message);
+    });
+
+  revalidatePath(pathname);
+}
+
+/**
+ * UNHIGHLIGHT HASH ACTION
+ * @param { hashId, pathname }: { hashId: string, pathname: string }
+ * @returns void
+ * @throws MongooseError
+ */
+export async function unhighlightHashAction({
+  hashId,
+  pathname,
+}: {
+  hashId: string;
+  pathname: string;
+}) {
+  HashModel.findByIdAndUpdate({ _id: hashId }, { highlighted: false })
+    .then(() => {
+      console.log("HASH Unhighlighted Successfully");
+    })
+    .catch((error: MongooseError) => {
+      console.error(error.name + ": " + error.message);
+      throw new Error(error.message);
+    });
+
+  revalidatePath(pathname);
+}
+
+/**
+ * BOOKMARK HASH ACTION
+ */
+export async function bookmarkHashAction({
+  hashId,
+  username,
+  pathname,
+}: {
+  hashId: string;
+  username: string;
+  pathname: string;
+}) {
+  HashModel.findByIdAndUpdate(
+    { _id: hashId },
+    { $push: { bookmarkedBy: username } }
+  )
+    .then(() => {
+      console.log("HASH Bookmarked Successfully");
+    })
+    .catch((error: MongooseError) => {
+      console.error(error.name + ": " + error.message);
+      throw new Error(error.message);
+    });
+
+  revalidatePath(pathname);
+}
+
+/**
+ * UNBOOKMARK HASH ACTION
+ */
+export async function unBookmarkHashAction({
+  hashId,
+  username,
+  pathname,
+}: {
+  hashId: string;
+  username: string;
+  pathname: string;
+}) {
+  HashModel.findByIdAndUpdate(
+    { _id: hashId },
+    { $pull: { bookmarkedBy: username } }
+  )
+    .then(() => {
+      console.log("HASH UnBookmarked Successfully");
+    })
+    .catch((error: MongooseError) => {
+      console.error(error.name + ": " + error.message);
+      throw new Error(error.message);
+    });
+
+  revalidatePath(pathname);
 }

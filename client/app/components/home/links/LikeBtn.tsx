@@ -5,21 +5,77 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+//@ts-ignore
+import mojs from "@mojs/core";
+import { useEffect, useRef, useState } from "react";
 
 interface LikeBtnProps {
   count: number;
+  loggedInUser: string;
+  likes: string[];
 }
 
-export default function LikeBtn({ count }: LikeBtnProps) {
+export default function LikeBtn({ count, loggedInUser, likes }: LikeBtnProps) {
+  const parentDom = useRef<HTMLDivElement>(null);
+  const burstAnimation = useRef(null);
+  const iconRef = useRef<SVGSVGElement>(null);
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    const found = likes.find((like) => like === loggedInUser);
+    setLiked(found ? true : false);
+  }, [loggedInUser, likes]);
+
+  useEffect(() => {
+    if (burstAnimation.current) return;
+
+    burstAnimation.current = new mojs.Burst({
+      parent: parentDom.current,
+      radius: { 0: 100 },
+      count: 10,
+      easing: "ease.in-out",
+      isShowStart: true,
+      children: {
+        fill: { "#1991fe": "#ef4444" },
+      },
+    });
+  }, []);
+
+  const handleLike = (e: { pageX: any; pageY: any }) => {
+    if (burstAnimation.current) {
+      const parentRect = parentDom.current?.getBoundingClientRect();
+      const heartRect = iconRef.current?.getBoundingClientRect();
+      const screenSize = window.innerWidth;
+      if (parentRect && heartRect) {
+        const x = heartRect.left - parentRect.left + heartRect.width / 2;
+        const y = heartRect.top - parentRect.top + heartRect.height / 2;
+        if (screenSize <= 480) {
+          (burstAnimation.current as mojs.Burst)
+            .tune({ x: x - 80, y: y - 120 })
+            .replay();
+        } else {
+          (burstAnimation.current as mojs.Burst)
+            .tune({ x: x - 200, y: y - 20 })
+            .replay();
+        }
+      }
+    }
+  };
+
   return (
     <TooltipProvider>
       <Tooltip>
         <div className="group flex items-center gap-1">
           <TooltipTrigger>
-            <Heart
-              size={"24px"}
-              className="text-accent1 group-hover:text-red-500"
-            />
+            <div ref={parentDom} onClick={handleLike}>
+              <Heart
+                size={"24px"}
+                className={`group-hover:text-red-500 ${
+                  liked ? "text-red-700" : "text-accent1"
+                }`}
+                ref={iconRef}
+              />
+            </div>
           </TooltipTrigger>
           <span className="text-accent1/50 text-paragraph select-none">
             {count}

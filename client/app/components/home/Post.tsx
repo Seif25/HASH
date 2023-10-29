@@ -1,9 +1,11 @@
 "use client";
 
-import { ImageIcon, SendHorizontal, Smile } from "lucide-react";
+import { ImageIcon, Loader2, SendHorizontal, Smile } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import EmojiBtn from "../shared/triggers/EmojiBtn";
+import { createHashAction } from "@/lib/actions/hash/hash.actions";
+import { usePathname } from "next/navigation";
 
 interface PostProps {
   loggedInUser: string;
@@ -12,19 +14,25 @@ interface PostProps {
 
 export default function Post({ loggedInUser, profilePic }: PostProps) {
   const [text, setText] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const pathname = usePathname();
 
   const handleOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-  };
-
   return (
     <section className="w-full pt-5">
       <form
-        action=""
+        action={() => {
+          createHashAction({
+            text,
+            author: loggedInUser,
+            media: [],
+            pathname,
+          });
+          setText("");
+        }}
         className="flex items-start justify-start gap-5 rounded-2xl"
       >
         <Image
@@ -41,19 +49,24 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
               id="new-post-field"
               placeholder="What's on your mind?"
               rows={1}
+              value={text}
               className="w-[80%] resize-none bg-transparent outline-none ring-0 border-none text-accent1 px-2"
               onChange={handleOnChange}
             />
             <button
               className="text-primary disabled:text-accent1/50 w-[20%] flex items-center justify-end"
-              onClick={handleSubmit}
+              type="submit"
               disabled={text.length === 0}
             >
-              <SendHorizontal size={"16px"} />
+              {!loading ? (
+                <SendHorizontal size={"16px"} />
+              ) : (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
             </button>
           </div>
           <div className="flex items-center gap-3 px-5">
-            <EmojiBtn message="" setMessage={() => {}} />
+            <EmojiBtn message={text} setMessage={setText} />
             <button>
               <ImageIcon
                 size={"20px"}

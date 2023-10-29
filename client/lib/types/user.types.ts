@@ -10,3 +10,12 @@ export type UserType = {
     following: string[]
     followers: string[]
 }
+
+export type SummarizedUserType = {
+    name: string;
+    username: string;
+    image: string;
+    verified: boolean;
+    following: string[]
+    followers: string[]
+  };

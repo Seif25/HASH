@@ -9,6 +9,8 @@ import moment from "moment";
 import Image from "next/image";
 import HashStats from "./HashStats";
 import HashText from "../shared/text/HashText";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface HashProps {
   hash: HashType;
@@ -17,6 +19,16 @@ interface HashProps {
 
 export default function HashCard({ hash, loggedInUser }: HashProps) {
   const cols = ["grid-cols-1", "grid-cols-2", "grid-cols-3", "grid-cols-4"];
+  const [bookmarked, setBookmarked] = useState(false);
+
+  useEffect(() => {
+    if (hash && loggedInUser) {
+      const found = hash.bookmarkedBy?.find(
+        (bookmark) => bookmark === loggedInUser
+      );
+      setBookmarked(found ? true : false);
+    }
+  }, [hash, loggedInUser]);
 
   return (
     <div className="bg-accent2 rounded-2xl p-5">
@@ -58,9 +70,11 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
       {/* HASH INFORMATION */}
       <div className="flex flex-col gap-5">
         {/* Hash Text */}
-        <h2 className="text-heading font-normal text-accent1 p-5">
-          <HashText text={hash.text} />
-        </h2>
+        <Link href={`/hash/${hash._id}`}>
+          <h2 className="text-heading font-normal text-accent1 p-5">
+            <HashText text={hash.text} />
+          </h2>
+        </Link>
 
         {/* Hash Media */}
         {hash.media.length > 0 && (
@@ -88,6 +102,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
 
       {/* Hash Metadata */}
       <HashStats
+        hashId={hash._id}
         commentCount={hash.children.length}
         likeCount={hash.likes.length}
         repostCount={hash.reposts.length}
@@ -96,6 +111,10 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
         hashMedia={hash.media}
         hashAuthor={hash.author}
         hashText={hash.text}
+        hashLikes={hash.likes}
+        pinned={hash.pinned}
+        highlighted={hash.highlighted}
+        bookmarked={bookmarked}
       />
     </div>
   );

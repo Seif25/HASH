@@ -9,8 +9,6 @@ interface HomeProps {
   loggedInUser: string;
 }
 
-export const revalidate = 10;
-
 export default async function Home({ loggedInUser }: HomeProps) {
   const {
     data: result,
@@ -19,6 +17,7 @@ export default async function Home({ loggedInUser }: HomeProps) {
   } = useQuery({
     queryKey: ["hashes"],
     queryFn: () => fetchHashes(1, 10),
+    refetchInterval: 300000,
   });
   if (error) throw new Error(error.message);
   if (isLoading) return <HashSkeleton />;

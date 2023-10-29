@@ -44,9 +44,18 @@ const hashSchema = new mongoose.Schema({
     {
       type: String,
       ref: "Tag",
-      default: []
-    }
-  ]
+      default: [],
+    },
+  ],
+  pinned: { type: Boolean, default: false },
+  highlighted: { type: Boolean, default: false },
+  bookmarkedBy: [
+    {
+      type: String,
+      ref: "User",
+      default: [],
+    },
+  ],
 });
 
 const Hash = mongoose.models.Hash || mongoose.model("Hash", hashSchema);

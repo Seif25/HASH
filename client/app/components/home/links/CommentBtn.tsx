@@ -15,21 +15,15 @@ import {
 } from "@/components/ui/dialog";
 import { MediaType } from "@/lib/types/hash.types";
 import Image from "next/image";
+import { SummarizedUserType } from "@/lib/types/user.types";
 
 interface CommentBtnProps {
   count: number;
   commenter: string;
   hashMedia: MediaType[];
   hashText: string;
-  hashAuthor: AuthorType;
+  hashAuthor: SummarizedUserType;
 }
-
-type AuthorType = {
-  name: string;
-  username: string;
-  image: string;
-  verified: boolean;
-};
 
 export default function CommentBtn({
   count,

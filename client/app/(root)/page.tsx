@@ -20,10 +20,10 @@ export default async function Hash() {
   });
 
   const loggedInUser = {
-    name: "Dummy",
-    username: "Lord Dummy",
+    name: "Seif Ahmed Fouad",
+    username: "seif25",
     verified: true,
-    image: "/assets/profile-pic.png",
+    image: "/assets/ts.jpg",
   };
 
   return (
