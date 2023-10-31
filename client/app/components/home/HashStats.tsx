@@ -64,6 +64,7 @@ export default function HashStats({
           author={hashAuthor.username}
           hashText={hashText}
           bookmarked={bookmarked}
+          loggedInUser={loggedInUser}
         />
         <InformationBtn
           loggedInUser={loggedInUser}

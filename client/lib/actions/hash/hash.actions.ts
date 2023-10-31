@@ -42,6 +42,34 @@ export async function createHashAction({
 }
 
 /**
+ * FETCH HASH BY ID ACTION
+ */
+export async function fetchHashByIdAction(hashId: string) {
+  const Query = HashModel.findById({ _id: hashId })
+    .populate({
+      path: "author",
+      model: "User",
+      foreignField: "username",
+      select: "username name image followers following verified bio",
+    })
+    .populate({
+      path: "children",
+      model: "Hash",
+      populate: {
+        path: "author",
+        model: "User",
+        foreignField: "username",
+        select: "username name image followers following verified bio",
+      },
+    })
+    .lean();
+
+  const hash = await Query.exec();
+
+  return hash;
+}
+
+/**
  * DELETE HASH ACTION
  * @param { hashId, pathname }: DeleteHashParams
  * @returns void

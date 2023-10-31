@@ -52,6 +52,14 @@
   @apply rounded-full p-2 bg-gradient-to-b from-[#1991fe] via-[#1183e8] to-[#0671cb] text-accent1;
 }
 
+.gradient{
+  @apply bg-gradient-to-bl from-[#1991fe] via-[#1183e8] to-[#0671cb];
+}
+
+.dark-gradient{
+  @apply bg-gradient-to-br from-[#002A81] to-[#000C5B];
+}
+
 .pop-up {
   position: absolute;
   top: 0%;

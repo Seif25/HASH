@@ -31,6 +31,7 @@ interface ShareBtnProps {
   author: string;
   hashText: string;
   bookmarked: boolean;
+  loggedInUser: string;
 }
 
 export default function ShareBtn({
@@ -38,6 +39,7 @@ export default function ShareBtn({
   author,
   hashText,
   bookmarked,
+  loggedInUser,
 }: ShareBtnProps) {
   const pathname = usePathname();
 
@@ -52,9 +54,9 @@ export default function ShareBtn({
 
   function handleBookmarkHash() {
     if (!bookmarked) {
-      bookmarkHashAction({ hashId, username: author, pathname });
+      bookmarkHashAction({ hashId, username: loggedInUser, pathname });
     } else {
-      unBookmarkHashAction({ hashId, username: author, pathname });
+      unBookmarkHashAction({ hashId, username: loggedInUser, pathname });
     }
   }
   return (

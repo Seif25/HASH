@@ -1,3 +1,5 @@
+"use client";
+
 import { HashType } from "@/lib/types/hash.types";
 import {
   HoverCard,

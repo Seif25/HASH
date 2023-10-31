@@ -61,8 +61,8 @@ export const LeftSidebarLinks = [
     {
         icon: <Mail size={"24px"} />,
         title: "Messages",
-        link: "/messages/",
-        specific: true
+        link: "/messages",
+        specific: false
     },
     {
         icon: <Bell size={"24px"} />,
