@@ -1,11 +1,13 @@
-import { MediaType } from "@/lib/types/hash.types";
+import { MediaType } from "@/app/lib/types/hash.types";
 import CommentBtn from "./links/CommentBtn";
 import InformationBtn from "./links/InformationBtn";
 import LikeBtn from "./links/LikeBtn";
 import RepostBtn from "./links/RepostBtn";
 import ShareBtn from "./links/ShareBtn";
 import Views from "./links/Views";
-import { SummarizedUserType } from "@/lib/types/user.types";
+import { SummarizedUserType } from "@/app/lib/types/user.types";
+import moment from "moment";
+import { Separator } from "@/components/ui/separator";
 
 interface HashStatsProps {
   hashId: string;
@@ -22,6 +24,7 @@ interface HashStatsProps {
   highlighted: boolean;
   bookmarked: boolean;
   restriction: "everyone" | "followers only" | "followed by me";
+  createdAt: Date;
 }
 
 export default function HashStats({
@@ -39,10 +42,11 @@ export default function HashStats({
   highlighted,
   bookmarked,
   restriction,
+  createdAt,
 }: HashStatsProps) {
   return (
-    <div className="flex items-center justify-between w-full">
-      <div className="flex items-center justify-evenly w-[80%]">
+    <div className="flex flex-col justify-center w-full gap-5">
+      <div className="flex items-center justify-between lg:justify-start lg:gap-10 lg:px-5">
         <CommentBtn
           count={commentCount}
           hashAuthor={hashAuthor}
@@ -58,22 +62,29 @@ export default function HashStats({
         <RepostBtn count={repostCount} />
         <Views count={viewCount} />
       </div>
-      <div className="flex items-center justify-evenly w-[20%]">
-        <ShareBtn
-          hashId={hashId}
-          author={hashAuthor.username}
-          hashText={hashText}
-          bookmarked={bookmarked}
-          loggedInUser={loggedInUser}
-        />
-        <InformationBtn
-          loggedInUser={loggedInUser}
-          hashAuthor={hashAuthor}
-          hashId={hashId}
-          pinned={pinned}
-          highlighted={highlighted}
-          restriction={restriction}
-        />
+      <Separator />
+      <div className="flex items-center justify-between">
+        {/* Hash Timestamp */}
+        <p className="text-accent1/50 text-paragraph">
+          {moment(createdAt).format("MMM DD YYYY - hh:mm A")}
+        </p>
+        <div className="flex items-center gap-5">
+          <ShareBtn
+            hashId={hashId}
+            author={hashAuthor.username}
+            hashText={hashText}
+            bookmarked={bookmarked}
+            loggedInUser={loggedInUser}
+          />
+          <InformationBtn
+            loggedInUser={loggedInUser}
+            hashAuthor={hashAuthor}
+            hashId={hashId}
+            pinned={pinned}
+            highlighted={highlighted}
+            restriction={restriction}
+          />
+        </div>
       </div>
     </div>
   );

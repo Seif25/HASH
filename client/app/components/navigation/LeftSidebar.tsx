@@ -1,15 +1,20 @@
 "use client";
 
-import { LeftSidebarLinks } from "@/utils/Links";
+import { LeftSidebarLinks } from "@/app/utils/Links";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import Badge from "@mui/material/Badge";
+import LogoutBtn from "../shared/triggers/LogoutBtn";
 
 interface LeftSidebarProps {
   username: string;
+  notificationCount: number;
 }
 
-export default function LeftSidebar({ username }: LeftSidebarProps) {
+export default function LeftSidebar({
+  username,
+  notificationCount,
+}: LeftSidebarProps) {
   const path = usePathname();
   return (
     <div className="group custom-scrollbar left-sidebar">
@@ -23,7 +28,23 @@ export default function LeftSidebar({ username }: LeftSidebarProps) {
                 path === link.link && "left-sidebar-active-link"
               }`}
             >
-              {link.icon}
+              {link.title === "Notifications" ? (
+                <>
+                  <Badge
+                    badgeContent={notificationCount ?? 0}
+                    sx={{
+                      "& .MuiBadge-badge": {
+                        color: "#E6EBF0",
+                        backgroundColor: "red",
+                      },
+                    }}
+                  >
+                    {link.icon}
+                  </Badge>
+                </>
+              ) : (
+                <>{link.icon}</>
+              )}
               <span className="max-lg:hidden hidden group-hover:flex">
                 {link.title}
               </span>
@@ -31,16 +52,7 @@ export default function LeftSidebar({ username }: LeftSidebarProps) {
           ))}
         </div>
         <div>
-          <Link
-            href={"/logout"}
-            key={"logout"}
-            className={`sheet-config-links`}
-          >
-            <LogOut size={24} />
-            <span className="max-lg:hidden hidden group-hover:flex">
-              {"Logout"}
-            </span>
-          </Link>
+          <LogoutBtn className="max-lg:hidden hidden group-hover:flex" />
         </div>
       </div>
     </div>

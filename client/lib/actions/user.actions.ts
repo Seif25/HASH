@@ -1,19 +1,21 @@
 "use server";
 
+import UserModel from "../../app/lib/models/user.model";
 import {
-  DetailedUser,
-  FetchAllUsersParams,
-  MongoUser,
-  User,
-  UserSummary,
-} from "@/utils/types/user.types";
-import UserModel from "../models/user.model";
-import { initializeMongoConnection, isConnected } from "../mongoose.middleware";
+  initializeMongoConnection,
+  isConnected,
+} from "../../app/lib/mongoose.middleware";
 import { revalidatePath } from "next/cache";
 import mongoose, { FilterQuery, MongooseError } from "mongoose";
-import Hash from "../models/hash.model";
+import HashModel from "../../app/lib/models/hash.model";
 
 import moment from "moment";
+import {
+  FetchAllUsersParams,
+  FetchUserReplies,
+  SummarizedUserType,
+  UserType,
+} from "@/app/lib/types/user.types";
 // import { logger } from "../logs/logger";
 
 // *SETTING UP LOGGER
@@ -36,9 +38,7 @@ function connectToDB() {
  * @returns {Promise<User | null>}
  * @throws {MongooseError}
  */
-export async function fetchUser(
-  username: string
-): Promise<DetailedUser | null> {
+export async function fetchUser(username: string): Promise<UserType | null> {
   // Connect to MongoDB
   connectToDB();
 
@@ -61,14 +61,14 @@ export async function fetchUser(
           select: "username name image verified following followers bio",
         },
         options: { sort: { createdAt: "desc" } },
-      });
+      })
+      .lean();
 
-    // console.log(`Attempting to Fetch user ${username}`);
-    const user = await userQuery.exec();
+    const user = (await userQuery.exec()) as unknown as UserType;
 
     if (user) {
       // console.info(`Successfully fetched user ${username}`);
-      return user;
+      return user as unknown as UserType;
     } else {
       console.error(`Failed to fetch user ${username}`);
       return null;
@@ -76,6 +76,35 @@ export async function fetchUser(
   } catch (error: any) {
     console.error(`Error finding user ${username}: ${error.message}`);
     return null;
+  }
+}
+
+export default async function fetchUserReplies(username: string) {
+  try {
+    const hashes = await HashModel.find({
+      author: username,
+      parentId: { $ne: null },
+    })
+      .populate({
+        path: "author",
+        model: UserModel,
+        foreignField: "username",
+        select: "username name image verified following followers bio",
+      })
+      .populate({
+        path: "parentId",
+        model: HashModel,
+        populate: {
+          path: "author",
+          model: UserModel,
+          foreignField: "username",
+          select: "username name image verified following followers bio",
+        },
+      })
+      .lean();
+    return hashes as FetchUserReplies[];
+  } catch (error: any) {
+    throw new Error(`Error finding replies for ${username}: ${error.message}`);
   }
 }
 
@@ -87,7 +116,7 @@ export async function fetchUser(
  */
 export async function getUserInformation(
   username: string
-): Promise<User | null> {
+): Promise<UserType | null> {
   connectToDB();
 
   // console.log(`Attempting to Fetch user information for ${username}`);
@@ -178,7 +207,10 @@ export async function fetchUsers({
   pageNumber = 1,
   pageSize = 20,
   sortBy = "desc",
-}: FetchAllUsersParams): Promise<{ users: User[]; isNext: boolean } | null> {
+}: FetchAllUsersParams): Promise<{
+  users: UserType[];
+  isNext: boolean;
+} | null> {
   // Connect to MongoDB
   connectToDB();
 
@@ -210,9 +242,10 @@ export async function fetchUsers({
       ];
     }
 
-    const sortOptions = { createdAt: sortBy };
+    const sortOptions = { joinedAt: sortBy };
 
     const usersQuery = UserModel.find(query)
+      // @ts-ignore
       .sort(sortOptions)
       .skip(skip)
       .limit(pageSize);
@@ -243,7 +276,7 @@ export async function fetchUsers({
  */
 export async function getRecommendedUsers(
   username: string
-): Promise<User[] | undefined> {
+): Promise<UserType[] | undefined> {
   // Connect to MongoDB
   connectToDB();
 
@@ -253,7 +286,9 @@ export async function getRecommendedUsers(
         { followers: { $nin: [username] } }, // exclude users that have the username in their followers list
         { username: { $ne: username } }, // exclude the username itself
       ],
-    }).select("name username following followers image verified").limit(5);
+    })
+      .select("name username following followers image verified")
+      .limit(5);
   } catch (error: any) {
     throw new Error(`Error getting recommended users: ${error.message}`);
   }
@@ -263,17 +298,17 @@ export async function getRecommendedUsers(
  * Get Recipients
  * @param Recipients {string[]}
  * @returns {Promise<User[] | undefined>}
- * @throws {MongooseError} 
+ * @throws {MongooseError}
  */
 export async function getRecipients(
   recipients: string[]
-): Promise<UserSummary[] | undefined>{
+): Promise<SummarizedUserType[] | undefined> {
   // Connect to MongoDB
   connectToDB();
 
   try {
     return await UserModel.find({
-      username: { $in: recipients }
+      username: { $in: recipients },
     }).select("name username following followers image verified");
   } catch (error: any) {
     throw new Error(`Error getting recipients: ${error.message}`);
@@ -282,14 +317,16 @@ export async function getRecipients(
 
 export async function getRecipient(
   recipient: string
-): Promise<UserSummary | undefined>{
+): Promise<SummarizedUserType | undefined> {
   // Connect to MongoDB
   connectToDB();
 
   try {
-    return await UserModel.findOne({
-      username: recipient
-    }).select("name username following followers image verified") as UserSummary;
+    return (await UserModel.findOne({
+      username: recipient,
+    }).select(
+      "name username following followers image verified"
+    )) as SummarizedUserType;
   } catch (error: any) {
     throw new Error(`Error getting recipient: ${error.message}`);
   }
@@ -301,6 +338,7 @@ export async function getRecipient(
     ! ################################### !
 */
 
+// @ts-ignore
 export async function updateUser({
   _id,
   username,
@@ -313,7 +351,7 @@ export async function updateUser({
   bio,
   pathname,
   clerkId,
-}: MongoUser & { pathname: string; clerkId: string }): Promise<void> {
+}: UserType & { pathname: string; clerkId: string }): Promise<void> {
   connectToDB();
 
   // console.log(`Attempting to update user ${username}`);

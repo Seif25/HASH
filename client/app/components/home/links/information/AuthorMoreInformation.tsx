@@ -9,7 +9,7 @@ import {
   pinHashAction,
   unhighlightHashAction,
   unpinHashAction,
-} from "@/lib/actions/hash/hash.actions";
+} from "@/app/lib/actions/hash/hash.actions";
 import {
   BarChart2,
   Globe2,

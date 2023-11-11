@@ -4,6 +4,11 @@ import type { Metadata } from "next";
 import LeftSidebar from "../components/navigation/LeftSidebar";
 import { Suspense } from "react";
 import LeftSidebarSkeleton from "../components/navigation/LeftSidebarSkeleton";
+import { currentUser } from "@clerk/nextjs";
+import { fetchUser } from "@/lib/actions/user.actions";
+import BottomBar from "../components/navigation/BottomBar";
+import FloatingButton from "../components/navigation/FloatingButton";
+import { fetchNotificationCountAction } from "../lib/actions/notification/notification.actions";
 
 export const metadata: Metadata = {
   title: "/ Hash",
@@ -15,31 +20,30 @@ export const metadata: Metadata = {
   publisher: "Vercel",
 };
 
-export default function MainLayout({
+export default async function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const dummy = {
-    username: "dummy",
-    image: "/assets/profile-pic.png",
-    name: "Lord Dummy",
-    following: [],
-    followers: [],
-    verified: true,
-    bio: "I'm a dummy account.",
-    location: "Dummyville, Dummyland",
-    website: "https://dummy.com",
-    createdAt: Date.now().toString(),
-  };
+  const user = await currentUser();
+  const loggedInUser = await fetchUser(user?.username ?? "");
+
+  const notificationCount = await fetchNotificationCountAction(
+    loggedInUser?.username ?? ""
+  );
+
   return (
-    // TODO: Bottom Navigation
     <div>
-      <Navbar loggedUser={dummy} />
+      {loggedInUser && <Navbar loggedUser={loggedInUser} />}
       <section className="app">
         <main className="flex flex-row w-full justify-between">
           <Suspense fallback={<LeftSidebarSkeleton />}>
-            <LeftSidebar username={dummy.username} />
+            {loggedInUser && (
+              <LeftSidebar
+                username={loggedInUser.username}
+                notificationCount={notificationCount}
+              />
+            )}
           </Suspense>
           <section className="main">
             <div className="w-full max-w-4xl">{children}</div>
@@ -47,6 +51,8 @@ export default function MainLayout({
           <RightSidebar />
         </main>
       </section>
+      <FloatingButton />
+      <BottomBar notificationCount={notificationCount} />
     </div>
   );
 }

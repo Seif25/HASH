@@ -1,6 +1,6 @@
 "use client";
 
-import { HashType } from "@/lib/types/hash.types";
+import { HashType } from "@/app/lib/types/hash.types";
 import {
   HoverCard,
   HoverCardContent,
@@ -62,18 +62,13 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
             />
           </HoverCardContent>
         </HoverCard>
-
-        {/* Hash Timestamp */}
-        <p className="text-accent1/50 text-paragraph">
-          {moment(hash.createdAt).fromNow()}
-        </p>
       </div>
 
       {/* HASH INFORMATION */}
       <div className="flex flex-col gap-5">
         {/* Hash Text */}
         <Link href={`/hash/${hash._id}`}>
-          <h2 className="text-heading font-normal text-accent1 p-5">
+          <h2 className="text-body lg:text-heading font-normal text-accent1 p-5">
             <HashText text={hash.text} />
           </h2>
         </Link>
@@ -118,6 +113,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
         highlighted={hash.highlighted}
         bookmarked={bookmarked}
         restriction={hash.restriction ?? ""}
+        createdAt={hash.createdAt}
       />
     </div>
   );

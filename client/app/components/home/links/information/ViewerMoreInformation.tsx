@@ -2,7 +2,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { SummarizedUserType } from "@/lib/types/user.types";
+import { SummarizedUserType } from "@/app/lib/types/user.types";
 import { Ban, Flag, Frown, UserPlus2, UserX2, VolumeX } from "lucide-react";
 
 interface ViewerMoreInformationProps {

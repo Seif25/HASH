@@ -23,7 +23,7 @@ import { useClipboard } from "@reactuses/core";
 import {
   bookmarkHashAction,
   unBookmarkHashAction,
-} from "@/lib/actions/hash/hash.actions";
+} from "@/app/lib/actions/hash/hash.actions";
 import { usePathname } from "next/navigation";
 
 interface ShareBtnProps {

@@ -6,10 +6,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { SheetLinks } from "@/utils/Links";
+import { SheetLinks } from "@/app/utils/Links";
 import { BadgeCheckIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import LogoutBtn from "../shared/triggers/LogoutBtn";
 
 interface ProfileSheetProps {
   username: string;
@@ -50,6 +51,7 @@ export default function ProfileSheet({
                   alt={username}
                   width={48}
                   height={48}
+                  className="rounded-full"
                 />
               </Link>
               <div className="flex flex-col justify-center gap-0">
@@ -89,7 +91,9 @@ export default function ProfileSheet({
             <div className="flex flex-col gap-3">
               {SheetLinks.filter((l) => l.section === 1).map((link) => (
                 <Link
-                  href={link.link + username}
+                  href={
+                    link.title === "Profile" ? link.link + username : link.link
+                  }
                   key={link.title}
                   className="sheet-links"
                 >
@@ -108,6 +112,7 @@ export default function ProfileSheet({
                   {link.icon} {link.title}
                 </Link>
               ))}
+              <LogoutBtn />
             </div>
           </SheetDescription>
         </SheetHeader>

@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { ConversationType } from "@/lib/types/conversation.types";
+import { ConversationType } from "@/app/lib/types/conversation.types";
 import moment from "moment";
 import Image from "next/image";
 

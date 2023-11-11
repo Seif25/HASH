@@ -4,7 +4,7 @@ import { ImageIcon, Loader2, SendHorizontal, Smile } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import EmojiBtn from "../shared/triggers/EmojiBtn";
-import { createHashAction } from "@/lib/actions/hash/hash.actions";
+import { createHashAction } from "@/app/lib/actions/hash/hash.actions";
 import { usePathname } from "next/navigation";
 
 interface PostProps {

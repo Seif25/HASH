@@ -1,7 +1,10 @@
 "use server";
 import moment from "moment";
-import TagModel from "../models/tag.model";
-import { initializeMongoConnection, isConnected } from "../mongoose.middleware";
+import TagModel from "../../app/lib/models/tag.model";
+import {
+  initializeMongoConnection,
+  isConnected,
+} from "../../app/lib/mongoose.middleware";
 import { Tag } from "@/utils/types/tag.types";
 
 async function connectToDB() {
@@ -24,14 +27,14 @@ export async function suggestTags(query: string): Promise<Tag[]> {
       const tags = await TagModel.find(
         { lastUsed: { $gte: lastWeek } },
         { limit: 10, sort: { count: -1 } }
-      ).select("tag")
-      return tags
+      ).select("tag");
+      return tags;
     }
     const tags = await TagModel.find({ tag: { $regex: query, $options: "i" } })
       .limit(10)
       .sort({ count: -1 })
-      .select("tag")
-      return tags
+      .select("tag");
+    return tags;
   } catch (error: any) {
     throw new Error(
       `Failed to retrieve tags with query: ${query} -  ${error.message}`

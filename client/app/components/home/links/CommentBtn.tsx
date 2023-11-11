@@ -13,9 +13,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { MediaType } from "@/lib/types/hash.types";
+import { MediaType } from "@/app/lib/types/hash.types";
 import Image from "next/image";
-import { SummarizedUserType } from "@/lib/types/user.types";
+import { SummarizedUserType } from "@/app/lib/types/user.types";
 
 interface CommentBtnProps {
   count: number;

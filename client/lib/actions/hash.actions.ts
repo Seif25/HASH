@@ -5,14 +5,17 @@ import {
   CreateHashParams,
   LikeHashParams,
   RepostHashParams,
-} from "@/utils/actions/types/hash.actions.types";
-import { HashType } from "../types/hash.types";
-import { initializeMongoConnection, isConnected } from "../mongoose.middleware";
-import HashModel from "../models/hash.model";
+} from "@/app/utils/actions/types/hash.actions.types";
+import { HashType } from "../../app/lib/types/hash.types";
+import {
+  initializeMongoConnection,
+  isConnected,
+} from "../../app/lib/mongoose.middleware";
+import HashModel from "../../app/lib/models/hash.model";
 import { revalidatePath } from "next/cache";
 import mongoose, { MongooseError } from "mongoose";
-import User from "../models/user.model";
-import Tag from "../models/tag.model";
+import User from "../../app/lib/models/user.model";
+import Tag from "../../app/lib/models/tag.model";
 // import { logger } from "../logs/logger";
 
 // *SETTING UP LOGGER
@@ -140,10 +143,10 @@ export async function fetchHashes(
           path: "author",
           model: "User",
           foreignField: "username",
-          select:
-            "name image verified username bio following followers",
+          select: "name image verified username bio following followers",
         },
-      }).lean()
+      })
+      .lean();
 
     let totalPageCount: number = 0;
     try {

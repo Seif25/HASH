@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SummarizedUserType } from "@/lib/types/user.types";
+import { SummarizedUserType } from "@/app/lib/types/user.types";
 import ViewerMoreInformation from "./information/ViewerMoreInformation";
 import AuthorMoreInformation from "./information/AuthorMoreInformation";
 import { useState } from "react";

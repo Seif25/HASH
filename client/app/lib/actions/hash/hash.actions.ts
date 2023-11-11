@@ -1,16 +1,13 @@
 "use server";
 
-import Hash from "@/app/(root)/page";
-import clientPromise from "@/lib/database/mongodb";
-import HashModel from "@/lib/models/hash.model";
-import UserModel from "@/lib/models/user.model";
+import HashModel from "@/app/lib/models/hash.model";
 import {
   CreateHashParams,
   DeleteHashParams,
-} from "@/lib/types/hash.actions.types";
-import { MediaType } from "@/lib/types/hash.types";
+} from "@/app/lib/types/hash.actions.types";
 import { MongooseError } from "mongoose";
 import { revalidatePath } from "next/cache";
+import { HashType } from "../../types/hash.types";
 
 /**
  * CREATE HASH ACTION
@@ -64,9 +61,10 @@ export async function fetchHashByIdAction(hashId: string) {
     })
     .lean();
 
-  const hash = await Query.exec();
+  const hash = (await Query.exec()) as HashType;
+  const JsonHash = JSON.parse(JSON.stringify(hash)) as HashType;
 
-  return hash;
+  return JsonHash;
 }
 
 /**
@@ -240,6 +238,27 @@ export async function unBookmarkHashAction({
     });
 
   revalidatePath(pathname);
+}
+
+/**
+ * fetch user bookmarks
+ * @param username: string
+ * @returns HashType[]
+ */
+export async function fetchUserBookmarks({ username }: { username: string }) {
+  const Query = HashModel.find({ bookmarkedBy: username })
+    .populate({
+      path: "author",
+      model: "User",
+      foreignField: "username",
+      select: "username name image followers following verified bio",
+    })
+    .lean();
+
+  const hash = (await Query.exec()) as HashType[];
+  const JsonHash = JSON.parse(JSON.stringify(hash)) as HashType[];
+
+  return JsonHash;
 }
 
 export async function changeRestrictionAction({

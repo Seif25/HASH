@@ -19,9 +19,16 @@ import moment from "moment";
 import ConversationPreview from "../components/ConversationPreview";
 import Link from "next/link";
 import { useState } from "react";
-import { ConversationType } from "@/lib/types/conversation.types";
+import { ConversationType } from "@/app/lib/types/conversation.types";
+import { UserType } from "@/app/lib/types/user.types";
 
-export default function UserConversationsPage() {
+interface UserConversationPageProps {
+  loggedInUser: UserType;
+}
+
+export default function UserConversationsPage({
+  loggedInUser,
+}: UserConversationPageProps) {
   const [query, setQuery] = useState<string>("");
   const [queryResults, setQueryResults] = useState<ConversationType[]>([]);
 
@@ -54,16 +61,25 @@ export default function UserConversationsPage() {
   return (
     <section className="flex flex-col gap-5 bg-accent2 rounded-2xl lg:mt-5">
       {/* Start new Conversation & Search */}
-      <section className="gradient rounded-t-2xl h-[15vh] lg:h-[23vh] p-5 flex flex-col gap-5">
-        <div className="flex items-center justify-between">
+      <section className="dark-gradient rounded-t-2xl h-[10vh] lg:h-[15vh] p-5 flex flex-col gap-5">
+        <div className="flex items-center justify-between gap-5">
           <Image
-            src={"/assets/profile-pic.png"}
-            alt="seif25"
+            src={loggedInUser.image ?? "/assets/profile-pic.png"}
+            alt={loggedInUser.username}
             width={48}
             height={48}
             className="rounded-full"
           />
-          <h3 className="text-[24px]">Conversations</h3>
+          <div className="flex items-center justify-between px-3 py-2 bg-dark rounded-2xl w-[70%] lg:w-[80%]">
+            <input
+              type="text"
+              className="bg-transparent ring-0 outline-none border-none px-3 w-full"
+              placeholder="Looking for a conversation?"
+              onChange={handleConversationSearch}
+            />
+            <Search size={"24px"} className="text-accent1" />
+          </div>
+          {/* <h3 className="text-[24px]">Conversations</h3> */}
           {/* New Conversation */}
           <TooltipProvider>
             <Tooltip>
@@ -108,15 +124,6 @@ export default function UserConversationsPage() {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-        </div>
-        <div className="flex items-center justify-between px-3 py-2 bg-dark rounded-2xl">
-          <input
-            type="text"
-            className="bg-transparent ring-0 outline-none border-none px-3 w-full"
-            placeholder="Looking for a conversation?"
-            onChange={handleConversationSearch}
-          />
-          <Search size={"24px"} className="text-accent1" />
         </div>
       </section>
       {/* Conversations */}

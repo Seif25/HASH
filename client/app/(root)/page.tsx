@@ -8,6 +8,8 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import { currentUser } from "@clerk/nextjs";
+import { fetchUser } from "@/lib/actions/user.actions";
 
 export const revalidate = 0;
 
@@ -19,15 +21,11 @@ export default async function Hash() {
     queryFn: () => fetchHashes(1, 10),
   });
 
-  const loggedInUser = {
-    name: "Seif Ahmed Fouad",
-    username: "seif25",
-    verified: true,
-    image: "/assets/ts.jpg",
-  };
+  const user = await currentUser();
+  const loggedInUser = await fetchUser(user?.username ?? "");
 
   return (
-    <section className="flex flex-col gap-5 overflow-y-hidden">
+    <section className="flex flex-col px-5 lg:px-0 gap-5 overflow-y-hidden">
       <Post
         loggedInUser={loggedInUser.username}
         profilePic={loggedInUser.image}

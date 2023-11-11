@@ -94,7 +94,7 @@ export default function ConversationWindow({
                   className={`rounded-2xl text-accent1 w-auto max-w-80 p-2 ${
                     message.sender === loggedInUser
                       ? "gradient"
-                      : "dark-gradient"
+                      : "bg-gradient-to-br from-emerald-500 via-emerald-700 to-emerald-950"
                   }`}
                 >
                   {message.message}
