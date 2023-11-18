@@ -27,6 +27,11 @@ export type SummarizedUserType = {
   followers: string[];
 };
 
+export type UserFollowingType = {
+  _id: string;
+  following: SummarizedUserType[];
+};
+
 export type FetchAllUsersParams = {
   currentUser: string;
   searchString: string;

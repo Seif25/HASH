@@ -28,26 +28,29 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-        </head>
-        <body className={`${rubik.className} app pb-10`}>
-          <main>
-            <QueryProvider>{children}</QueryProvider>
-          </main>
-        </body>
-        <footer className="grid grid-cols-2 lg:flex items-center justify-center lg:justify-between p-5 bg-black pb-24 lg:pb-5">
+      <QueryProvider>
+        <html lang="en">
+          <head>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
+          </head>
+          <body className={`${rubik.className} app pb-10`}>
+            <main>{children}</main>
+          </body>
+          {/* <footer className="grid grid-cols-2 lg:flex items-center justify-center lg:justify-between p-5 bg-black pb-24 lg:pb-5">
           <Image src="/logo.png" alt="hash" width={50} height={50} />
           <p className="text-[12px] lg:text-paragraph text-accent1/50">
-            &copy; {new Date().getFullYear()} Hash. All rights reserved.
+          &copy; {new Date().getFullYear()} Hash. All rights reserved.
           </p>
           <p className="lg:hidden text-transparent">HASH</p>
           <p className="text-[12px] lg:text-paragraph text-accent1/50 font-bold">
-            Hash v1.5.0-alpha.1
+          Hash v1.5.0-alpha.1
           </p>
-        </footer>
-      </html>
+        </footer> */}
+        </html>
+      </QueryProvider>
     </ClerkProvider>
   );
 }

@@ -1,6 +1,6 @@
 import Navbar from "../components/navigation/Navbar";
 import RightSidebar from "../components/navigation/RightSidebar";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import LeftSidebar from "../components/navigation/LeftSidebar";
 import { Suspense } from "react";
 import LeftSidebarSkeleton from "../components/navigation/LeftSidebarSkeleton";
@@ -10,15 +10,21 @@ import BottomBar from "../components/navigation/BottomBar";
 import FloatingButton from "../components/navigation/FloatingButton";
 import { fetchNotificationCountAction } from "../lib/actions/notification/notification.actions";
 
-export const metadata: Metadata = {
-  title: "/ Hash",
-  description:
-    "From breaking news and entertainment to sports and politics, get the full story with all the live commentary.",
-  appleWebApp: true,
-  applicationName: "Hash",
-  creator: "Seif Ahmed",
-  publisher: "Vercel",
-};
+export async function generateMetadata(
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+
+  return {
+    title: `Home / Hash`,
+    description:
+      "From breaking news and entertainment to sports and politics, get the full story with all the live commentary.",
+    appleWebApp: true,
+    applicationName: "Hash",
+    creator: "Seif Ahmed",
+    publisher: "Vercel",
+  };
+}
 
 export default async function MainLayout({
   children,

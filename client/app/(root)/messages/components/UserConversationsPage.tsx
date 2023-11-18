@@ -2,58 +2,55 @@
 
 import { ArrowRight, MailPlus, Plus, Search } from "lucide-react";
 import Image from "next/image";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import moment from "moment";
 import ConversationPreview from "../components/ConversationPreview";
 import Link from "next/link";
 import { useState } from "react";
-import { ConversationType } from "@/app/lib/types/conversation.types";
-import { UserType } from "@/app/lib/types/user.types";
+import {
+  ConversationType,
+  ConversationsType,
+} from "@/app/lib/types/conversation.types";
+import { UserFollowingType, UserType } from "@/app/lib/types/user.types";
+import NewConversationWindow from "./NewConversationWindow";
 
 interface UserConversationPageProps {
   loggedInUser: UserType;
+  following: UserFollowingType;
+  conversations: ConversationsType[];
 }
 
 export default function UserConversationsPage({
   loggedInUser,
+  following,
+  conversations,
 }: UserConversationPageProps) {
   const [query, setQuery] = useState<string>("");
-  const [queryResults, setQueryResults] = useState<ConversationType[]>([]);
+  const [queryResults, setQueryResults] = useState<ConversationsType[]>([]);
 
   const MostRecent = conversations.sort((a, b) =>
-    moment(b.lastUpdated).diff(moment(a.lastUpdated))
+    moment(b.last_update).diff(moment(a.last_update))
   );
   const LatestConversations = conversations.filter(
-    (user) => user.unReadMessages > 0
+    (user) => user.unread_messages > 0 || !user.opened
   );
-  const OpenedConversations = conversations.filter((user) => user.read);
+  const OpenedConversations = conversations.filter((user) => user.opened);
 
-  const NewConversations = following
-    .filter(
-      (user) =>
-        !conversations.some(
-          (conversation) => conversation.username === user.username
-        )
-    )
-    .sort((a, b) => a.name.localeCompare(b.name));
+  // const NewConversations = following
+  //   .filter(
+  //     (user) =>
+  //       !conversations.some(
+  //         (conversation) => conversation.username === user.username
+  //       )
+  //   )
+  //   .sort((a, b) => a.name.localeCompare(b.name));
 
   function handleConversationSearch(e: React.ChangeEvent<HTMLInputElement>) {
     const q = e.target.value;
     setQuery(q);
-    const results = conversations.filter((user) =>
-      user.name.toLowerCase().includes(q.toLowerCase())
+    const results = conversations.filter(
+      (user) =>
+        user.participant_1.toLowerCase().includes(q.toLowerCase()) ||
+        user.participant_2.toLowerCase().includes(q.toLowerCase())
     );
     setQueryResults(results);
   }
@@ -61,7 +58,7 @@ export default function UserConversationsPage({
   return (
     <section className="flex flex-col gap-5 bg-accent2 rounded-2xl lg:mt-5">
       {/* Start new Conversation & Search */}
-      <section className="dark-gradient rounded-t-2xl h-[10vh] lg:h-[15vh] p-5 flex flex-col gap-5">
+      <section className="bg-accent2 rounded-t-2xl h-[10vh] lg:h-[15vh] p-5 flex flex-col gap-5">
         <div className="flex items-center justify-between gap-5">
           <Image
             src={loggedInUser.image ?? "/assets/profile-pic.png"}
@@ -79,51 +76,8 @@ export default function UserConversationsPage({
             />
             <Search size={"24px"} className="text-accent1" />
           </div>
-          {/* <h3 className="text-[24px]">Conversations</h3> */}
           {/* New Conversation */}
-          <TooltipProvider>
-            <Tooltip>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <TooltipTrigger asChild>
-                    <button className="rounded-full border border-dashed border-accent1 w-[48px] h-[48px] bg-dark flex items-center justify-center">
-                      <MailPlus className="text-accent1" size={"24px"} />
-                    </button>
-                  </TooltipTrigger>
-                </DialogTrigger>
-                <DialogContent className="max-h-96 overflow-y-scroll custom-scrollbar">
-                  <DialogHeader>
-                    <DialogTitle>Start A New Conversation</DialogTitle>
-                  </DialogHeader>
-                  <div className="flex flex-col gap-5">
-                    {NewConversations.map((user, index) => (
-                      <div
-                        className="flex items-center cursor-pointer"
-                        key={`user-${index}`}
-                      >
-                        <Image
-                          src={user.image}
-                          alt={user.name}
-                          width={48}
-                          height={48}
-                          className="rounded-full w-[48px] h-[48px] object-cover"
-                        />
-                        <h3 className="text-heading text-accent1 ml-5 mr-2">
-                          {user.name}
-                        </h3>
-                        <span className="text-paragraph text-accent1/50">
-                          @{user.username}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </DialogContent>
-              </Dialog>
-              <TooltipContent>
-                <p>Start a Conversation</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <NewConversationWindow following={following.following} />
         </div>
       </section>
       {/* Conversations */}
@@ -138,8 +92,10 @@ export default function UserConversationsPage({
                 key={`recent-${index}`}
               >
                 <Image
-                  src={conversation.image}
-                  alt={conversation.name}
+                  src={
+                    conversation.receiver?.image ?? "/assets/profile-pic.png"
+                  }
+                  alt={conversation.receiver?.name ?? ""}
                   width={128}
                   height={128}
                   className="object-cover rounded-full"
@@ -161,31 +117,43 @@ export default function UserConversationsPage({
       {query.length === 0 ? (
         <section className="flex flex-col gap-5">
           {/* New Conversations */}
-          <div className="flex flex-col gap-3 w-full">
-            <h3 className="text-heading text-accent1/50 font-bold px-5">New</h3>
-            {LatestConversations.map((conversation, index) => (
-              <Link href={`/messages/${conversation.id}`} key={`new-${index}`}>
-                <ConversationPreview conversation={conversation} />
-              </Link>
-            ))}
-          </div>
+          {LatestConversations.length > 0 && (
+            <div className="flex flex-col gap-3 w-full">
+              <h3 className="text-heading text-accent1/50 font-bold px-5">
+                New
+              </h3>
+              {LatestConversations.map((conversation, index) => (
+                <Link
+                  href={`/messages/${conversation.id}`}
+                  key={`new-${index}`}
+                >
+                  <ConversationPreview
+                    conversation={conversation}
+                    bottom={OpenedConversations.length === 0}
+                  />
+                </Link>
+              ))}
+            </div>
+          )}
           {/* Opened Conversations */}
-          <div className="flex flex-col gap-3 w-full">
-            <h3 className="text-heading text-accent1/50 font-bold px-5">
-              Opened
-            </h3>
-            {OpenedConversations.map((conversation, index) => (
-              <Link
-                href={`/messages/${conversation.id}`}
-                key={`opened-${index}`}
-              >
-                <ConversationPreview
-                  conversation={conversation}
-                  bottom={index === OpenedConversations.length - 1}
-                />
-              </Link>
-            ))}
-          </div>
+          {OpenedConversations.length > 0 && (
+            <div className="flex flex-col gap-3 w-full">
+              <h3 className="text-heading text-accent1/50 font-bold px-5">
+                Opened
+              </h3>
+              {OpenedConversations.map((conversation, index) => (
+                <Link
+                  href={`/messages/${conversation.id}`}
+                  key={`opened-${index}`}
+                >
+                  <ConversationPreview
+                    conversation={conversation}
+                    bottom={index === OpenedConversations.length - 1}
+                  />
+                </Link>
+              ))}
+            </div>
+          )}
         </section>
       ) : (
         // Search Results
@@ -219,73 +187,73 @@ export default function UserConversationsPage({
   );
 }
 
-const conversations = [
-  {
-    id: "1",
-    image: "/assets/user1.jpg",
-    name: "Olivia",
-    username: "olivia",
-    messages: ["What's up"],
-    read: false,
-    unReadMessages: 1,
-    lastUpdated: new Date("10/29/2023 12:45 PM"),
-  },
-  {
-    id: "3",
-    image: "/assets/user3.jpg",
-    name: "Asher",
-    username: "asher",
-    messages: ["yeah sure", "I'm in"],
-    read: true,
-    unReadMessages: 0,
-    lastUpdated: new Date("10/30/2023 1:12 PM"),
-  },
-  {
-    id: "4",
-    image: "/assets/user4.jpg",
-    name: "Evelyn",
-    username: "evelyn",
-    messages: ["Can't wait", "see u there"],
-    read: false,
-    unReadMessages: 2,
-    lastUpdated: new Date("10/30/2023 12:01 AM"),
-  },
-];
+// const conversations = [
+//   {
+//     id: "1",
+//     image: "/assets/user1.jpg",
+//     name: "Olivia",
+//     username: "olivia",
+//     messages: ["What's up"],
+//     read: false,
+//     unReadMessages: 1,
+//     lastUpdated: new Date("10/29/2023 12:45 PM"),
+//   },
+//   {
+//     id: "3",
+//     image: "/assets/user3.jpg",
+//     name: "Asher",
+//     username: "asher",
+//     messages: ["yeah sure", "I'm in"],
+//     read: true,
+//     unReadMessages: 0,
+//     lastUpdated: new Date("10/30/2023 1:12 PM"),
+//   },
+//   {
+//     id: "4",
+//     image: "/assets/user4.jpg",
+//     name: "Evelyn",
+//     username: "evelyn",
+//     messages: ["Can't wait", "see u there"],
+//     read: false,
+//     unReadMessages: 2,
+//     lastUpdated: new Date("10/30/2023 12:01 AM"),
+//   },
+// ];
 
-const following = [
-  {
-    image: "/assets/user1.jpg",
-    name: "Olivia",
-    username: "olivia",
-  },
-  {
-    image: "/assets/user2.jpg",
-    name: "Kai",
-    username: "kai",
-  },
-  {
-    image: "/assets/user3.jpg",
-    name: "Asher",
-    username: "asher",
-  },
-  {
-    image: "/assets/user4.jpg",
-    name: "Evelyn",
-    username: "evelyn",
-  },
-  {
-    image: "/assets/user5.jpg",
-    name: "Liam",
-    username: "liam",
-  },
-  {
-    name: "Babatunde",
-    username: "babatunde",
-    image: "/assets/user6.webp",
-  },
-  {
-    name: "Sir Theadore III",
-    username: "sirtheadoreiii",
-    image: "/assets/user7.webp",
-  },
-];
+// const following = [
+//   {
+//     image: "/assets/user1.jpg",
+//     name: "Olivia",
+//     username: "olivia",
+//   },
+//   {
+//     image: "/assets/user2.jpg",
+//     name: "Kai",
+//     username: "kai",
+//   },
+//   {
+//     image: "/assets/user3.jpg",
+//     name: "Asher",
+//     username: "asher",
+//   },
+//   {
+//     image: "/assets/user4.jpg",
+//     name: "Evelyn",
+//     username: "evelyn",
+//   },
+//   {
+//     image: "/assets/user5.jpg",
+//     name: "Liam",
+//     username: "liam",
+//   },
+//   {
+//     name: "Babatunde",
+//     username: "babatunde",
+//     image: "/assets/user6.webp",
+//   },
+//   {
+//     name: "Sir Theadore III",
+//     username: "sirtheadoreiii",
+//     image: "/assets/user7.webp",
+//   },
+// ];
