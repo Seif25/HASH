@@ -6,13 +6,9 @@ import { fetchReceiverInfoAction } from "@/app/lib/actions/user/user.actions";
 
 type Props = {
   params: { conversationId: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props) {
   // read route params
   const user = await currentUser();
 
