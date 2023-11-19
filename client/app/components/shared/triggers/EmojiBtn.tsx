@@ -20,12 +20,11 @@ import {
 
 interface EmojiBtnProps {
   setMessage: React.Dispatch<React.SetStateAction<string>>;
-  message: string;
 }
 
-export default function EmojiBtn({ message, setMessage }: EmojiBtnProps) {
+export default function EmojiBtn({ setMessage }: EmojiBtnProps) {
   const handleEmojiClick = (emoji: EmojiClickData) => {
-    setMessage(message + emoji.emoji);
+    setMessage((oldValue) => oldValue + emoji.emoji);
   };
 
   return (

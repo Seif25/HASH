@@ -40,4 +40,6 @@ export type MessageType = {
   sender: string;
   message: string;
   timestamp: Date;
+  deleted?: boolean;
+  isReply?: { replyTo: string | null };
 };

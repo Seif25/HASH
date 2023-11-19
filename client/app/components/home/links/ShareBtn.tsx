@@ -63,11 +63,11 @@ export default function ShareBtn({
     <TooltipProvider>
       <Tooltip>
         <DropdownMenu>
-          <div className="group flex items-center gap-1">
+          <div className="group">
             <DropdownMenuTrigger asChild>
               <TooltipTrigger>
                 <Share
-                  size={"24px"}
+                  size={"20px"}
                   className="text-accent1 group-hover:text-primary"
                 />
               </TooltipTrigger>

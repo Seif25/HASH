@@ -66,7 +66,7 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
             </button>
           </div>
           <div className="flex items-center gap-3 px-5">
-            <EmojiBtn message={text} setMessage={setText} />
+            <EmojiBtn setMessage={setText} />
             <button>
               <ImageIcon
                 size={"20px"}

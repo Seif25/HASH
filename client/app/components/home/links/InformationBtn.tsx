@@ -38,7 +38,7 @@ export default function InformationBtn({
     <TooltipProvider>
       <Tooltip>
         <DropdownMenu open={open} onOpenChange={setOpen}>
-          <div className="group flex items-center gap-1">
+          <div className="group">
             <DropdownMenuTrigger>
               <TooltipTrigger>
                 <MoreVertical

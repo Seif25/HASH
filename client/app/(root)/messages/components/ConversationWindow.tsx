@@ -11,9 +11,12 @@ import {
   Mail,
   MoreVertical,
   Phone,
+  Reply,
   SendHorizontal,
   Smile,
   Video,
+  X,
+  XCircle,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,6 +25,9 @@ import Message from "./Message";
 import { nanoid } from "nanoid";
 import { EmojiClickData } from "emoji-picker-react";
 import moment from "moment";
+import EmojiBtn from "@/app/components/shared/triggers/EmojiBtn";
+import clsx from "clsx";
+import { Button } from "@/components/ui/button";
 
 export default function ConversationWindow({
   loggedInUser,
@@ -36,6 +42,9 @@ export default function ConversationWindow({
   );
 
   const [newMessage, changeMessage] = useState<string>("");
+
+  const [showReplySection, setShowReplySection] = useState<boolean>(false);
+  const [messageToReplyTo, replyToMessage] = useState<MessageType>();
 
   useEffect(() => {
     // scroll to the end of the messages section
@@ -72,11 +81,17 @@ export default function ConversationWindow({
   }
 
   async function sendMessage() {
+    let _replyData: string | null = null;
+    if (showReplySection && messageToReplyTo) {
+      _replyData = messageToReplyTo.id;
+    }
     const generatedMessage: MessageType = {
       id: nanoid(),
       message: newMessage,
       sender: loggedInUser,
       timestamp: moment().toDate(),
+      deleted: false,
+      isReply: { replyTo: _replyData },
     };
     const data = [...messages, generatedMessage];
     const { error } = await supabase
@@ -84,6 +99,8 @@ export default function ConversationWindow({
       .update({ messages: data, last_update: moment().toDate() })
       .eq("id", conversation.id);
     changeMessage("");
+    setShowReplySection(false);
+    replyToMessage(undefined);
     if (error) throw new Error(error.message);
   }
 
@@ -94,14 +111,10 @@ export default function ConversationWindow({
     }
   }
 
-  const handleEmojiClick = (emoji: EmojiClickData) => {
-    changeMessage(newMessage + emoji.emoji);
-  };
-
   return (
     <>
       {conversation && (
-        <div className="w-full flex items-center justify-center">
+        <div className="w-full flex items-center justify-center z-50">
           {/* Recipient Information */}
           <nav className="fixed top-20 p-5 h-[10vh] lg:h-[13vh] bg-accent2 rounded-t-2xl w-full lg:w-[60%] z-30 border-b border-accent1/10">
             <div className="flex items-center justify-between">
@@ -156,13 +169,33 @@ export default function ConversationWindow({
               </div>
             </div>
           </nav>
-          <div className="fixed flex flex-col gap-3 top-32 h-[80vh] lg:h-[68vh] bg-accent2 w-full lg:w-[60%] pt-14 pb-10 px-5 overflow-y-scroll custom-scrollbar">
+          {/* Conversation */}
+          <div
+            className={clsx(
+              "fixed flex flex-col gap-3 top-32 bg-accent2 w-full lg:w-[60%] pt-14 pb-10 px-5 overflow-y-scroll custom-scrollbar",
+              showReplySection ? "h-[70vh] lg:h-[60vh]" : "h-[80vh] lg:h-[68vh]"
+            )}
+          >
             {messages.map((message, index) => (
               <Message
                 key={message.id}
-                message={message.message}
+                message={message}
+                conversationId={conversation.id}
                 color={
                   message.sender === loggedInUser ? "gradient" : "bg-zinc-700"
+                }
+                rounded={
+                  message.sender === loggedInUser
+                    ? `${
+                        message.isReply
+                          ? "rounded-r-2xl rounded-tl-2xl"
+                          : "rounded-r-full rounded-tl-full"
+                      } rounded-bl-sm`
+                    : `${
+                        message.isReply
+                          ? "rounded-l-2xl rounded-br-2xl"
+                          : "rounded-l-full rounded-br-full"
+                      } rounded-tr-sm`
                 }
                 position={
                   message.sender === loggedInUser ? "items-end" : "items-start"
@@ -171,19 +204,42 @@ export default function ConversationWindow({
                 length={messages.length}
                 messagesEndRef={messagesEndRef}
                 timestamp={message.timestamp}
+                showReply={setShowReplySection}
+                replyMessage={replyToMessage}
+                messages={messages}
               />
             ))}
           </div>
+          {/* Reply Section */}
+          {showReplySection && (
+            <div className="fixed flex items-center bg-accent2 border-t border-accent1/10 bottom-24 lg:bottom-[84px] h-[9vh] lg:h-[8vh] w-full lg:w-[60%]">
+              <div className="flex items-center w-full">
+                <Reply size={20} className="text-accent1 mx-2" />
+                <div className="flex flex-col flex-grow border-l-primary border-l-4 pl-2">
+                  <h1 className="text-body text-primary font-bold">
+                    @{messageToReplyTo?.sender}
+                  </h1>
+                  <p className="text-[14px] text-accent1/50">
+                    {messageToReplyTo?.message}
+                  </p>
+                </div>
+                <Button
+                  size={"icon"}
+                  variant={"icon"}
+                  onClick={() => setShowReplySection(false)}
+                  className="self-end justify-self-end mx-2"
+                >
+                  <X size={20} className="text-accent1/50" />
+                </Button>
+              </div>
+            </div>
+          )}
+          {/* Textfield & Options */}
           <footer className="fixed bottom-5 flex items-center p-5 h-[10vh] bg-accent2 rounded-b-2xl w-full lg:w-[60%] z-30 border-t border-accent1/10">
             <div className="flex items-center justify-between bg-dark rounded-2xl p-2 w-full">
               {/* Emoji & Image */}
               <div className="flex items-center gap-2">
-                <button>
-                  <Smile
-                    size={"20px"}
-                    className="text-accent1 hover:text-primary"
-                  />
-                </button>
+                <EmojiBtn setMessage={changeMessage} />
                 <button>
                   <ImageIcon
                     size={"20px"}
@@ -198,6 +254,7 @@ export default function ConversationWindow({
                 placeholder="Send a message..."
                 onChange={handleMessageChange}
                 onKeyDown={handleKeyDown}
+                value={newMessage}
               />
               <button onClick={sendMessage}>
                 <SendHorizontal size={"20px"} className="text-primary" />
