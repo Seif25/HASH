@@ -112,11 +112,11 @@ export default function ConversationWindow({
   }
 
   return (
-    <>
+    <div className="w-full">
       {conversation && (
-        <div className="w-full flex items-center justify-center z-50">
+        <section className="flex flex-col items-center justify-center mt-5 w-full">
           {/* Recipient Information */}
-          <nav className="fixed top-20 p-5 h-[10vh] lg:h-[13vh] bg-accent2 rounded-t-2xl w-full lg:w-[60%] z-30 border-b border-accent1/10">
+          <nav className="top-20 p-5 h-[10vh] lg:h-[13vh] bg-accent2 rounded-t-2xl w-full z-30 border-b border-accent1/10">
             <div className="flex items-center justify-between">
               <div className="flex items-start">
                 {/* Go Back */}
@@ -172,8 +172,10 @@ export default function ConversationWindow({
           {/* Conversation */}
           <div
             className={clsx(
-              "fixed flex flex-col gap-3 top-32 bg-accent2 w-full lg:w-[60%] pt-14 pb-10 px-5 overflow-y-scroll custom-scrollbar",
-              showReplySection ? "h-[70vh] lg:h-[60vh]" : "h-[80vh] lg:h-[68vh]"
+              " flex flex-col gap-3 top-32 bg-accent2 w-full pt-14 pb-10 px-5 overflow-y-scroll custom-scrollbar",
+              showReplySection
+                ? "h-[70vh] lg:h-[60vh] max-h-[70vh] lg:max-h-[60vh]"
+                : "h-[80vh] lg:h-[68vh] max-h-[80vh] lg:max-h-[68vh]"
             )}
           >
             {messages.map((message, index) => (
@@ -212,7 +214,7 @@ export default function ConversationWindow({
           </div>
           {/* Reply Section */}
           {showReplySection && (
-            <div className="fixed flex items-center bg-accent2 border-t border-accent1/10 bottom-24 lg:bottom-[84px] h-[9vh] lg:h-[8vh] w-full lg:w-[60%]">
+            <div className=" flex items-center bg-accent2 border-t border-accent1/10 bottom-24 lg:bottom-[84px] h-[9vh] lg:h-[8vh] w-full">
               <div className="flex items-center w-full">
                 <Reply size={20} className="text-accent1 mx-2" />
                 <div className="flex flex-col flex-grow border-l-primary border-l-4 pl-2">
@@ -235,7 +237,7 @@ export default function ConversationWindow({
             </div>
           )}
           {/* Textfield & Options */}
-          <footer className="fixed bottom-5 flex items-center p-5 h-[10vh] bg-accent2 rounded-b-2xl w-full lg:w-[60%] z-30 border-t border-accent1/10">
+          <footer className=" bottom-5 flex items-center p-5 h-[10vh] bg-accent2 rounded-b-2xl w-full border-t border-accent1/10">
             <div className="flex items-center justify-between bg-dark rounded-2xl p-2 w-full">
               {/* Emoji & Image */}
               <div className="flex items-center gap-2">
@@ -261,8 +263,8 @@ export default function ConversationWindow({
               </button>
             </div>
           </footer>
-        </div>
+        </section>
       )}
-    </>
+    </div>
   );
 }

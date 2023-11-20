@@ -19,7 +19,7 @@
 
 /*! LEFT SIDEBAR  */
 .left-sidebar {
-  @apply sticky left-0 top-0 z-20 flex h-screen w-[15%] hover:w-[20%] flex-col hover:items-start items-center justify-center overflow-auto p-5 max-md:hidden bg-[#13161a] bg-opacity-0;
+  @apply sticky left-0 top-0 z-20 flex max-h-screen w-[15%] hover:w-[20%] flex-col hover:items-start items-center justify-center overflow-auto p-5 max-md:hidden bg-[#13161a] bg-opacity-0;
 }
 
 .left-sidebar-link {
