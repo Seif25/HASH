@@ -1,15 +1,14 @@
 "use server";
+import {
+  NewNotificationProps,
+  NotificationType,
+} from "@/app/lib/types/notification.types";
 import NotificationModel from "../../app/lib/models/notification.model";
 import {
   initializeMongoConnection,
   isConnected,
 } from "../../app/lib/mongoose.middleware";
 import { revalidatePath } from "next/cache";
-import {
-  DetailedNotificationType,
-  NewNotificationType,
-  NotificationType,
-} from "@/utils/types/notification.types";
 
 async function connectToDB() {
   if (!isConnected) {
@@ -43,7 +42,7 @@ export async function getDetailedNotifications(username: string) {
     });
 
     const notifications =
-      (await notificationsQuery.exec()) as DetailedNotificationType[];
+      (await notificationsQuery.exec()) as NotificationType[];
 
     return notifications;
   } catch (error: any) {
@@ -57,7 +56,7 @@ export async function createNotification({
   type,
   link,
   source,
-}: NewNotificationType) {
+}: NewNotificationProps) {
   await connectToDB();
 
   try {

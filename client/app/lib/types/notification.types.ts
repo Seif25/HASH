@@ -19,3 +19,11 @@ export type NotificationGroupedType = {
   repost?: NotificationType[];
   admin?: NotificationType[];
 };
+
+export type NewNotificationProps = {
+  user: string;
+  message: string;
+  link: string;
+  type: "like" | "mention" | "reply" | "repost" | "admin" | "follow";
+  source: string;
+};

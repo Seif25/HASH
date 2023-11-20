@@ -8,20 +8,12 @@ import {
 import supabase from "@/app/lib/supabase/supabase";
 import { Metadata, ResolvingMetadata } from "next";
 
-export async function generateMetadata(
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   // read route params
   const user = await currentUser();
 
   return {
     title: `@${user?.username} Messages / Hash`,
-    description:
-      "From breaking news and entertainment to sports and politics, get the full story with all the live commentary.",
-    appleWebApp: true,
-    applicationName: "Hash",
-    creator: "Seif Ahmed",
-    publisher: "Vercel",
   };
 }
 

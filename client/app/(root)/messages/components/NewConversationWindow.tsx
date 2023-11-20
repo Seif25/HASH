@@ -13,15 +13,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { MailPlus } from "lucide-react";
-import Image from "next/image";
 import NewConversationCard from "./NewConversationCard";
+import { currentUser } from "@clerk/nextjs";
 
 interface NewConversationWindowProps {
   following: SummarizedUserType[];
+  loggedInUser: string;
 }
 
-export default function NewConversationWindow({
+export default async function NewConversationWindow({
   following,
+  loggedInUser,
 }: NewConversationWindowProps) {
   return (
     <TooltipProvider>
@@ -43,7 +45,11 @@ export default function NewConversationWindow({
             </DialogHeader>
             <div className="flex flex-col gap-10">
               {following.map((user) => (
-                <NewConversationCard user={user} key={user.username} />
+                <NewConversationCard
+                  user={user}
+                  key={user.username}
+                  loggedInUser={loggedInUser}
+                />
               ))}
             </div>
           </DialogContent>

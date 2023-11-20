@@ -27,11 +27,11 @@ export default async function Hash() {
   return (
     <section className="flex flex-col px-5 lg:px-0 gap-5 overflow-y-hidden">
       <Post
-        loggedInUser={loggedInUser.username}
-        profilePic={loggedInUser.image}
+        loggedInUser={loggedInUser?.username ?? ""}
+        profilePic={loggedInUser?.image ?? "/assets/profile-pic.png"}
       />
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Home loggedInUser={loggedInUser.username} />
+        <Home loggedInUser={loggedInUser?.username ?? ""} />
       </HydrationBoundary>
     </section>
   );

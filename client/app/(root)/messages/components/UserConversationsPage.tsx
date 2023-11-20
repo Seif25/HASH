@@ -77,7 +77,10 @@ export default function UserConversationsPage({
             <Search size={"24px"} className="text-accent1" />
           </div>
           {/* New Conversation */}
-          <NewConversationWindow following={following.following} />
+          <NewConversationWindow
+            following={following.following}
+            loggedInUser={loggedInUser.username}
+          />
         </div>
       </section>
       {/* Conversations */}

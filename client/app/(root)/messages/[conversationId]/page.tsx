@@ -6,20 +6,18 @@ import { fetchReceiverInfoAction } from "@/app/lib/actions/user/user.actions";
 
 type Props = {
   params: { conversationId: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   // read route params
   const user = await currentUser();
 
   return {
     title: `@${user?.username} Messages / Hash - ${params.conversationId}`,
-    description:
-      "From breaking news and entertainment to sports and politics, get the full story with all the live commentary.",
-    appleWebApp: true,
-    applicationName: "Hash",
-    creator: "Seif Ahmed",
-    publisher: "Vercel",
   };
 }
 

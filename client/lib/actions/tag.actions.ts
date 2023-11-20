@@ -5,7 +5,7 @@ import {
   initializeMongoConnection,
   isConnected,
 } from "../../app/lib/mongoose.middleware";
-import { Tag } from "@/utils/types/tag.types";
+import { TagType } from "@/app/lib/types/tag.types";
 
 async function connectToDB() {
   if (!isConnected) {
@@ -15,11 +15,9 @@ async function connectToDB() {
 
 const lastWeek = moment().subtract(1, "week").toDate();
 
-export async function suggestTags(query: string): Promise<Tag[]> {
+export async function suggestTags(query: string): Promise<TagType[]> {
   // connect to db
   await connectToDB();
-
-  console.log(query);
 
   try {
     // find tags
