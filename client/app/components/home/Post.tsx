@@ -10,23 +10,32 @@ import { type PutBlobResult } from "@vercel/blob";
 import { upload } from "@vercel/blob/client";
 import { CreateHashParams } from "@/app/lib/types/hash.actions.types";
 import { useToast } from "@/components/ui/use-toast";
-import { nanoid } from "nanoid";
+import { customAlphabet, nanoid } from "nanoid";
 import { MediaType } from "@/app/lib/types/hash.types";
+import supabase from "@/app/lib/supabase/supabase";
+import { useUploadThing } from "@/app/lib/uploadthing/uploadThing";
 
 interface PostProps {
   loggedInUser: string;
   profilePic: string;
 }
 
+const file_nanoid = customAlphabet(
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+  7
+);
+
 export default function Post({ loggedInUser, profilePic }: PostProps) {
   const { toast } = useToast();
 
   const [text, setText] = useState<string>("");
-  const [blob, setBlob] = useState<MediaType[]>([]);
+  const [blob, setBlob] = useState<File[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const pathname = usePathname();
 
   const inputFileRef = useRef<HTMLInputElement>(null);
+
+  const { startUpload } = useUploadThing("hashMedia");
 
   const handleOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
@@ -39,6 +48,7 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
 
   useEffect(() => {
     if (inputFileRef.current?.files) {
+      setBlob(Array.from(inputFileRef.current?.files));
       if (inputFileRef.current?.files?.length > 4) {
         toast({
           title: "Unable to upload",
@@ -46,37 +56,42 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
         });
       }
     }
-  }, [inputFileRef.current?.files]);
+  }, [inputFileRef.current]);
 
   const createPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (text.length === 0 && inputFileRef.current?.files?.length === 0) {
+      toast({
+        title: "Unable to create Hash",
+        description: "You must add some text or media to your Hash",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
+
+    const media: MediaType[] = [];
+
     if (inputFileRef.current?.files) {
       const files = Array.from(inputFileRef.current?.files);
-      files.forEach(async (file) => {
-        // const newBlob = await upload(file.name, file, {
-        //   access: "public",
-        //   handleUploadUrl: "/api/media/upload",
-        // });
-        fetch("/api/media/upload", {
-          method: "POST",
-          headers: { "content-type": file?.type || "application/octet-stream" },
-          body: file,
-        }).then(async (res) => {
-          const { url } = (await res.json()) as PutBlobResult;
-          const mediaBlob = {
-            id: nanoid(),
-            url: url,
-            alt: "",
-          };
-          setBlob((prev) => [...prev, mediaBlob]);
-        });
+
+      const res = await startUpload(files);
+
+      res?.forEach((file) => {
+        const mediaBlob = {
+          id: file_nanoid(),
+          url: file.url,
+          alt: file.name,
+        };
+        media.push(mediaBlob);
       });
     }
     const data = {
       text,
       author: loggedInUser,
-      media: blob,
+      media,
       pathname,
     };
     await createHashAction(data as CreateHashParams);
@@ -112,7 +127,7 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
             <button
               className="text-primary disabled:text-accent1/50 w-[20%] flex items-center justify-end"
               type="submit"
-              disabled={text.length === 0}
+              // disabled={text.length === 0 && blob.length === 0}
             >
               {!loading ? (
                 <SendHorizontal size={"16px"} />
