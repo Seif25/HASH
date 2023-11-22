@@ -64,3 +64,33 @@ export const groupNotifications = function (array: NotificationType[]) {
     // ...groupedAdmin,
   ];
 };
+
+export const getMediaType = function (url: string): ReturnMediaType {
+  const type = url.split(".").pop();
+  if (
+    type === "jpg" ||
+    type === "jpeg" ||
+    type === "png" ||
+    type === "gif" ||
+    type === "webp"
+  ) {
+    return "image";
+  } else if (
+    type === "mp4" ||
+    type === "webm" ||
+    type === "ogg" ||
+    type === "mov"
+  ) {
+    return "video";
+  } else if (
+    type === "mp3" ||
+    type === "wav" ||
+    type === "ogg" ||
+    type === "m4a"
+  ) {
+    return "audio";
+  }
+  return "unknown";
+};
+
+type ReturnMediaType = "image" | "video" | "audio" | "unknown";

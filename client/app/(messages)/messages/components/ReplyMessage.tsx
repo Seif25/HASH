@@ -1,5 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
 interface ReplyMessageProps {
   sender: string;
   replyMessage: string;
@@ -17,6 +20,7 @@ export default function ReplyMessage({
   color,
   rounded,
 }: ReplyMessageProps) {
+  const [showMore, setShowMore] = useState<boolean>(false);
   function handleScroll() {
     const element = document.getElementById(replyId);
     if (element) {
@@ -41,9 +45,34 @@ export default function ReplyMessage({
         onClick={handleScroll}
       >
         <h1 className="text-body text-accent1 font-bold">@{sender}</h1>
-        <p className="text-[14px] text-accent1/50">{replyMessage}</p>
+        <p className="text-[14px] text-accent1/50">
+          {replyMessage.length > 250
+            ? replyMessage.slice(0, 250) + "..."
+            : replyMessage}
+        </p>
       </div>
-      <p>{message}</p>
+      <div>
+        {message.length > 250 ? (
+          <p
+            className={`${rounded} gap-1 text-accent1 w-auto max-w-80 p-2 select-none ${color}`}
+          >
+            {showMore ? message : message.slice(0, 250) + "..."}
+            <Button
+              variant={"link"}
+              className="text-[12px] font-bold underline"
+              onClick={() => setShowMore((prev) => !prev)}
+            >
+              {showMore ? "Show Less" : "Show More"}
+            </Button>
+          </p>
+        ) : (
+          <p
+            className={`${rounded} text-accent1 w-auto max-w-80 max-h-20 p-2 select-none ${color} line-clamp-6 overflow-y-hidden`}
+          >
+            {message}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

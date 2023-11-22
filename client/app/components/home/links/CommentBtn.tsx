@@ -16,6 +16,7 @@ import {
 import { MediaType } from "@/app/lib/types/hash.types";
 import Image from "next/image";
 import { SummarizedUserType } from "@/app/lib/types/user.types";
+import ReactPlayer from "react-player";
 
 interface CommentBtnProps {
   count: number;
@@ -79,14 +80,30 @@ export default function CommentBtn({
                     } gap-5 w-full max-w-xs h-full max-h-[380px] rounded-2xl`}
                   >
                     {hashMedia.map((hashMedia) => (
-                      <Image
-                        src={hashMedia.url}
-                        alt={hashMedia.alt}
-                        width={100}
-                        height={100}
-                        key={hashMedia.url}
-                        className="w-full h-auto max-h-[400px] rounded-2xl object-cover"
-                      />
+                      <div key={hashMedia.id}>
+                        {hashMedia.mediaType === "image" ? (
+                          <Image
+                            src={hashMedia.url}
+                            alt={hashMedia.alt}
+                            width={800}
+                            height={800}
+                            className="rounded-2xl w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="rounded-2xl w-full h-full">
+                            <ReactPlayer
+                              url={hashMedia.url}
+                              width="100%"
+                              height="100%"
+                              muted={true}
+                              playing={true}
+                              loop={true}
+                              controls={true}
+                              style={{ borderRadius: "1rem" }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                 )}

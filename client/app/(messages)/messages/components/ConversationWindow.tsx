@@ -178,7 +178,7 @@ export default function ConversationWindow({
                 : "h-[80vh] lg:h-[68vh] max-h-[80vh] lg:max-h-[68vh]"
             )}
           >
-            {messages.map((message, index) => (
+            {messages?.map((message, index) => (
               <Message
                 key={message.id}
                 message={message}
@@ -214,14 +214,14 @@ export default function ConversationWindow({
           </div>
           {/* Reply Section */}
           {showReplySection && (
-            <div className=" flex items-center bg-accent2 border-t border-accent1/10 bottom-24 lg:bottom-[84px] h-[9vh] lg:h-[8vh] w-full">
+            <div className=" flex items-center bg-accent2 border-t border-accent1/10 bottom-24 lg:bottom-[84px] h-[9vh] lg:h-[10vh] w-full py-1">
               <div className="flex items-center w-full">
-                <Reply size={20} className="text-accent1 mx-2" />
-                <div className="flex flex-col flex-grow border-l-primary border-l-4 pl-2">
+                <Reply size={20} className="text-accent1 mx-2 w-[5%]" />
+                <div className="flex flex-col flex-grow border-l-primary border-l-4 pl-2 w-[90%]">
                   <h1 className="text-body text-primary font-bold">
                     @{messageToReplyTo?.sender}
                   </h1>
-                  <p className="text-[14px] text-accent1/50">
+                  <p className="text-[14px] text-accent1/50 line-clamp-2">
                     {messageToReplyTo?.message}
                   </p>
                 </div>
@@ -229,7 +229,7 @@ export default function ConversationWindow({
                   size={"icon"}
                   variant={"icon"}
                   onClick={() => setShowReplySection(false)}
-                  className="self-end justify-self-end mx-2"
+                  className="self-end justify-self-end mx-2 w-[5%]"
                 >
                   <X size={20} className="text-accent1/50" />
                 </Button>

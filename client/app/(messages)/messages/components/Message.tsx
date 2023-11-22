@@ -12,6 +12,8 @@ import { AlertCircle } from "lucide-react";
 import ReplyBtn from "./ReplyBtn";
 import ForwardBtn from "./ForwardBtn";
 import ReplyMessage from "./ReplyMessage";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface MessageProps {
   position: string;
@@ -43,6 +45,7 @@ export default function Message({
   messages,
 }: MessageProps) {
   const reply = messages.find((msg) => msg.id === message.isReply?.replyTo);
+  const [showMore, setShowMore] = useState<boolean>(false);
   return (
     <div
       id={message.id}
@@ -73,11 +76,30 @@ export default function Message({
                 rounded={rounded}
               />
             ) : (
-              <p
-                className={`${rounded} text-accent1 w-auto max-w-80 p-2 select-none ${color}`}
-              >
-                {message.message}
-              </p>
+              <div>
+                {message.message.length > 250 ? (
+                  <p
+                    className={`${rounded} gap-1 text-accent1 w-auto max-w-80 p-2 select-none ${color}`}
+                  >
+                    {showMore
+                      ? message.message
+                      : message.message.slice(0, 250) + "..."}
+                    <Button
+                      variant={"link"}
+                      className="text-[12px] font-bold underline"
+                      onClick={() => setShowMore((prev) => !prev)}
+                    >
+                      {showMore ? "Show Less" : "Show More"}
+                    </Button>
+                  </p>
+                ) : (
+                  <p
+                    className={`${rounded} text-accent1 w-auto max-w-80 max-h-20 p-2 select-none ${color} line-clamp-6 overflow-y-hidden`}
+                  >
+                    {message.message}
+                  </p>
+                )}
+              </div>
             )}
           </ContextMenuTrigger>
           <ContextMenuContent>

@@ -14,6 +14,7 @@ import { customAlphabet, nanoid } from "nanoid";
 import { MediaType } from "@/app/lib/types/hash.types";
 import supabase from "@/app/lib/supabase/supabase";
 import { useUploadThing } from "@/app/lib/uploadthing/uploadThing";
+import { getMediaType } from "@/app/utils/functions/functions";
 
 interface PostProps {
   loggedInUser: string;
@@ -80,10 +81,12 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
       const res = await startUpload(files);
 
       res?.forEach((file) => {
+        const mediaType = getMediaType(file.name);
         const mediaBlob = {
           id: file_nanoid(),
           url: file.url,
           alt: file.name,
+          mediaType,
         };
         media.push(mediaBlob);
       });

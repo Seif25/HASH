@@ -13,6 +13,7 @@ const rubik = Rubik({
 });
 
 export const metadata: Metadata = {
+  manifest: "/manifest.json",
   title: "Hash. Your portal to the world.",
   description:
     "From breaking news and entertainment to sports and politics, get the full story with all the live commentary.",

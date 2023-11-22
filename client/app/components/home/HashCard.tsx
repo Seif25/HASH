@@ -12,6 +12,7 @@ import Image from "next/image";
 import HashStats from "./HashStats";
 import HashText from "../shared/text/HashText";
 import Link from "next/link";
+import ReactPlayer from "react-player";
 import { useEffect, useState } from "react";
 
 interface HashProps {
@@ -84,13 +85,28 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
           >
             {hash.media.map((media) => (
               <div key={media.id}>
-                <Image
-                  src={media.url}
-                  alt={media.alt}
-                  width={800}
-                  height={800}
-                  className="rounded-2xl w-full h-full object-cover"
-                />
+                {media.mediaType === "image" ? (
+                  <Image
+                    src={media.url}
+                    alt={media.alt}
+                    width={800}
+                    height={800}
+                    className="rounded-2xl w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="rounded-2xl w-full h-full">
+                    <ReactPlayer
+                      url={media.url}
+                      width="100%"
+                      height="100%"
+                      muted={true}
+                      playing={true}
+                      loop={true}
+                      controls={true}
+                      style={{ borderRadius: "1rem" }}
+                    />
+                  </div>
+                )}
               </div>
             ))}
           </div>
