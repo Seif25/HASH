@@ -85,23 +85,25 @@ export default function ConversationWindow({
     if (showReplySection && messageToReplyTo) {
       _replyData = messageToReplyTo.id;
     }
-    const generatedMessage: MessageType = {
-      id: nanoid(),
-      message: newMessage,
-      sender: loggedInUser,
-      timestamp: moment().toDate(),
-      deleted: false,
-      isReply: { replyTo: _replyData },
-    };
-    const data = [...messages, generatedMessage];
-    const { error } = await supabase
-      .from("Conversations")
-      .update({ messages: data, last_update: moment().toDate() })
-      .eq("id", conversation.id);
-    changeMessage("");
-    setShowReplySection(false);
-    replyToMessage(undefined);
-    if (error) throw new Error(error.message);
+    if (newMessage.length > 0) {
+      const generatedMessage: MessageType = {
+        id: nanoid(),
+        message: newMessage,
+        sender: loggedInUser,
+        timestamp: moment().toDate(),
+        deleted: false,
+        isReply: { replyTo: _replyData },
+      };
+      const data = [...messages, generatedMessage];
+      const { error } = await supabase
+        .from("Conversations")
+        .update({ messages: data, last_update: moment().toDate() })
+        .eq("id", conversation.id);
+      changeMessage("");
+      setShowReplySection(false);
+      replyToMessage(undefined);
+      if (error) throw new Error(error.message);
+    }
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -189,15 +191,11 @@ export default function ConversationWindow({
                 rounded={
                   message.sender === loggedInUser
                     ? `${
-                        message.isReply
-                          ? "rounded-r-2xl rounded-tl-2xl"
-                          : "rounded-r-full rounded-tl-full"
-                      } rounded-bl-sm`
-                    : `${
-                        message.isReply
-                          ? "rounded-l-2xl rounded-br-2xl"
-                          : "rounded-l-full rounded-br-full"
+                        message.isReply ? "rounded-2xl" : "rounded-full"
                       } rounded-tr-sm`
+                    : `${
+                        message.isReply ? "rounded-2xl" : "rounded-full"
+                      } rounded-tl-sm`
                 }
                 position={
                   message.sender === loggedInUser ? "items-end" : "items-start"

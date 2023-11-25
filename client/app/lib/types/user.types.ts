@@ -16,6 +16,7 @@ export type UserType = {
   followers: string[];
   birthDate: Date;
   hashes: HashType[];
+  likes?: HashType[];
 };
 
 export type SummarizedUserType = {

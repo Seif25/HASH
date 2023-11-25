@@ -28,7 +28,7 @@ export default function Navbar({ loggedUser }: NavbarProps) {
           <Image src={"/LogoName.png"} alt="HASH" width={128} height={128} />
         </Link>
         <Link href={"/"} className="lg:hidden">
-          <Image src={"/Logo.png"} alt="HASH" width={48} height={48} />
+          <Image src={"/logo.png"} alt="HASH" width={48} height={48} />
         </Link>
       </div>
       <div className="hidden lg:flex w-1/3 justify-end items-center">

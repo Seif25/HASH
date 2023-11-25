@@ -14,6 +14,7 @@ interface ProfileInformationProps {
   website: string;
   following: number;
   followers: number;
+  ref?: any;
 }
 
 export default function ProfileInformation({
@@ -27,9 +28,10 @@ export default function ProfileInformation({
   website,
   following,
   followers,
+  ref,
 }: ProfileInformationProps) {
   return (
-    <>
+    <div ref={ref}>
       {banner ? (
         <section
           className="rounded-2xl p-10"
@@ -65,7 +67,7 @@ export default function ProfileInformation({
       <div className="flex flex-col gap-0 justify-center lg:mx-10 my-5">
         <div className="flex items-center gap-1">
           <h1 className="text-heading font-bold">{name}</h1>
-          {verified && <BadgeCheck className="text-primary" />}
+          {verified && <BadgeCheck size={16} className="text-primary" />}
         </div>
         <h3 className="text-paragraph font-normal text-accent1/50">
           @{username}
@@ -113,6 +115,6 @@ export default function ProfileInformation({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

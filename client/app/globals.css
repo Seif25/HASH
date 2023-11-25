@@ -36,10 +36,10 @@
 }
 
 .sheet-links {
-  @apply text-accent1 text-heading rounded-full hover:bg-primary/10 hover:text-primary p-3 flex items-center gap-3 w-40;
+  @apply text-accent1 text-heading rounded-full hover:bg-primary/10 hover:text-primary p-3 flex items-center gap-3 w-44;
 }
 .sheet-config-links {
-  @apply text-accent1 text-heading rounded-full hover:bg-red-500/10 hover:text-red-500 p-3 flex items-center gap-3 w-40;
+  @apply text-accent1 text-heading rounded-full hover:bg-red-500/10 hover:text-red-500 p-3 flex items-center gap-3 w-44;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

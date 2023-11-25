@@ -18,7 +18,7 @@ export async function generateMetadata(
   // read route params
 
   return {
-    title: `Home / Hash`,
+    title: `Messages / Hash`,
     description:
       "From breaking news and entertainment to sports and politics, get the full story with all the live commentary.",
     appleWebApp: true,

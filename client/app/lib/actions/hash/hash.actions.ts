@@ -8,6 +8,7 @@ import {
 import { MongooseError } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { HashType } from "../../types/hash.types";
+import UserModel from "../../models/user.model";
 
 /**
  * CREATE HASH ACTION
@@ -27,8 +28,25 @@ export async function createHashAction({
     media,
     community: null,
   })
-    .then(() => {
-      console.log("New HASH Created Successfully");
+    .then((res) => {
+      UserModel.updateOne(
+        { username: author },
+        {
+          $push: { hashes: res._id },
+        }
+      )
+        .then(() => {
+          console.log("New HASH Created Successfully");
+        })
+        .catch((error: MongooseError) => {
+          console.error(
+            "Failed to update user's hashes: " +
+              error.name +
+              ": " +
+              error.message
+          );
+          throw new Error(error.message);
+        });
     })
     .catch((error: MongooseError) => {
       console.error(error.name + ": " + error.message);
