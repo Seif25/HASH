@@ -14,6 +14,7 @@ import HashText from "../shared/text/HashText";
 import Link from "next/link";
 import ReactPlayer from "react-player";
 import { useEffect, useState } from "react";
+import HashCarousel from "./HashCarousel";
 
 interface HashProps {
   hash: HashType;
@@ -69,46 +70,25 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
       <div className="flex flex-col gap-5">
         {/* Hash Text */}
         <Link href={`/hash/${hash._id}`}>
-          <h2 className="text-body lg:text-heading font-normal text-accent1 p-5">
+          <h2 className="text-body lg:text-heading font-normal text-accent1 px-5 pt-5">
             <HashText text={hash.text} />
           </h2>
         </Link>
 
         {/* Hash Media */}
         {hash.media.length > 0 && (
-          <div
-            className={`grid ${
-              cols[hash.media.length - 1]
-            } gap-5 p-5 items-center justify-center ${
-              hash.media.length === 1 ? "max-w-sm h-auto" : "w-full h-full"
-            } object-cover`}
-          >
-            {hash.media.map((media) => (
-              <div key={media.id}>
-                {media.mediaType === "image" ? (
-                  <Image
-                    src={media.url}
-                    alt={media.alt}
-                    width={800}
-                    height={800}
-                    className="rounded-2xl w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="rounded-2xl w-full h-full">
-                    <ReactPlayer
-                      url={media.url}
-                      width="100%"
-                      height="100%"
-                      muted={true}
-                      playing={true}
-                      loop={true}
-                      controls={true}
-                      style={{ borderRadius: "1rem" }}
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
+          <div className="flex items-center justify-start w-full h-auto px-5">
+            {hash.media.length === 1 ? (
+              <Image
+                src={hash.media[0].url}
+                alt={hash.media[0].alt}
+                width={400}
+                height={400}
+                className="rounded-2xl w-full lg:w-1/2 bg-accent1 h-80 object-cover"
+              />
+            ) : (
+              <HashCarousel media={hash.media} />
+            )}
           </div>
         )}
       </div>

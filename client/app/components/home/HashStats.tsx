@@ -45,7 +45,7 @@ export default function HashStats({
   createdAt,
 }: HashStatsProps) {
   return (
-    <div className="flex flex-col justify-center w-full gap-5">
+    <div className="flex flex-col justify-center w-full gap-5 mt-5">
       <div className="flex items-center justify-between lg:justify-start lg:gap-10 lg:px-5">
         <CommentBtn
           count={commentCount}
