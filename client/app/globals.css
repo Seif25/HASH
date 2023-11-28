@@ -112,3 +112,26 @@
   transform: rotate(135deg) translate(-50%);
   border-right: 10px solid rgb(19 22 26);
 }
+
+.video-container {
+  margin-inline: auto;
+}
+
+.timeline{
+  background: #13161a;
+}
+
+.timeline::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: calc(100% - var(--preview-position) * 100%);
+  background: #E6EBF0;
+  display: none;
+}
+
+.timeline-container:hover .timeline::before{
+  display: block;
+}

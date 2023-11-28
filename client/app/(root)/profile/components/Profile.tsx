@@ -42,7 +42,7 @@ export default function Profile({
     setTabValue(value);
     startRef.current?.scrollIntoView({
       behavior: "smooth",
-      block: "start",
+      block: "center",
       inline: "start",
     });
   }
@@ -67,8 +67,7 @@ export default function Profile({
           className="sticky top-0 flex items-center justify-between h-20 w-full p-5 rounded-t-2xl"
           style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${
-              user.banner ||
-              `https://placehold.co/800x300/13161a/1991fe?text=${user.username};&font=Lato`
+              user.banner || `/assets/default-banner.png`
             })`,
             backgroundSize: "cover",
             width: "100%",

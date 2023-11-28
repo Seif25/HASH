@@ -79,7 +79,7 @@ export default function Message({
               <div>
                 {message.message.length > 250 ? (
                   <p
-                    className={`${rounded} gap-1 text-accent1 w-auto max-w-80 p-2 select-none ${color}`}
+                    className={`${rounded} gap-1 text-accent1 w-auto max-w-80 p-2 line-clamp-4 select-none ${color}`}
                   >
                     {showMore
                       ? message.message
@@ -94,7 +94,7 @@ export default function Message({
                   </p>
                 ) : (
                   <p
-                    className={`${rounded} text-accent1 w-auto max-w-80 max-h-20 p-2 select-none ${color} line-clamp-6 overflow-y-hidden`}
+                    className={`${rounded} text-accent1 w-auto max-w-80 p-2 select-none ${color} overflow-y-hidden`}
                   >
                     {message.message}
                   </p>
