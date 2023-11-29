@@ -135,3 +135,7 @@
 .timeline-container:hover .timeline::before{
   display: block;
 }
+
+.video-duration{
+  min-width: 40px;
+}

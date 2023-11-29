@@ -1,6 +1,7 @@
 import Image from "next/image";
 import ReactPlayer from "react-player";
 import HashVideoPlayer from "./HashVideoPlayer";
+import HashVideoPreview from "./HashVideoPreview";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 
 import '@splidejs/splide/css/skyblue';
@@ -12,7 +13,7 @@ export default function HashCarousel({ media }) {
       className="w-full h-[25rem] lg:p-10 my-10 bg-teal-200 z-0"
     >
       {media.map((item, index) => (
-        <SplideSlide key={`slide-${index}`} options = {{ autoWidth: true, autoHeight: true }} className="bg-red-400 p-10">
+        <SplideSlide key={`slide-${index}`} options = {{ autoWidth: true, autoHeight: true }} className="bg-red-400 lg:p-10">
           {item.mediaType === "image" ? (
             <Image
               src={item.url}
@@ -23,7 +24,7 @@ export default function HashCarousel({ media }) {
             />
           ) : (
             <div className="rounded-2xl w-full h-80">
-              <HashVideoPlayer src={item.url} />
+              <HashVideoPreview src={item.url} />
               {/* <ReactPlayer
                 url={item.url}
                 width="100%"

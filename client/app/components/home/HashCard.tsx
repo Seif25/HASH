@@ -14,6 +14,7 @@ import HashText from "../shared/text/HashText";
 import Link from "next/link";
 import ReactPlayer from "react-player";
 import { useEffect, useState } from "react";
+import HashVideoPreview from "./HashVideoPreview";
 import HashCarousel from "./HashCarousel";
 
 interface HashProps {
@@ -87,7 +88,24 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
                 className="rounded-2xl w-full lg:w-1/2 bg-accent1 h-80 object-cover"
               />
             ) : (
-              <HashCarousel media={hash.media} />
+              // <HashCarousel media={hash.media} />
+              <div className="grid grid-cols-2 gap-5 space-y-5 items-center justify-center w-full">
+                {hash.media.map((media, index) => (
+                  <div>
+                    {media.mediaType === "image" ? (
+                      <Image
+                        src={media.url}
+                        alt={media.alt}
+                        width={400}
+                        height={400}
+                        className="rounded-2xl w-full bg-accent1 h-44 object-cover"
+                      />
+                    ) : (
+                      <HashVideoPreview src={media.url} />
+                    )}
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         )}
