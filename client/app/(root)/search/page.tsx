@@ -1,34 +1,50 @@
-import Search from "@/components/shared/Search";
-import { fetchUser, fetchUsers } from "@/lib/actions/user.actions";
+import HashCard from "@/app/components/home/HashCard";
+import { searchAction } from "@/app/lib/actions/search/search.actions";
+import { HashType } from "@/app/lib/types/hash.types";
+import { Button } from "@/components/ui/button";
 import { currentUser } from "@clerk/nextjs";
-import { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { Search } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Search / Hash",
+type Props = {
+  searchParams?: { [key: string]: string | undefined };
 };
 
-export default async function SearchPage() {
+export default async function Page({ searchParams }: Props) {
   const user = await currentUser();
-  if (!user) throw new Error("Not authenticated.");
 
-  const userInfo = await fetchUser(user?.username ?? "");
-  if (!userInfo?.onBoarded) redirect("/onboarding");
+  const query = searchParams?.q ?? "";
+  const type = searchParams?.type ?? "";
 
-  //   Fetch All Users
-//   const handleSearch = async (searchString: string) => {
-//     return await fetchUsers({
-//       currentUser: userInfo.username,
-//       searchString: searchString,
-//       pageNumber: 1,
-//       pageSize: 10,
-//       sortBy: "asc",
-//     });
-//   };
+  const results = await searchAction({ query: `#${query}`, type });
 
   return (
-    <section className="w-full">
-      <Search currentUser={userInfo.username} />
-    </section>
+    <div className="mt-5 bg-accent2/50 rounded-2xl p-5">
+      <h1 className="text-heading font-bold mb-5">Search</h1>
+      <div className="flex items-center justify-between rounded-2xl bg-accent2 p-1 mb-5">
+        <input
+          type="text"
+          className="bg-accent2 w-full rounded-full ringo-0 outline-none border-none px-3 py-1 text-accent1"
+          defaultValue={query}
+          placeholder="Search Hash"
+        />
+        <Button size={"icon"} variant={"icon"} className="text-accent1">
+          <Search size={24} />
+        </Button>
+      </div>
+      {results &&
+        (results.type === "hash" ? (
+          <div className="flex flex-col gap-5">
+            {results.results.map((result: HashType) => (
+              <HashCard
+                key={result._id}
+                hash={result}
+                loggedInUser={user?.username ?? ""}
+              />
+            ))}
+          </div>
+        ) : (
+          <></>
+        ))}
+    </div>
   );
 }

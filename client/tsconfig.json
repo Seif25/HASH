@@ -22,7 +22,7 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/utils/Links.js", "app/components/home/MediaCard.jsx", "../old/middleware.ts", "../old/middleware.ts", "app/components/shared/swiper/Swiper.jsx", "app/components/home/HashCarousel.tsx"],
   "exclude": ["node_modules"],
   "resolve": {
     "alias": {

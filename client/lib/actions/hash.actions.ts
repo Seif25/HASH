@@ -3,16 +3,19 @@
 import {
   AddCommentParams,
   CreateHashParams,
-  Hash,
   LikeHashParams,
   RepostHashParams,
-} from "@/utils/types/hash.types";
-import { initializeMongoConnection, isConnected } from "../mongoose.middleware";
-import HashModel from "../models/hash.model";
+} from "@/app/utils/actions/types/hash.actions.types";
+import { HashType } from "../../app/lib/types/hash.types";
+import {
+  initializeMongoConnection,
+  isConnected,
+} from "../../app/lib/mongoose.middleware";
+import HashModel from "../../app/lib/models/hash.model";
 import { revalidatePath } from "next/cache";
 import mongoose, { MongooseError } from "mongoose";
-import User from "../models/user.model";
-import Tag from "../models/tag.model";
+import User from "../../app/lib/models/user.model";
+import Tag from "../../app/lib/models/tag.model";
 // import { logger } from "../logs/logger";
 
 // *SETTING UP LOGGER
@@ -77,7 +80,7 @@ export async function createHash({
     media: media,
     tags: tags,
   })
-    .then((newHash: Hash) => {
+    .then((newHash: HashType) => {
       // console.info(`New hash created successfully for: ${username}`);
       // Add hash to user's hashes
       User.findOneAndUpdate(
@@ -110,17 +113,15 @@ export async function createHash({
  * Return all hashes
  * @param pageNumber {number}
  * @param pageSize {number}
- * @returns {Promise<{hashes: Hash[], isNext: boolean}>}
+ * @returns {Promise<{hashes: HashType[], isNext: boolean}>}
  * @throws {MongooseError}
  */
 export async function fetchHashes(
   pageNumber: number = 1,
   pageSize: number = 20
-): Promise<{ hashes: Hash[]; isNext: boolean }> {
+): Promise<{ hashes: HashType[]; isNext: boolean }> {
   // Connect to DB
   connectToDB();
-  // console.log(`Attempting to Fetch All Hashes`);
-
   try {
     // Calculate skip and limit
     const skip = (pageNumber - 1) * pageSize;
@@ -142,29 +143,28 @@ export async function fetchHashes(
           path: "author",
           model: "User",
           foreignField: "username",
-          select:
-            "name image verified username bio following followers",
+          select: "name image verified username bio following followers",
         },
-      }).lean()
+      })
+      .lean();
 
     let totalPageCount: number = 0;
     try {
-      // console.log(`Attempting to retrieve total page count`);
       totalPageCount = await HashModel.countDocuments({
         parentId: { $in: [null, undefined] },
       });
-      // console.info(`Total page count retrieved successfully`);
     } catch (error: any) {
       console.error(`Error retrieving total page count: ${error.message}`);
       revalidatePath(`/`);
       return { hashes: [], isNext: false };
     }
 
-    const hashes = (await hashQuery.exec()) as Hash[];
+    const hashes = (await hashQuery.exec()) as HashType[];
+    const JsonHashes = JSON.parse(JSON.stringify(hashes)) as HashType[];
 
     const isNext = totalPageCount > skip + hashes.length;
 
-    return { hashes, isNext };
+    return { hashes: JsonHashes, isNext };
   } catch (error: any) {
     console.error(`Error fetching hashes: ${error.message}`);
     throw new Error(`Error fetching hashes: ${error.message}`);
@@ -221,7 +221,7 @@ export async function deleteHash(id: string): Promise<void> {
   // console.log(`Attempting to Delete Hash: ${id}`);
   try {
     // Delete Hash from hash collection
-    const deletedHash: Hash | null = await HashModel.findByIdAndDelete(id);
+    const deletedHash: HashType | null = await HashModel.findByIdAndDelete(id);
 
     // console.info(`Deleted hash successfully`);
 
@@ -273,7 +273,7 @@ export async function addComment({
     parentId,
     community: null, //TODO: create community model,
     media: media,
-  }).then((newHash: Hash) => {
+  }).then((newHash: HashType) => {
     // console.info(`New comment created successfully by: ${author}`);
     // Add comment to parent hash's children
     HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(parentId), {

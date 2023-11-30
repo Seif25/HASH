@@ -1,46 +1,38 @@
-import CreateHash from "./create-hash/page";
+import { Suspense } from "react";
+import Home from "../components/home/Home";
+import HashSkeleton from "../components/home/HashSkeleton";
+import Post from "../components/home/Post";
 import { fetchHashes } from "@/lib/actions/hash.actions";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { currentUser } from "@clerk/nextjs";
-import { Metadata } from "next";
-import HashCardSkeleton from "@/components/skeletons/HashCardSkeleton";
-import ForYou from "@/components/layouts/foryou";
+import { fetchUser } from "@/lib/actions/user.actions";
 
-export const metadata: Metadata = {
-  title: "Home / Hash",
-  description: "Home page for Hash",
-};
+export const revalidate = 0;
 
-export default async function Home() {
-  const userHashes = await fetchHashes(1, 20);
+export default async function Hash() {
+  // Fetch Recommended Hashes for User
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["hashes"],
+    queryFn: () => fetchHashes(1, 10),
+  });
+
   const user = await currentUser();
+  const loggedInUser = await fetchUser(user?.username ?? "");
 
   return (
-    <main className="flex flex-col flex-1 justify-start gap-10 w-full lg:px-0 lg:pt-0 pb-10">
-      {/* Tabs */}
-      {user && (
-        <section>
-          <section className="w-full h-auto hidden lg:block">
-            <CreateHash />
-          </section>
-          {/* Hashes */}
-          <section className="flex flex-col gap-5 w-full">
-            {userHashes ? (
-              <>
-                <ForYou
-                  hashes={userHashes.hashes}
-                  currentUser={user.username ?? ""}
-                />
-              </>
-            ) : (
-              <>
-                {Array.from(Array(10).keys()).map((i) => (
-                  <HashCardSkeleton key={`skeleton-${i}`} />
-                ))}
-              </>
-            )}
-          </section>
-        </section>
-      )}
-    </main>
+    <section className="flex flex-col px-5 lg:px-0 gap-5 overflow-y-hidden">
+      <Post
+        loggedInUser={loggedInUser?.username ?? ""}
+        profilePic={loggedInUser?.image ?? "/assets/profile-pic.png"}
+      />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Home loggedInUser={loggedInUser?.username ?? ""} />
+      </HydrationBoundary>
+    </section>
   );
 }

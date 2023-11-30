@@ -1,5 +1,4 @@
 import { SignIn } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
 
 async function Page() {
   return (
@@ -18,18 +17,18 @@ async function Page() {
               filter: "brightness(0) invert(1)",
             },
             formButtonPrimary: {
-                backgroundColor: "#3228a2",
-                color: "#000",
-                fontWeight: "700",
-                "&:hover": {
-                    backgroundColor: "#241c77",
-                }
+              backgroundColor: "#3228a2",
+              color: "#000",
+              fontWeight: "700",
+              "&:hover": {
+                backgroundColor: "#241c77",
+              },
             },
             footerActionLink: {
-                color: "white",
-                "&:hover": {
-                    color: "#3228a2",
-                }
+              color: "white",
+              "&:hover": {
+                color: "#3228a2",
+              },
             },
             footer: {
               "& + div": {

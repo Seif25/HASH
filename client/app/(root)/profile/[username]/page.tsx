@@ -1,9 +1,9 @@
-import ProfileInformation from "@/components/layouts/profile/ProfileInformation";
-import ProfileTabs from "@/components/layouts/profile/ProfileTabs";
-import { fetchUser } from "@/lib/actions/user.actions";
-import { currentUser } from "@clerk/nextjs/server";
-import type { Metadata, ResolvingMetadata } from "next";
-import { notFound } from "next/navigation";
+import { FetchUserReplies, UserType } from "@/app/lib/types/user.types";
+import fetchUserReplies, { fetchUser } from "@/lib/actions/user.actions";
+import { currentUser } from "@clerk/nextjs";
+import { HashType } from "@/app/lib/types/hash.types";
+import { Metadata, ResolvingMetadata } from "next";
+import Profile from "../components/Profile";
 
 type Props = {
   params: { username: string };
@@ -15,45 +15,50 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const username = params.username;
 
-  // fetch data
-  const user = await fetchUser(username);
-
-  if (!user) {
-    return {
-      title: "User not found",
-    };
-  }
   return {
-    title: `${user?.name} (@${username}) / Hash`,
+    title: `@${params.username} Profile / Hash`,
   };
 }
 
-export default async function Profile({
+export default async function Page({
   params,
 }: {
   params: { username: string };
 }) {
-  const user = await fetchUser(params.username);
-  const loggedUser = await currentUser();
+  const loggedInUser = await currentUser();
+  const user: UserType | null = await fetchUser(params.username);
+  const replies: FetchUserReplies[] = await fetchUserReplies(params.username);
 
-  if (!user) {
-    notFound();
-  }
+  const userHashes = user?.hashes as HashType[];
+  const highlights = userHashes.filter((hash) => hash.highlighted);
+
+  userHashes.sort((a, b) => {
+    if (a.pinned && !b.pinned) {
+      return -1;
+    }
+    if (!a.pinned && b.pinned) {
+      return 1;
+    }
+    return 0;
+  });
+
+  const mediaHashes = user?.hashes.filter((hash) => hash.media.length > 0);
+
+  const likedHashes = user?.likes;
 
   return (
-    <div className="bg-accent2 bg-opacity-50 lg:rounded-lg">
+    <div>
       {user && (
-        <>
-          <ProfileInformation user={user} />
-
-          <ProfileTabs
-            posts={user.hashes}
-            likes={user.likes}
-            currentUser={loggedUser?.username ?? ""}
-          />
-        </>
+        <Profile
+          loggedInUser={loggedInUser?.username ?? ""}
+          user={user}
+          replies={replies}
+          userHashes={userHashes}
+          highlights={highlights}
+          mediaHashes={mediaHashes ?? []}
+          likedHashes={likedHashes ?? []}
+        />
       )}
     </div>
   );
