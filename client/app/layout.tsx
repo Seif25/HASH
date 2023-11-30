@@ -3,7 +3,6 @@ import { Rubik } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/app/providers/QueryProvider";
 import { ClerkProvider } from "@clerk/nextjs";
-import Image from "next/image";
 import { Toaster } from "@/components/ui/toaster";
 
 const rubik = Rubik({

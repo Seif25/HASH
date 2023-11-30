@@ -1,4 +1,3 @@
-import { number } from "zod";
 import { HashType } from "./hash.types";
 
 export type UserType = {
@@ -17,6 +16,7 @@ export type UserType = {
   birthDate: Date;
   hashes: HashType[];
   likes?: HashType[];
+  fcmToken?: string;
 };
 
 export type SummarizedUserType = {
@@ -26,6 +26,7 @@ export type SummarizedUserType = {
   verified: boolean;
   following: string[];
   followers: string[];
+  fcmToken?: string;
 };
 
 export type UserFollowingType = {

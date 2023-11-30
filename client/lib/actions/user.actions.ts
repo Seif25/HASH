@@ -49,7 +49,8 @@ export async function fetchUser(username: string): Promise<UserType | null> {
         populate: {
           path: "author",
           foreignField: "username",
-          select: "username name image verified following followers bio",
+          select:
+            "username name image verified following followers bio fcmToken",
         },
         options: { sort: { createdAt: "desc" } },
       })
@@ -58,7 +59,8 @@ export async function fetchUser(username: string): Promise<UserType | null> {
         populate: {
           path: "author",
           foreignField: "username",
-          select: "username name image verified following followers bio",
+          select:
+            "username name image verified following followers bio fcmToken",
         },
         options: { sort: { createdAt: "desc" } },
       })
@@ -309,7 +311,7 @@ export async function getRecipients(
   try {
     return await UserModel.find({
       username: { $in: recipients },
-    }).select("name username following followers image verified");
+    }).select("name username following followers image verified fcmToken");
   } catch (error: any) {
     throw new Error(`Error getting recipients: ${error.message}`);
   }
@@ -325,7 +327,7 @@ export async function getRecipient(
     return (await UserModel.findOne({
       username: recipient,
     }).select(
-      "name username following followers image verified"
+      "name username following followers image verified fcmToken"
     )) as SummarizedUserType;
   } catch (error: any) {
     throw new Error(`Error getting recipient: ${error.message}`);

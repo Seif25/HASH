@@ -16,6 +16,15 @@ export default function LeftSidebar({
   notificationCount,
 }: LeftSidebarProps) {
   const path = usePathname();
+
+  // Notification.requestPermission().then((permission) => {
+  //   if (permission === "granted") {
+  //     console.log("Notification permission granted.");
+  //   } else {
+  //     console.log("Notification permission denied.");
+  //   }
+  // });
+
   return (
     <div className="group custom-scrollbar left-sidebar">
       <div className="flex flex-col justify-between h-screen">

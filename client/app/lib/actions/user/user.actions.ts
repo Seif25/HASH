@@ -1,3 +1,5 @@
+"use server";
+
 import UserModel from "../../models/user.model";
 import {
   ConversationsType,
@@ -58,6 +60,20 @@ export async function fetchReceiverInfoAction({
       };
     });
     return populatedConversations as ConversationsType[];
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function updateFCMToken({
+  username,
+  fcmToken,
+}: {
+  username: string;
+  fcmToken: string;
+}) {
+  try {
+    return await UserModel.updateOne({ username }, { fcmToken });
   } catch (error: any) {
     throw new Error(error.message);
   }

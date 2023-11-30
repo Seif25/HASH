@@ -111,6 +111,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
                     alt={hash.media[0].alt}
                     width={400}
                     height={400}
+                    priority
                     className="rounded-2xl w-full lg:w-1/2 bg-accent1 h-80 object-cover"
                   />
                 ) : hash.media[0].mediaType === "video" ? (

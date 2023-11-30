@@ -45,6 +45,7 @@ const userSchema = new mongoose.Schema({
     },
   ],
   joinedAt: { type: Date, default: Date.now },
+  fcmToken: { type: String },
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);

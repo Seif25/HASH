@@ -1,6 +1,4 @@
-import { Suspense } from "react";
 import Home from "../components/home/Home";
-import HashSkeleton from "../components/home/HashSkeleton";
 import Post from "../components/home/Post";
 import { fetchHashes } from "@/lib/actions/hash.actions";
 import {
