@@ -1,18 +1,22 @@
 "use client";
 
-import { ImageIcon, Loader2, SendHorizontal, Smile } from "lucide-react";
+import {
+  ArrowUpFromLine,
+  ImageIcon,
+  Loader2,
+  SendHorizontal,
+  Smile,
+} from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import EmojiBtn from "../shared/triggers/EmojiBtn";
 import { createHashAction } from "@/app/lib/actions/hash/hash.actions";
 import { usePathname } from "next/navigation";
-import { type PutBlobResult } from "@vercel/blob";
-import { upload } from "@vercel/blob/client";
 import { CreateHashParams } from "@/app/lib/types/hash.actions.types";
 import { useToast } from "@/components/ui/use-toast";
 import { customAlphabet, nanoid } from "nanoid";
 import { MediaType } from "@/app/lib/types/hash.types";
-import supabase from "@/app/lib/supabase/supabase";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useUploadThing } from "@/app/lib/uploadthing/uploadThing";
 import { getMediaType } from "@/app/utils/functions/functions";
 
@@ -30,9 +34,11 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
   const { toast } = useToast();
 
   const [text, setText] = useState<string>("");
-  const [blob, setBlob] = useState<File[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const pathname = usePathname();
+  const [alertMessage, setAlertMessage] = useState(
+    "We're getting your post ready to share with the world. Hold tight!"
+  );
 
   const inputFileRef = useRef<HTMLInputElement>(null);
 
@@ -46,18 +52,6 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
     e.preventDefault();
     inputFileRef.current?.click();
   };
-
-  useEffect(() => {
-    if (inputFileRef.current?.files) {
-      setBlob(Array.from(inputFileRef.current?.files));
-      if (inputFileRef.current?.files?.length > 4) {
-        toast({
-          title: "Unable to upload",
-          description: "You can only upload 4 media files with each Hash",
-        });
-      }
-    }
-  }, [inputFileRef.current]);
 
   const createPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,6 +76,7 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
 
       res?.forEach((file) => {
         const mediaType = getMediaType(file.name);
+        console.log("mediaType: ", mediaType);
         const mediaBlob = {
           id: file_nanoid(),
           url: file.url,
@@ -98,13 +93,34 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
       pathname,
     };
     await createHashAction(data as CreateHashParams);
-    setLoading(false);
     setText("");
-    setBlob([]);
+    setLoading(false);
+    setAlertMessage(
+      "We're getting your post ready to share with the world. Hold tight!"
+    );
   };
+
+  useEffect(() => {
+    if (loading) {
+      setTimeout(() => {
+        if (loading) {
+          setAlertMessage(
+            "Oops! It seems your post is taking a bit longer to upload than usual. We're working on it, but just hang in there a bit longer. We'll let you know when it's ready to share with the world."
+          );
+        }
+      }, 30000);
+    }
+  }, [loading]);
 
   return (
     <section className="w-full pt-5">
+      {loading && (
+        <Alert className="mb-10 animate-pulse">
+          <ArrowUpFromLine size={24} className="h-4 w-4 text-accent1" />
+          <AlertTitle>Get Ready for Your Post to Shine</AlertTitle>
+          <AlertDescription>{alertMessage}</AlertDescription>
+        </Alert>
+      )}
       <form
         onSubmit={createPost}
         className="flex items-start justify-start gap-5 rounded-2xl"

@@ -67,6 +67,7 @@ export const groupNotifications = function (array: NotificationType[]) {
 
 export const getMediaType = function (url: string): ReturnMediaType {
   const type = url.split(".").pop();
+  console.log(url, type);
   if (
     type === "jpg" ||
     type === "jpeg" ||

@@ -10,7 +10,13 @@ import {
   VideoDialogTrigger,
 } from "../shared/dialog";
 
-export default function HashVideoPreview({ src }: { src: string }) {
+export default function HashVideoPreview({
+  src,
+  autoplay = true,
+}: {
+  src: string;
+  autoplay?: boolean;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [duration, setDuration] = useState<number | undefined>(0);
   const [muted, setMuted] = useState(true);
@@ -100,7 +106,7 @@ export default function HashVideoPreview({ src }: { src: string }) {
             ref={videoRef}
             muted={muted}
             loop
-            autoPlay
+            autoPlay={autoplay ?? true}
           ></video>
         </VideoDialogTrigger>
         <VideoDialogContent className="w-[100vw] h-[100vh]">

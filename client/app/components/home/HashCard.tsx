@@ -7,15 +7,15 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import HashAuthor from "./HashAuthor";
-import moment from "moment";
 import Image from "next/image";
 import HashStats from "./HashStats";
 import HashText from "../shared/text/HashText";
 import Link from "next/link";
-import ReactPlayer from "react-player";
 import { useEffect, useState } from "react";
 import HashVideoPreview from "./HashVideoPreview";
 import HashCarousel from "./HashCarousel";
+import { Repeat2 } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 interface HashProps {
   hash: HashType;
@@ -23,8 +23,11 @@ interface HashProps {
 }
 
 export default function HashCard({ hash, loggedInUser }: HashProps) {
-  const cols = ["grid-cols-1", "grid-cols-2", "grid-cols-3", "grid-cols-4"];
   const [bookmarked, setBookmarked] = useState(false);
+  const [reposted, setReposted] = useState(false);
+  const [visitedUser, setVisitedUser] = useState<string | undefined>(undefined);
+
+  const pathname = usePathname();
 
   useEffect(() => {
     if (hash && loggedInUser) {
@@ -32,11 +35,32 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
         (bookmark) => bookmark === loggedInUser
       );
       setBookmarked(found ? true : false);
+
+      if (pathname.includes(loggedInUser)) {
+        const isReposted = hash.reposts.find(
+          (user) => user.user === loggedInUser
+        );
+        setReposted(isReposted ? true : false);
+      } else {
+        const visitedUser = pathname.split("/").at(-1);
+        setVisitedUser(visitedUser);
+        const isReposted = hash.reposts.find(
+          (user) => user.user === visitedUser
+        );
+        setReposted(isReposted ? true : false);
+      }
     }
   }, [hash, loggedInUser]);
 
   return (
     <div className="bg-accent2 rounded-2xl p-5">
+      {reposted && (
+        <h3 className="text-green-500 font-bold text-[14px] flex items-center gap-1 mb-1">
+          <Repeat2 size={24} />
+          {visitedUser ? `${visitedUser} Reposted` : "You Reposted"}
+        </h3>
+      )}
+
       {/* AUTHOR INFORMATION */}
       <div className="flex items-center justify-between">
         <HoverCard>
@@ -78,34 +102,25 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
 
         {/* Hash Media */}
         {hash.media.length > 0 && (
-          <div className="flex items-center justify-start w-full h-auto px-5">
+          <div className="flex items-center justify-start w-full h-auto">
             {hash.media.length === 1 ? (
-              <Image
-                src={hash.media[0].url}
-                alt={hash.media[0].alt}
-                width={400}
-                height={400}
-                className="rounded-2xl w-full lg:w-1/2 bg-accent1 h-80 object-cover"
-              />
+              <>
+                {hash.media[0].mediaType === "image" ? (
+                  <Image
+                    src={hash.media[0].url}
+                    alt={hash.media[0].alt}
+                    width={400}
+                    height={400}
+                    className="rounded-2xl w-full lg:w-1/2 bg-accent1 h-80 object-cover"
+                  />
+                ) : hash.media[0].mediaType === "video" ? (
+                  <HashVideoPreview src={hash.media[0].url} />
+                ) : (
+                  <></>
+                )}
+              </>
             ) : (
-              // <HashCarousel media={hash.media} />
-              <div className="grid grid-cols-2 gap-5 space-y-5 items-center justify-center w-full">
-                {hash.media.map((media, index) => (
-                  <div>
-                    {media.mediaType === "image" ? (
-                      <Image
-                        src={media.url}
-                        alt={media.alt}
-                        width={400}
-                        height={400}
-                        className="rounded-2xl w-full bg-accent1 h-44 object-cover"
-                      />
-                    ) : (
-                      <HashVideoPreview src={media.url} />
-                    )}
-                  </div>
-                ))}
-              </div>
+              <HashCarousel HashMedia={hash.media} />
             )}
           </div>
         )}
@@ -128,6 +143,8 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
         bookmarked={bookmarked}
         restriction={hash.restriction ?? ""}
         createdAt={hash.createdAt}
+        reposted={reposted}
+        setReposted={setReposted}
       />
     </div>
   );

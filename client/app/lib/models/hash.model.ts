@@ -26,6 +26,7 @@ const hashSchema = new mongoose.Schema({
       url: { type: String },
       alt: { type: String },
       id: { type: String },
+      mediaType: { type: String },
     },
   ],
   likes: [

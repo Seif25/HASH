@@ -25,6 +25,8 @@ interface HashStatsProps {
   bookmarked: boolean;
   restriction: "everyone" | "followers only" | "followed by me";
   createdAt: Date;
+  reposted: boolean;
+  setReposted: (value: boolean) => void;
 }
 
 export default function HashStats({
@@ -43,6 +45,8 @@ export default function HashStats({
   bookmarked,
   restriction,
   createdAt,
+  reposted,
+  setReposted,
 }: HashStatsProps) {
   return (
     <div className="flex flex-col justify-center w-full gap-5 mt-5">
@@ -58,8 +62,15 @@ export default function HashStats({
           count={likeCount}
           loggedInUser={loggedInUser}
           likes={hashLikes}
+          hashId={hashId}
         />
-        <RepostBtn count={repostCount} />
+        <RepostBtn
+          count={repostCount}
+          loggedInUser={loggedInUser}
+          hashId={hashId}
+          reposted={reposted}
+          setReposted={setReposted}
+        />
         <Views count={viewCount} />
       </div>
       <Separator />

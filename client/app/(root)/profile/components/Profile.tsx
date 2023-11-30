@@ -64,7 +64,7 @@ export default function Profile({
       </div>
       {!inView && (
         <div
-          className="sticky top-0 flex items-center justify-between h-20 w-full p-5 rounded-t-2xl"
+          className="sticky top-0 flex items-center justify-between h-20 w-full p-5 rounded-t-2xl z-[100]"
           style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${
               user.banner || `/assets/default-banner.png`
@@ -102,7 +102,7 @@ export default function Profile({
       )}
       <Tabs value={tabValue} className="w-full" onValueChange={changeTabs}>
         <div
-          className={`sticky top-20 h-20 flex items-center rounded-b-2xl ${
+          className={`sticky z-[100] top-20 h-20 flex items-center rounded-b-2xl ${
             !inView ? "bg-accent2 pt-5" : "bg-transparent pt-0"
           }`}
         >
@@ -135,7 +135,7 @@ export default function Profile({
               className="flex flex-col gap-1 bg-accent2 rounded-2xl"
               key={hash._id.toString()}
             >
-              {hash.pinned && (
+              {hash.pinned && loggedInUser === hash.author.username && (
                 <h3 className="gradient bg-clip-text text-transparent text-paragraph font-bold flex items-center gap-1 px-5 pt-5">
                   <Pin size={16} className="text-accent3" /> Pinned
                 </h3>
