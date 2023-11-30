@@ -84,6 +84,7 @@ export default function HashCarousel({
         {HashMedia.map((media, index) => (
           <div
             id={media.id}
+            key={media.id}
             className={`absolute flex items-center justify-center inset-0 rounded-2xl ${
               active === index ? "block" : "hidden"
             }`}

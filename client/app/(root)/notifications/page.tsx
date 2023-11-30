@@ -1,5 +1,8 @@
 import { fetchUserNotificationsAction } from "@/app/lib/actions/notification/notification.actions";
-import { NotificationType } from "@/app/lib/types/notification.types";
+import {
+  NotificationType,
+  NotificationWatchType,
+} from "@/app/lib/types/notification.types";
 import { groupNotifications } from "@/app/utils/functions/functions";
 import { Toggle } from "@/components/ui/toggle";
 import { currentUser } from "@clerk/nextjs";
@@ -15,7 +18,6 @@ import SingleNotification from "./components/SingleNotification";
 import GroupedNotification from "./components/GroupedNotification";
 import Link from "next/link";
 import RemoveNotification from "./components/RemoveNotification";
-
 const toggleOptions = [
   { label: "Mentions", value: "mentions", icon: <AtSign size={16} /> },
   { label: "Replies", value: "replies", icon: <MessageCircle size={16} /> },

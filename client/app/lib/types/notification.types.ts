@@ -1,4 +1,6 @@
+import { Timestamp } from "mongodb";
 import { SummarizedUserType } from "./user.types";
+import { ObjectId } from "mongoose";
 
 export type NotificationType = {
   _id: string;
@@ -26,4 +28,16 @@ export type NewNotificationProps = {
   link: string;
   type: "like" | "mention" | "reply" | "repost" | "admin" | "follow";
   source: string;
+};
+
+export type NotificationWatchType = {
+  _id: {
+    _data: string;
+  };
+  operationType: string;
+  clusterTime: Timestamp;
+  wallTime: Date;
+  fullDocument: NotificationType;
+  ns: { db: string; coll: string };
+  documentKey: { _id: ObjectId };
 };

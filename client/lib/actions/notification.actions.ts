@@ -2,6 +2,7 @@
 import {
   NewNotificationProps,
   NotificationType,
+  NotificationWatchType,
 } from "@/app/lib/types/notification.types";
 import NotificationModel from "../../app/lib/models/notification.model";
 import {
@@ -71,4 +72,21 @@ export async function createNotification({
   } catch (error: any) {
     throw new Error(error.message);
   }
+}
+
+export async function watchNotifications({
+  username,
+}: {
+  username: string;
+}): Promise<NotificationWatchType | null> {
+  NotificationModel.watch().on("change", (data: NotificationWatchType) => {
+    if (data) {
+      if (data.operationType === "insert" || data.operationType === "update") {
+        if (data.fullDocument.user === username) {
+          return data;
+        }
+      }
+    }
+  });
+  return null;
 }
