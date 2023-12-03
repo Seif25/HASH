@@ -94,6 +94,8 @@ export default function HashStats({
             pinned={pinned}
             highlighted={highlighted}
             restriction={restriction}
+            hashMedia={hashMedia}
+            hashText={hashText}
           />
         </div>
       </div>

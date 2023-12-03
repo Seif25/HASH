@@ -56,6 +56,10 @@
   @apply bg-gradient-to-bl from-[#1991fe] via-[#1183e8] to-[#0671cb];
 }
 
+.gradient-radial{
+  @apply bg-gradient-radial from-[#1991fe] from-40% to-[#0671cb] to-60%
+}
+
 .dark-gradient{
   @apply bg-gradient-to-br from-[#002A81] to-[#000C5B];
 }

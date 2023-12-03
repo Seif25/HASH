@@ -102,8 +102,8 @@ export default function Profile({
       )}
       <Tabs value={tabValue} className="w-full" onValueChange={changeTabs}>
         <div
-          className={`sticky z-[100] top-20 h-20 flex items-center rounded-b-2xl ${
-            !inView ? "bg-accent2 pt-5" : "bg-transparent pt-0"
+          className={`sticky top-20 h-20 flex items-center rounded-b-2xl ${
+            !inView ? "bg-accent2 pt-5 z-[100]" : "bg-transparent pt-0"
           }`}
         >
           <TabsList

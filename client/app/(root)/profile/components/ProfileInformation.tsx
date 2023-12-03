@@ -75,7 +75,7 @@ export default function ProfileInformation({
         {/* BIO */}
         <h3 className="text-body my-3">{bio}</h3>
         {/* FOLLOWING / FOLLOWERS */}
-        <div className="flex items-center gap-10 justify-between lg:justify-normal mb-3">
+        <div className="flex items-center gap-10 justify-normal mb-3">
           <Link
             href={`/profile/${username}/following`}
             className="flex items-center gap-1 group"

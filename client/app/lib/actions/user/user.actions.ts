@@ -13,9 +13,26 @@ import { UserFollowingType } from "../../types/user.types";
 export async function fetchUserFollowingAction(username: string) {
   try {
     return (await UserModel.findOne({ username: username })
-      .select("following")
+      .select("followers following")
       .populate({
         path: "following",
+        model: UserModel,
+        foreignField: "username",
+        select: "username name image followers following verified",
+      })
+      .sort({ name: -1 })
+      .lean()) as UserFollowingType;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function fetchUserFollowersAction(username: string) {
+  try {
+    return (await UserModel.findOne({ username: username })
+      .select("followers following")
+      .populate({
+        path: "followers",
         model: UserModel,
         foreignField: "username",
         select: "username name image followers following verified",

@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Badge from "@mui/material/Badge";
 import LogoutBtn from "../shared/triggers/LogoutBtn";
+import { useEffect } from "react";
+import { watchNotifications } from "@/lib/actions/notification.actions";
 
 interface LeftSidebarProps {
   username: string;
@@ -16,14 +18,6 @@ export default function LeftSidebar({
   notificationCount,
 }: LeftSidebarProps) {
   const path = usePathname();
-
-  // Notification.requestPermission().then((permission) => {
-  //   if (permission === "granted") {
-  //     console.log("Notification permission granted.");
-  //   } else {
-  //     console.log("Notification permission denied.");
-  //   }
-  // });
 
   return (
     <div className="group custom-scrollbar left-sidebar">
