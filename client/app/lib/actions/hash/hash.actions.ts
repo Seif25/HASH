@@ -4,6 +4,7 @@ import HashModel from "@/app/lib/models/hash.model";
 import {
   CreateHashParams,
   DeleteHashParams,
+  EditHashParams,
 } from "@/app/lib/types/hash.actions.types";
 import { MongooseError } from "mongoose";
 import { revalidatePath } from "next/cache";
@@ -53,6 +54,22 @@ export async function createHashAction({
       throw new Error(error.message);
     });
 
+  revalidatePath(pathname);
+}
+
+/**
+ * EDIT HASH ACTION
+ */
+export async function editHashAction({
+  hashId,
+  text,
+  media,
+  pathname,
+}: EditHashParams) {
+  await HashModel.findByIdAndUpdate(
+    { _id: hashId },
+    { text, media, edited: true }
+  );
   revalidatePath(pathname);
 }
 

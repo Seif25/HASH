@@ -7,6 +7,13 @@ export type CreateHashParams = {
   pathname: string;
 };
 
+export type EditHashParams = {
+  hashId: string;
+  text: string;
+  media: MediaType[];
+  pathname: string;
+};
+
 export type DeleteHashParams = {
   hashId: string;
   pathname: string;

@@ -1,9 +1,7 @@
-import ComingSoon from "@/app/components/ComingSoon";
-
 export default function Page() {
   return (
-    <div className="flex items-center justify-center h-screen">
-      <ComingSoon page="premium" isAre="is" />
+    <div className="flex flex-col gap-5 rounded-2xl mt-5 bg-accent2">
+      <h1 className="text-title">Premium</h1>
     </div>
   );
 }

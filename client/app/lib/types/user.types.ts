@@ -32,6 +32,7 @@ export type SummarizedUserType = {
 export type UserFollowingType = {
   _id: string;
   following: SummarizedUserType[];
+  followers: SummarizedUserType[];
 };
 
 export type FetchAllUsersParams = {

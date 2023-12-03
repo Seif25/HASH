@@ -6,6 +6,10 @@ import UserModel from "../../models/user.model";
 import { NotificationType } from "@/app/lib/types/notification.types";
 
 export async function fetchUserNotificationsAction(username: string) {
+  NotificationModel.watch().on("change", (data) => {
+    revalidatePath(`/notifications`);
+  });
+
   return (await NotificationModel.find({ user: username })
     .sort({
       createdAt: -1,

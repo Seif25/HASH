@@ -16,6 +16,7 @@ export type HashType = {
   highlighted: boolean;
   bookmarkedBy: string[];
   restriction: "everyone" | "followers only" | "followed by me";
+  edited: boolean;
 };
 
 export type MediaType = {

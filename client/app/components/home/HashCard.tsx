@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import HashVideoPreview from "./HashVideoPreview";
 import HashCarousel from "./HashCarousel";
-import { Repeat2 } from "lucide-react";
+import { Pencil, Repeat2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 interface HashProps {
@@ -54,8 +54,15 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
 
   return (
     <div className="bg-accent2 rounded-2xl p-5">
+      {hash.edited && (
+        <h3 className="text-accent1/50 font-bold text-[14px] flex items-center gap-2 mb-5">
+          <Pencil size={16} />
+          Edited
+        </h3>
+      )}
+
       {reposted && (
-        <h3 className="text-green-500 font-bold text-[14px] flex items-center gap-1 mb-1">
+        <h3 className="text-green-500 font-bold text-[14px] flex items-center gap-1 mb-2">
           <Repeat2 size={24} />
           {visitedUser ? `${visitedUser} Reposted` : "You Reposted"}
         </h3>
