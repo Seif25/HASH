@@ -34,7 +34,7 @@ export const SheetLinks = [
     {
         icon: <Settings size={24} />,
         title: "Settings",
-        link: "/settings",
+        link: "/settings/account-settings",
         section: 2
     },
     // {
