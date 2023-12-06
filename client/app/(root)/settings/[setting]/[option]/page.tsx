@@ -1,15 +1,49 @@
-import { ArrowLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import AccountInformationSettings from "../../components/AccountInformationSettings";
+import { currentUser } from "@clerk/nextjs";
+import { fetchUserAction } from "@/app/lib/actions/user/user.actions";
+import ChangePassword from "../../components/ChangePassword";
+import DownloadData from "../../components/DownloadData";
+import DeleteAccount from "../../components/DeleteAccount";
 
-export default function Page({
+export default async function Page({
   params,
 }: {
   params: { setting: string; option: string };
 }) {
-  const selectedSetting = settings.find((s) => s.href === params.setting);
-  const selectedOption = selectedSetting?.options?.find(
-    (o) => o.href === params.option
-  );
+  const user = await currentUser();
+  const loggedInUser = await fetchUserAction(user?.username ?? "");
+
+  const views = [
+    {
+      href: "account-information",
+      component: (
+        <AccountInformationSettings
+          loggedInUser={loggedInUser}
+          firstName={user?.firstName ?? ""}
+          lastName={user?.lastName ?? ""}
+          email={user?.emailAddresses[0].emailAddress ?? ""}
+          phone={user?.phoneNumbers[0]?.phoneNumber ?? ""}
+        />
+      ),
+    },
+    {
+      href: "change-password",
+      component: <ChangePassword />,
+    },
+    {
+      href: "download-data",
+      component: <DownloadData />,
+    },
+    {
+      href: "delete-account",
+      component: <DeleteAccount />,
+    },
+  ];
+
+  const selectedOption = views?.find((v) => v.href === params.option);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-6 gap-5 mt-5 w-full h-full bg-accent2 rounded-2xl">
       <div className="hidden lg:block col-span-1 lg:col-span-2 bg-accent2 lg:bg-accent1/10 h-full rounded-2xl lg:rounded-l-2xl lg:rounded-r-none w-full p-5">
@@ -33,15 +67,7 @@ export default function Page({
       </div>
       <div className="col-span-1 lg:col-span-4 bg-accent2 h-full rounded-2xl w-full">
         <div className="flex flex-col gap-5 justify-center">
-          <div className="flex items-center gap-5 p-5 bg-transparent rounded-2xl text-accent1">
-            <Link href={`/settings/${selectedSetting?.href}`}>
-              <ArrowLeft
-                size={20}
-                className="text-accent1/75 hover:text-primary"
-              />
-            </Link>
-            <h3 className="text-heading">{selectedOption?.title}</h3>
-          </div>
+          {selectedOption?.component}
         </div>
       </div>
     </div>

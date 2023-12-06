@@ -23,7 +23,7 @@ export default function Error({
           <Image src={"/logo.png"} alt="Hash" width={64} height={64} />
         </Link>
       </nav>
-      <div className="flex flex-col justify-center gap-5 p-10 w-full lg:w-[60%]">
+      <div className="flex flex-col justify-center gap-5 p-10 w-full">
         <div className="flex flex-col gap-0 w-full">
           <h2 className="text-title-sm lg:text-title">{"Hmmm..."}</h2>
           <div className="flex items-center justify-center gap-5 w-full">

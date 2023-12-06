@@ -5,7 +5,15 @@ import {
   ConversationsType,
   SupabaseConversationType,
 } from "../../types/conversation.types";
-import { UserFollowingType } from "../../types/user.types";
+import { UserFollowingType, UserType } from "../../types/user.types";
+
+export async function fetchUserAction(username: string) {
+  try {
+    return (await UserModel.findOne({ username: username }).lean()) as UserType;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
 
 /**
  * Fetch people that a user is following
