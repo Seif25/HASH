@@ -1,5 +1,7 @@
+import ComingSoon from "@/app/components/ComingSoon";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import Premium from "../../premium/page";
 
 export default function Page({ params }: { params: { setting: string } }) {
   const selectedSetting = settings.find((s) => s.href === params.setting);
@@ -25,30 +27,40 @@ export default function Page({ params }: { params: { setting: string } }) {
         </div>
       </div>
       <div className="col-span-1 lg:col-span-4 bg-accent2 h-full rounded-2xl w-full">
-        <div className="flex flex-col gap-5 justify-center">
-          <div className="flex items-center gap-5 p-5 bg-transparent rounded-2xl text-accent1">
-            <Link href="/settings" className="lg:hidden">
-              <ArrowLeft
-                size={20}
-                className="text-accent1/75 hover:text-primary"
-              />
-            </Link>
-            <h3 className="text-heading">{selectedSetting?.title}</h3>
-          </div>
-          <div className="flex flex-col gap-5 px-5">
-            {selectedSetting?.options?.map((option) => (
-              <Link href={`/settings/${selectedSetting.href}/${option.href}`}>
-                <div
-                  key={option.title}
-                  className={`flex items-center justify-between p-5 bg-transparent
-                  hover:bg-primary rounded-2xl text-accent1 cursor-pointer`}
-                >
-                  <h3 className="text-body">{option.title}</h3>
-                  <ChevronRight size={20} className="text-accent1/30" />
-                </div>
-              </Link>
-            ))}
-          </div>
+        <div className="">
+          {selectedSetting?.options ? (
+            <div className="flex flex-col gap-5 justify-center">
+              <div className="flex items-center gap-5 p-5 bg-transparent rounded-2xl text-accent1">
+                <Link href="/settings" className="lg:hidden">
+                  <ArrowLeft
+                    size={20}
+                    className="text-accent1/75 hover:text-primary"
+                  />
+                </Link>
+                <h3 className="text-heading">{selectedSetting?.title}</h3>
+              </div>
+              <div className="flex-col gap-5 px-5">
+                {selectedSetting?.options?.map((option) => (
+                  <Link
+                    href={`/settings/${selectedSetting.href}/${option.href}`}
+                  >
+                    <div
+                      key={option.title}
+                      className={`flex items-center justify-between p-5 bg-transparent
+                      hover:bg-primary rounded-2xl text-accent1 cursor-pointer`}
+                    >
+                      <h3 className="text-body">{option.title}</h3>
+                      <ChevronRight size={20} className="text-accent1/30" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : selectedSetting?.component ? (
+            selectedSetting.component
+          ) : (
+            <ComingSoon />
+          )}
         </div>
       </div>
     </div>
@@ -85,6 +97,7 @@ const settings = [
   {
     title: "Premium",
     href: "premium",
+    component: <Premium sm />,
   },
   {
     title: "Creator Subscriptions",

@@ -7,7 +7,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { BadgeCheck, Check } from "lucide-react";
 import { useState } from "react";
 
-export default function Page() {
+export default function Premium({ sm = false }: { sm?: boolean }) {
   const [interval, setInterval] = useState<"monthly" | "annually">("annually");
   async function handleCheckout(packageName: string) {
     let price: string;
@@ -89,7 +89,9 @@ export default function Page() {
           </Badge>
         </label>
       </div>
-      <div className="flex flex-col lg:grid lg:grid-cols-3 gap-5 p-5">
+      <div
+        className={`flex flex-col ${!sm && "lg:grid lg:grid-cols-3"} gap-5 p-5`}
+      >
         <div className="flex flex-col gap-5 items-center justify-center border border-accent1/10 rounded-2xl p-5">
           <h1 className="text-body">Basic</h1>
           {/* <p className="text-paragraph text-accent1/80">
