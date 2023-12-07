@@ -1,15 +1,77 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import UserModel from "../../models/user.model";
+import { UserValidationSchema } from "../../schemas/user.schema";
 import {
   ConversationsType,
   SupabaseConversationType,
 } from "../../types/conversation.types";
 import { UserFollowingType, UserType } from "../../types/user.types";
 
-export async function fetchUserAction(username: string) {
+/**
+ * Fetch user's information using their username
+ * @param username
+ * @returns UserType
+ */
+export async function fetchUserAction(username: string): Promise<UserType> {
   try {
     return (await UserModel.findOne({ username: username }).lean()) as UserType;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+/**
+ * Update user's information
+ * @param username string
+ * @param data typeof UserValidationScheme
+ * @param pathname string
+ * @returns Promise<void>
+ */
+export async function updateUserAction({
+  username,
+  data,
+  pathname,
+}: {
+  username: string;
+  data: any;
+  pathname: string;
+}): Promise<void> {
+  try {
+    await UserModel.updateOne({ username }, data);
+
+    revalidatePath(pathname);
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+}
+
+/**
+ * Fetch user's information using their email
+ * @param email
+ * @returns Promise<boolean>
+ */
+export async function checkIfUserExistsAction(
+  username: string
+): Promise<boolean> {
+  try {
+    const user = await UserModel.findOne({ username }).select("username");
+    if (!user) return false;
+    return true;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function checkIfEmailExistsAction(
+  email: string
+): Promise<boolean> {
+  try {
+    const user = await UserModel.findOne({ email }).select("email");
+    if (!user) return false;
+    return true;
   } catch (error: any) {
     throw new Error(error.message);
   }

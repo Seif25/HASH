@@ -10,6 +10,8 @@ export type UserType = {
   verified: boolean;
   bio: string;
   website: string;
+  email: string;
+  phoneNumber: string;
   location: string;
   following: string[];
   followers: string[];

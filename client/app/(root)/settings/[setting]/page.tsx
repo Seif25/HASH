@@ -42,10 +42,10 @@ export default function Page({ params }: { params: { setting: string } }) {
               <div className="flex-col gap-5 px-5">
                 {selectedSetting?.options?.map((option) => (
                   <Link
+                    key={option.title}
                     href={`/settings/${selectedSetting.href}/${option.href}`}
                   >
                     <div
-                      key={option.title}
                       className={`flex items-center justify-between p-5 bg-transparent
                       hover:bg-primary rounded-2xl text-accent1 cursor-pointer`}
                     >
