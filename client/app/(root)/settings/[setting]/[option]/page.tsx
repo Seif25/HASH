@@ -49,7 +49,7 @@ export default async function Page({
       <div className="hidden lg:block col-span-1 lg:col-span-2 bg-accent2 lg:bg-accent1/10 h-full rounded-2xl lg:rounded-l-2xl lg:rounded-r-none w-full p-5">
         <div className="flex flex-col gap-5 justify-center">
           {settings.map((setting) => (
-            <Link href={`/settings/${setting.href}`}>
+            <Link href={`/settings/${setting.href}`} key={setting.title}>
               <div
                 key={setting.title}
                 className={`flex items-center justify-between p-5 ${
