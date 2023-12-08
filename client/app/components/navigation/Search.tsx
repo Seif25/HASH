@@ -1,18 +1,44 @@
 "use client";
 
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface SearchProps {}
 
 export default function Search({}: SearchProps) {
+  const router = useRouter();
   const [expand, setExpand] = useState<boolean>(false);
+  const [query, ChangeQuery] = useState<string>("");
+
   const handleCollapse = () => {
     setTimeout(() => {
       setExpand(false);
     }, 1000);
   };
+
+  function handleQueryChange(e: React.ChangeEvent<HTMLInputElement>) {
+    ChangeQuery(e.target.value);
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      handleSearchQuery();
+    }
+  }
+
+  function handleSearchQuery() {
+    if (query.length > 0) {
+      let type: "hashtag" | "profile" | "query" = "query";
+      if (query.startsWith("#")) {
+        type = "hashtag";
+      } else if (query.startsWith("@")) {
+        type = "profile";
+      }
+      router.push(`/search?q=${query}&type=${type}`);
+    }
+  }
   return (
     <div
       className={`flex items-center w-full rounded-2xl ${
@@ -28,10 +54,13 @@ export default function Search({}: SearchProps) {
         <input
           type="text"
           placeholder="Search"
+          value={query}
           className="bg-transparent ring-0 outline-none border-none w-[80%] p-2"
-          onBlur={handleCollapse}
+          // onBlur={handleCollapse}
+          onChange={handleQueryChange}
+          onKeyDown={handleKeyDown}
         />
-        <button>
+        <button onClick={handleSearchQuery} disabled={query.length === 0}>
           <SearchIcon size={"24px"} className="text-accent1" />
         </button>
       </motion.div>

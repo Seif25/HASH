@@ -84,7 +84,10 @@ export default function AccountInformationSettings({
     setLoading(true);
     await updateUserAction({
       username: loggedInUser.username,
-      data: form.getValues(),
+      data: {
+        ...form.getValues(),
+        name: `${form.getValues("firstName")} ${form.getValues("lastName")}`,
+      },
       pathname,
     });
     toast({

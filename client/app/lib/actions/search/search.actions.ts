@@ -3,16 +3,28 @@
 import HashModel from "../../models/hash.model";
 import UserModel from "../../models/user.model";
 import { HashType } from "../../types/hash.types";
+import { UserType } from "../../types/user.types";
 
 export async function searchAction({
+  loggedUsername,
+  loggedName,
   query,
   type,
 }: {
+  loggedUsername: string;
+  loggedName: string;
   query: string;
-  type: string | string[];
-}) {
+  type: "hashtag" | "query" | "profile";
+}): Promise<{
+  results: {
+    users: UserType[];
+    hashes: HashType[];
+  };
+}> {
+  let hashes: HashType[] = [];
+  let users: UserType[] = [];
   if (type === "hashtag") {
-    const hashes = await HashModel.find({
+    hashes = await HashModel.find({
       tags: {
         $exists: true,
         $not: { $size: 0 },
@@ -24,12 +36,11 @@ export async function searchAction({
         path: "author",
         model: UserModel,
         foreignField: "username",
-        select: "name username image verified following followers",
+        select: "name username image banner verified following followers",
       })
       .lean();
-    return { results: hashes as HashType[], type: "hash" };
-  } else if (type === "posts") {
-    const hashes = await HashModel.find({
+  } else if (type === "query") {
+    hashes = await HashModel.find({
       text: {
         $regex: new RegExp(query, "i"),
       },
@@ -42,6 +53,22 @@ export async function searchAction({
         select: "name username image verified following followers",
       })
       .lean();
-    return { results: hashes as HashType[], type: "hash" };
+    users = await UserModel.find({
+      name: {
+        // $ne: loggedName,
+        $regex: new RegExp(query, "i"),
+      },
+      username: {
+        // $ne: loggedUsername,
+        $regex: new RegExp(query, "i"),
+      },
+    })
+      .select("name username verified image banner following followers bio")
+      .lean();
   }
+  const queryResults = {
+    users,
+    hashes,
+  };
+  return { results: queryResults };
 }

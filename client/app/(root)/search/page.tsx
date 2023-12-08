@@ -1,50 +1,47 @@
 import HashCard from "@/app/components/home/HashCard";
 import { searchAction } from "@/app/lib/actions/search/search.actions";
 import { HashType } from "@/app/lib/types/hash.types";
+import { UserType } from "@/app/lib/types/user.types";
 import { Button } from "@/components/ui/button";
 import { currentUser } from "@clerk/nextjs";
-import { Search } from "lucide-react";
+import { BadgeCheck, Search } from "lucide-react";
+import Image from "next/image";
+import SearchResults from "./components/SearchResults";
+import { fetchUserAction } from "@/app/lib/actions/user/user.actions";
 
 type Props = {
   searchParams?: { [key: string]: string | undefined };
 };
 
+type Type = "query" | "hashtag" | "profile";
+
 export default async function Page({ searchParams }: Props) {
   const user = await currentUser();
+  const loggedInUser = await fetchUserAction(user?.username ?? "");
 
   const query = searchParams?.q ?? "";
-  const type = searchParams?.type ?? "";
+  const type: Type = (searchParams?.type as Type) ?? "query";
 
-  const results = await searchAction({ query: `#${query}`, type });
+  if (type !== "query" && type !== "hashtag" && type !== "profile")
+    throw new Error("Invalid search type");
+
+  const searchQuery = type === "hashtag" ? `#${query}` : query;
+  const results = await searchAction({
+    query: searchQuery,
+    type,
+    loggedUsername: loggedInUser.username,
+    loggedName: loggedInUser.name,
+  });
 
   return (
     <div className="mt-5 bg-accent2/50 rounded-2xl p-5">
-      <h1 className="text-heading font-bold mb-5">Search</h1>
-      <div className="flex items-center justify-between rounded-2xl bg-accent2 p-1 mb-5">
-        <input
-          type="text"
-          className="bg-accent2 w-full rounded-full ringo-0 outline-none border-none px-3 py-1 text-accent1"
-          defaultValue={query}
-          placeholder="Search Hash"
-        />
-        <Button size={"icon"} variant={"icon"} className="text-accent1">
-          <Search size={24} />
-        </Button>
-      </div>
-      {results &&
-        (results.type === "hash" ? (
-          <div className="flex flex-col gap-5">
-            {results.results.map((result: HashType) => (
-              <HashCard
-                key={result._id}
-                hash={result}
-                loggedInUser={user?.username ?? ""}
-              />
-            ))}
-          </div>
-        ) : (
-          <></>
-        ))}
+      <SearchResults
+        initialQuery={query}
+        initialType={type}
+        loggedUsername={loggedInUser.username}
+        loggedName={loggedInUser.name}
+        initialResults={results}
+      />
     </div>
   );
 }
