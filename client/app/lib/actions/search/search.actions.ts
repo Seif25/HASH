@@ -55,11 +55,11 @@ export async function searchAction({
       .lean();
     users = await UserModel.find({
       name: {
-        // $ne: loggedName,
+        $ne: loggedName,
         $regex: new RegExp(query, "i"),
       },
       username: {
-        // $ne: loggedUsername,
+        $ne: loggedUsername,
         $regex: new RegExp(query, "i"),
       },
     })
