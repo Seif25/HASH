@@ -16,7 +16,9 @@ import {
 import { MediaType } from "@/app/lib/types/hash.types";
 import Image from "next/image";
 import { SummarizedUserType } from "@/app/lib/types/user.types";
-import ReactPlayer from "react-player";
+import HashVideoPreview from "../HashVideoPreview";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import CommentField from "./CommentField";
 
 interface CommentBtnProps {
   count: number;
@@ -24,6 +26,7 @@ interface CommentBtnProps {
   hashMedia: MediaType[];
   hashText: string;
   hashAuthor: SummarizedUserType;
+  hashId: string;
 }
 
 export default function CommentBtn({
@@ -32,8 +35,8 @@ export default function CommentBtn({
   hashText,
   hashAuthor,
   commenter,
+  hashId,
 }: CommentBtnProps) {
-  const cols = ["grid-cols-1", "grid-cols-2", "grid-cols-3", "grid-cols-4"];
   return (
     <div className="group flex items-center gap-1">
       <Dialog>
@@ -73,54 +76,63 @@ export default function CommentBtn({
               </div>
               <div className="flex flex-col gap-3 px-10 pb-5">
                 <h3 className="text-accent1 text-body">{hashText}</h3>
+                {/* Hash Media */}
                 {hashMedia.length > 0 && (
-                  <div
-                    className={`grid ${
-                      cols[hashMedia.length - 1]
-                    } gap-5 w-full max-w-xs h-full max-h-[380px] rounded-2xl`}
-                  >
-                    {hashMedia.map((hashMedia) => (
-                      <div key={hashMedia.id}>
-                        {hashMedia.mediaType === "image" ? (
-                          <Image
-                            src={hashMedia.url}
-                            alt={hashMedia.alt}
-                            width={800}
-                            height={800}
-                            className="rounded-2xl w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="rounded-2xl w-full h-full">
-                            <ReactPlayer
-                              url={hashMedia.url}
-                              width="100%"
-                              height="100%"
-                              muted={true}
-                              playing={true}
-                              loop={true}
-                              controls={true}
-                              style={{ borderRadius: "1rem" }}
+                  <div className="flex items-center justify-start w-full h-auto">
+                    {hashMedia.length === 1 ? (
+                      <div className="w-[250px] bg-transparent">
+                        {hashMedia[0].mediaType === "image" ? (
+                          <AspectRatio ratio={3 / 4}>
+                            <Image
+                              src={hashMedia[0].url}
+                              alt={hashMedia[0].alt}
+                              fill
+                              priority
+                              className="rounded-xl aspect-square bg-transparent object-contain"
                             />
-                          </div>
+                          </AspectRatio>
+                        ) : hashMedia[0].mediaType === "video" ? (
+                          <AspectRatio ratio={16 / 9}>
+                            <HashVideoPreview src={hashMedia[0].url} />
+                          </AspectRatio>
+                        ) : (
+                          <></>
                         )}
                       </div>
-                    ))}
+                    ) : (
+                      <div className="grid grid-cols-2 gap-3 w-full h-auto items-center">
+                        {hashMedia.map((media, index) => (
+                          <div
+                            key={media.id}
+                            className={`w-[150px] h-[150px] flex items-center justify-center bg-dark rounded-xl`}
+                          >
+                            {media.mediaType === "image" ? (
+                              <AspectRatio ratio={1 / 1}>
+                                <Image
+                                  src={media.url}
+                                  alt={media.alt}
+                                  fill
+                                  priority
+                                  className={`rounded-xl aspect-square bg-transparent object-contain`}
+                                />
+                              </AspectRatio>
+                            ) : media.mediaType === "video" ? (
+                              <AspectRatio ratio={16 / 9}>
+                                <HashVideoPreview src={media.url} />
+                              </AspectRatio>
+                            ) : (
+                              <></>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
             </DialogTitle>
             <DialogDescription className="pt-5">
-              <div className="bg-accent2 rounded-2xl flex items-center justify-between px-5">
-                <input
-                  type="text"
-                  id="comment-field"
-                  className="w-full rounded-2xl p-2 bg-accent2 border-none outline-none ring-0 text-accent1"
-                  placeholder="Write a comment..."
-                />
-                <button>
-                  <SendHorizonal size={"16px"} className="text-primary" />
-                </button>
-              </div>
+              <CommentField commenter={commenter} hashId={hashId} />
             </DialogDescription>
           </DialogHeader>
         </DialogContent>

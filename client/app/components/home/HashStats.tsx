@@ -57,6 +57,7 @@ export default function HashStats({
           hashMedia={hashMedia}
           hashText={hashText}
           commenter={loggedInUser}
+          hashId={hashId}
         />
         <LikeBtn
           count={likeCount}

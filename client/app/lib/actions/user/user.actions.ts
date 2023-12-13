@@ -8,6 +8,8 @@ import {
   SupabaseConversationType,
 } from "../../types/conversation.types";
 import { UserFollowingType, UserType } from "../../types/user.types";
+import { HashType } from "../../types/hash.types";
+import HashModel from "../../models/hash.model";
 
 /**
  * Fetch user's information using their username
@@ -163,5 +165,38 @@ export async function updateFCMToken({
     return await UserModel.updateOne({ username }, { fcmToken });
   } catch (error: any) {
     throw new Error(error.message);
+  }
+}
+
+export async function newCommentAction({
+  commenter,
+  hashId,
+  text,
+  media,
+}: {
+  commenter: string;
+  hashId: string;
+  text: string;
+  media: HashType[];
+}) {
+  try {
+    const hash = await HashModel.create({
+      author: commenter,
+      text,
+      media,
+    });
+    if (hash) {
+      await HashModel.findByIdAndUpdate(hashId, {
+        $push: { children: hash._id },
+      });
+      await UserModel.findOneAndUpdate(
+        { username: commenter },
+        {
+          $push: { hashes: hash._id },
+        }
+      );
+    }
+  } catch (error: any) {
+    console.log(error);
   }
 }

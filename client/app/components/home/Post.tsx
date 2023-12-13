@@ -5,7 +5,6 @@ import {
   ImageIcon,
   Loader2,
   SendHorizontal,
-  Smile,
 } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -19,6 +18,7 @@ import { MediaType } from "@/app/lib/types/hash.types";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useUploadThing } from "@/app/lib/uploadthing/uploadThing";
 import { getMediaType } from "@/app/utils/functions/functions";
+import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 
 interface PostProps {
   loggedInUser: string;
@@ -32,6 +32,8 @@ const file_nanoid = customAlphabet(
 
 export default function Post({ loggedInUser, profilePic }: PostProps) {
   const { toast } = useToast();
+
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const [text, setText] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -135,16 +137,17 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
         <div className="flex flex-col w-full bg-accent2 rounded-2xl pb-3">
           {/* Text Field and Post Button */}
           <div className="post-field rounded-r-2xl rounded-bl-2xl rounded-tl-none px-2">
-            <textarea
+            <TextareaAutosize
               id="new-post-field"
               placeholder="What's on your mind?"
-              rows={1}
+              minRows={1}
+              maxRows={6}
               value={text}
               className="w-[80%] resize-none bg-transparent outline-none ring-0 border-none text-accent1 px-2"
               onChange={handleOnChange}
             />
             <button
-              className="text-primary disabled:text-accent1/50 w-[20%] flex items-center justify-end"
+              className="text-primary disabled:text-accent1/50 w-[20%] flex items-end justify-end"
               type="submit"
               // disabled={text.length === 0 && blob.length === 0}
             >

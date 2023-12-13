@@ -16,11 +16,21 @@ import HashVideoPreview from "./HashVideoPreview";
 import HashCarousel from "./HashCarousel";
 import { Pencil, Repeat2 } from "lucide-react";
 import { usePathname } from "next/navigation";
-
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { motion } from "framer-motion";
 interface HashProps {
   hash: HashType;
   loggedInUser: string;
 }
+
+const item = {
+  hidden: {
+    opacity: 0,
+  },
+  show: {
+    opacity: 1,
+  },
+};
 
 export default function HashCard({ hash, loggedInUser }: HashProps) {
   const [bookmarked, setBookmarked] = useState(false);
@@ -53,7 +63,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
   }, [hash, loggedInUser]);
 
   return (
-    <div className="bg-accent2 rounded-2xl p-5">
+    <motion.div variants={item} className="bg-accent2 rounded-2xl p-5">
       {hash.edited && (
         <h3 className="text-accent1/50 font-bold text-[14px] flex items-center gap-2 mb-5">
           <Pencil size={16} />
@@ -111,24 +121,62 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
         {hash.media.length > 0 && (
           <div className="flex items-center justify-start w-full h-auto">
             {hash.media.length === 1 ? (
-              <>
+              <div className="w-[450px] bg-transparent">
                 {hash.media[0].mediaType === "image" ? (
-                  <Image
-                    src={hash.media[0].url}
-                    alt={hash.media[0].alt}
-                    width={400}
-                    height={400}
-                    priority
-                    className="rounded-2xl w-full lg:w-1/2 bg-accent1 h-80 object-cover"
-                  />
+                  <AspectRatio ratio={1 / 1}>
+                    <Image
+                      src={hash.media[0].url}
+                      alt={hash.media[0].alt}
+                      fill
+                      priority
+                      className="rounded-xl aspect-square bg-dark object-cover"
+                    />
+                  </AspectRatio>
                 ) : hash.media[0].mediaType === "video" ? (
-                  <HashVideoPreview src={hash.media[0].url} />
+                  <AspectRatio ratio={16 / 9}>
+                    <HashVideoPreview src={hash.media[0].url} />
+                  </AspectRatio>
                 ) : (
                   <></>
                 )}
-              </>
+              </div>
             ) : (
-              <HashCarousel HashMedia={hash.media} />
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 w-full h-auto items-center relative">
+                {hash.media.slice(0, 3).map((media, index) => (
+                  <div
+                    key={media.id}
+                    className={`w-[150px] h-[150px] lg:w-[250px] lg:h-[250px] flex items-center justify-center bg-dark rounded-xl`}
+                  >
+                    {media.mediaType === "image" ? (
+                      <AspectRatio ratio={1 / 1}>
+                        <Image
+                          src={media.url}
+                          alt={media.alt}
+                          fill
+                          priority
+                          className={`${
+                            index === 2 && "absolute z-0"
+                          } rounded-xl aspect-square bg-transparent object-cover`}
+                        />
+                        {hash.media.length > 3 && index === 2 && (
+                          <div className="absolute z-10 bg-accent2/20 w-[150px] h-[150px] lg:w-[250px] lg:h-[250px] rounded-xl flex items-center justify-center top-0">
+                            <h3 className="text-[20px] text-accent1">
+                              {`+ ${hash.media.length - 3}`}
+                            </h3>
+                          </div>
+                        )}
+                      </AspectRatio>
+                    ) : media.mediaType === "video" ? (
+                      <AspectRatio ratio={16 / 9}>
+                        <HashVideoPreview src={media.url} />
+                      </AspectRatio>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                ))}
+              </div>
+              // <HashCarousel HashMedia={hash.media} />
             )}
           </div>
         )}
@@ -154,6 +202,6 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
         reposted={reposted}
         setReposted={setReposted}
       />
-    </div>
+    </motion.div>
   );
 }

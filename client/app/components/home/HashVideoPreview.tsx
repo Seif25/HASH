@@ -74,11 +74,11 @@ export default function HashVideoPreview({
   return (
     <div
       id="video-container"
-      className={`w-[90%] max-w-5xl flex justify-center video-container relative`}
+      className={`aspect-video flex justify-center video-container relative`}
     >
       <div
         id="video-controls-container"
-        className={`absolute bottom-0 left-0 right-0 text-accent1 z-50 transition-all hover:opacity-100 focus-within:opacity-100 before:bg-gradient-to-t before:from-black before:rounded-b-2xl before:to-transparent before:absolute before:z-[-1] before:w-full before:bottom-0 before:aspect-[6/1]`}
+        className={`absolute bottom-0 left-0 right-0 text-accent1 z-50 transition-all hover:opacity-100 focus-within:opacity-100 before:bg-gradient-to-t before:from-black before:rounded-b-xl before:to-transparent before:absolute before:z-[-1] before:w-full before:bottom-0 before:aspect-[6/1]`}
       >
         <div id="controls" className="flex items-center gap-2 p-5">
           <div className="flex items-center gap-1 flex-grow">
@@ -102,7 +102,7 @@ export default function HashVideoPreview({
         <VideoDialogTrigger onClick={handleFullScreenChange}>
           <video
             src={src}
-            className="w-full z-10 rounded-2xl"
+            className="w-full z-10 rounded-xl"
             ref={videoRef}
             muted={muted}
             loop

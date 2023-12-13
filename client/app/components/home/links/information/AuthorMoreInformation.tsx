@@ -31,6 +31,7 @@ interface AuthorMoreInformationProps {
   whoCanReply: "everyone" | "followers only" | "followed by me" | "";
   handleOpenDialog: () => void;
   handleOpenEditDialog: () => void;
+  handleOpenDeleteDialog: () => void;
 }
 
 export default function AuthorMoreInformation({
@@ -40,6 +41,7 @@ export default function AuthorMoreInformation({
   whoCanReply,
   handleOpenDialog,
   handleOpenEditDialog,
+  handleOpenDeleteDialog,
 }: AuthorMoreInformationProps) {
   const pathname = usePathname();
 
@@ -65,7 +67,7 @@ export default function AuthorMoreInformation({
         {/* Delete Hash */}
         <DropdownMenuItem
           className="flex items-center gap-5 text-red-500 cursor-pointer"
-          onClick={() => deleteHashAction({ hashId, pathname })}
+          onClick={handleOpenDeleteDialog}
         >
           <Trash2 size={"20px"} className="mr-2" />
           <span>Delete Hash</span>
