@@ -23,7 +23,10 @@ import ViewerMoreInformation from "./information/ViewerMoreInformation";
 import AuthorMoreInformation from "./information/AuthorMoreInformation";
 import { useState } from "react";
 import { MediaType } from "@/app/lib/types/hash.types";
-import { changeRestrictionAction } from "@/app/lib/actions/hash/hash.actions";
+import {
+  changeRestrictionAction,
+  deleteHashAction,
+} from "@/app/lib/actions/hash/hash.actions";
 import { usePathname } from "next/navigation";
 import EditHash from "../../shared/post/EditHash";
 import {
@@ -33,6 +36,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -66,6 +80,7 @@ export default function InformationBtn({
   >(restriction);
   const [loading, setLoading] = useState<boolean>(false);
   const [openEdit, setOpenEdit] = useState<boolean>(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
   function handleOpenDialog() {
     setOpenRestriction(true);
@@ -76,6 +91,12 @@ export default function InformationBtn({
     setOpenEdit(true);
     setOpen(false);
   }
+
+  function handleOpenDeleteDialog() {
+    setOpenDeleteDialog(true);
+    setOpen(false);
+  }
+
   function handleRestrictionChange(value: typeof restriction) {
     changeRestriction(value);
   }
@@ -120,6 +141,7 @@ export default function InformationBtn({
                 whoCanReply={whoCanReply}
                 handleOpenDialog={handleOpenDialog}
                 handleOpenEditDialog={handleOpenEditDialog}
+                handleOpenDeleteDialog={handleOpenDeleteDialog}
               />
             )}
           </DropdownMenu>
@@ -128,6 +150,32 @@ export default function InformationBtn({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
+      {/* Confirm Delete Dialog */}
+      <AlertDialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you sure you want to delete this post?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              post.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>
+              <Button
+                variant={"destructive"}
+                size={"default"}
+                onClick={() => deleteHashAction({ hashId, pathname })}
+              >
+                Delete
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       {/* Edit Hash Dialog */}
       <EditHash
         hashId={hashId}

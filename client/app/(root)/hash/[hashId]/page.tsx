@@ -1,4 +1,5 @@
 import HashCard from "@/app/components/home/HashCard";
+import CommentField from "@/app/components/home/links/CommentField";
 import { fetchHashByIdAction } from "@/app/lib/actions/hash/hash.actions";
 import { HashType } from "@/app/lib/types/hash.types";
 import { currentUser } from "@clerk/nextjs";
@@ -13,16 +14,10 @@ export default async function ({ params }: { params: { hashId: string } }) {
       <div className="flex flex-col gap-5">
         {/* Hash Card */}
         <HashCard hash={hash} loggedInUser={loggedInUser?.username ?? ""} />
-        <div className="flex items-center justify-between bg-dark rounded-2xl p-2 px-5 mx-10">
-          <input
-            type="text"
-            className="ring-0 outline-none border-none bg-transparent px-3 w-full"
-            placeholder="Write a comment"
-          />
-          <button>
-            <SendHorizonal size={"16px"} className="text-primary" />
-          </button>
-        </div>
+        <CommentField
+          commenter={loggedInUser?.username ?? ""}
+          hashId={hashId}
+        />
         {hash.children.length > 0 && (
           <div className="flex flex-col gap-5 border-l border-accent1/10 px-3 lg:mx-10 mx-5">
             {hash.children.map((comment) => (

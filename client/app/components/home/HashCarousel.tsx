@@ -1,8 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import ReactPlayer from "react-player";
-import HashVideoPlayer from "./HashVideoPlayer";
 import HashVideoPreview from "./HashVideoPreview";
 
 import "@splidejs/splide/css/skyblue";
@@ -10,6 +8,7 @@ import { MediaType } from "@/app/lib/types/hash.types";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 export default function HashCarousel({
   HashMedia,
@@ -57,7 +56,7 @@ export default function HashCarousel({
     <div
       id="carousel-container"
       aria-label="media carousel for post"
-      className="w-[100%] h-[60vh] relative lg:p-10 mb-10"
+      className="w-[100%] h-[450px] relative lg:p-10 mb-10"
     >
       <div
         id="carousel-navigation"
@@ -80,25 +79,31 @@ export default function HashCarousel({
           <ArrowRight size={24} />
         </Button>
       </div>
-      <div id="slides-wrapper" className="flex items-center justify-center">
+      <div
+        id="slides-wrapper"
+        className="flex items-center justify-center h-[450px] max-h-[450px]"
+      >
         {HashMedia.map((media, index) => (
           <div
             id={media.id}
             key={media.id}
-            className={`absolute flex items-center justify-center inset-0 rounded-2xl ${
+            className={`absolute flex items-center justify-start inset-0 rounded-2xl ${
               active === index ? "block" : "hidden"
             }`}
           >
             {media.mediaType === "image" ? (
-              <Image
-                src={media.url}
-                alt={media.alt}
-                width={100}
-                height={100}
-                className="rounded-2xl w-[340px] h-auto object-contain object-center block"
-              />
+              <div className="w-[450px] h-[250px] max-h-[250px]">
+                <Image
+                  src={media.url}
+                  alt={media.alt}
+                  fill
+                  className="rounded-xl aspect-auto object-contain block"
+                />
+              </div>
             ) : media.mediaType === "video" ? (
-              <HashVideoPreview src={media.url} autoplay={active === index} />
+              <AspectRatio ratio={16 / 9}>
+                <HashVideoPreview src={media.url} autoplay={active === index} />
+              </AspectRatio>
             ) : (
               <></>
             )}

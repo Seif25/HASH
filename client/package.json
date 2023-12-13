@@ -18,11 +18,13 @@
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.2",
     "@mojs/core": "^1.7.1",
+    "@mui/base": "^5.0.0-beta.27",
     "@mui/icons-material": "^5.14.7",
     "@mui/joy": "^5.0.0-beta.4",
     "@mui/material": "^5.14.7",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
+    "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-context-menu": "^2.1.5",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -58,7 +60,6 @@
     "@vercel/blob": "^0.14.1",
     "ably": "^1.2.45",
     "agora-rtc-sdk-ng": "^4.19.1",
-    "autoprefixer": "10.4.15",
     "bufferutil": "^4.0.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
@@ -77,7 +78,6 @@
     "next": "^14.0.0",
     "pino": "^8.16.1",
     "popmotion": "^11.0.5",
-    "postcss": "8.4.29",
     "react": "^18.2.0",
     "react-day-picker": "^8.8.1",
     "react-dom": "^18.2.0",
@@ -91,7 +91,6 @@
     "svix": "^1.10.0",
     "swiper": "^11.0.5",
     "tailwind-merge": "^1.14.0",
-    "tailwindcss": "3.3.3",
     "typescript": "5.2.2",
     "uploadthing": "^5.6.0",
     "utf-8-validate": "^6.0.3",
@@ -99,9 +98,14 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "autoprefixer": "^10.4.16",
     "daisyui": "^3.9.1",
     "eslint-plugin-storybook": "^0.6.13",
     "pino-pretty": "^10.2.3",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.3.6",
     "tailwindcss-animate": "^1.0.7"
   }
 }

@@ -17,13 +17,13 @@ async function connectToDB() {
   }
 }
 
-export async function getNotifications(username: string) {
+export async function fetchNotificationsAction(username: string) {
   await connectToDB();
 
   try {
     return (await NotificationModel.find({
       user: username,
-    })) as NotificationType[];
+    }).sort({ createdAt: -1 })) as NotificationType[];
   } catch (error: any) {
     throw new Error(error.message);
   }
@@ -35,12 +35,14 @@ export async function getDetailedNotifications(username: string) {
   try {
     const notificationsQuery = NotificationModel.find({
       user: username,
-    }).populate({
-      path: "source",
-      model: "User",
-      foreignField: "username",
-      select: "name username image verified following followers bio",
-    });
+    })
+      .populate({
+        path: "source",
+        model: "User",
+        foreignField: "username",
+        select: "name username image verified following followers bio",
+      })
+      .sort({ createdAt: -1 });
 
     const notifications =
       (await notificationsQuery.exec()) as NotificationType[];
@@ -74,19 +76,19 @@ export async function createNotification({
   }
 }
 
-export async function watchNotifications({
-  username,
-}: {
-  username: string;
-}): Promise<NotificationWatchType | null> {
-  NotificationModel.watch().on("change", (data: NotificationWatchType) => {
-    if (data) {
-      if (data.operationType === "insert" || data.operationType === "update") {
-        if (data.fullDocument.user === username) {
-          return data;
-        }
-      }
-    }
-  });
-  return null;
-}
+// export async function watchNotifications({
+//   username,
+// }: {
+//   username: string;
+// }): Promise<NotificationWatchType | null> {
+//   NotificationModel.watch().on("change", (data: NotificationWatchType) => {
+//     if (data) {
+//       if (data.operationType === "insert" || data.operationType === "update") {
+//         if (data.fullDocument.user === username) {
+//           return data;
+//         }
+//       }
+//     }
+//   });
+//   return null;
+// }

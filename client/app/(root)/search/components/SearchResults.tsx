@@ -19,6 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AccountCard from "./AccountCard";
 import Link from "next/link";
 import AccountLink from "./AccountLink";
+import HashSkeleton from "@/app/components/home/HashSkeleton";
 
 interface SearchResultsProps {
   initialQuery: string;
@@ -35,13 +36,21 @@ export default function SearchResults({
   loggedName,
   initialResults,
 }: SearchResultsProps) {
-  const [value, setValue] = useState("all");
+  const [value, setValue] = useState(
+    initialType === "profile"
+      ? "people"
+      : initialType === "hashtag"
+      ? "hashes"
+      : "all"
+  );
   const [results, UpdateResults] =
     useState<typeof initialResults>(initialResults);
   const [query, setQuery] = useState<string>(initialQuery);
   const [type, setType] = useState<"query" | "hashtag" | "profile">(
     initialType
   );
+  const [update, setUpdate] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -50,19 +59,62 @@ export default function SearchResults({
     searchParams.get("q") && setQuery(searchParams.get("q") as string);
     searchParams.get("type") &&
       setType(searchParams.get("type") as "query" | "hashtag" | "profile");
+    setUpdate(true);
+    setLoading(false);
   }, [searchParams]);
 
   useEffect(() => {
-    const searchQuery = type === "hashtag" ? `#${query}` : query;
-    searchAction({ query: searchQuery, type, loggedUsername, loggedName })
-      .then((res) => {
-        UpdateResults(res);
-      })
-      .catch((err) => {
-        console.log(err);
-        throw new Error(err.message);
+    if (update) {
+      const searchQuery =
+        type === "hashtag" && !query.startsWith("#") ? `#${query}` : query;
+      searchAction({ query: searchQuery, type, loggedUsername, loggedName })
+        .then((res) => {
+          UpdateResults(res);
+          if (type === "profile") setValue("people");
+          else if (type === "hashtag") setValue("hashes");
+          else setValue("all");
+          setUpdate(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          throw new Error(err.message);
+        });
+    }
+  }, [update]);
+
+  function handleQueryChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const queryValue = e.target.value;
+    if (queryValue.length === 0) {
+      UpdateResults({
+        results: {
+          users: [],
+          hashes: [],
+        },
       });
-  }, [query, type]);
+    }
+    let typeValue: "profile" | "hashtag" | "query" = "query";
+    if (queryValue.startsWith("#")) typeValue = "hashtag";
+    else if (queryValue.startsWith("@")) typeValue = "profile";
+    else typeValue = "query";
+    setType(typeValue);
+    setQuery(queryValue);
+  }
+
+  function handleSearch() {
+    setLoading(true);
+    router.push(`/search?q=${query}&type=${type}`);
+  }
+
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-5">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <HashSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-5">
       {/* Header */}
@@ -81,14 +133,16 @@ export default function SearchResults({
             type="text"
             className="bg-accent2 w-full rounded-full ringo-0 outline-none border-none px-3 py-1 text-accent1"
             value={query}
+            onChange={handleQueryChange}
             aria-label="Search Box"
-            placeholder="Search Hash"
+            placeholder="What are you curious about today? Search Hash..."
           />
           <Button
             size={"icon"}
             variant={"icon"}
             className="text-accent1"
             aria-label="Search Button"
+            onClick={handleSearch}
           >
             <Search size={24} />
           </Button>
@@ -114,34 +168,100 @@ export default function SearchResults({
         </div>
       </div>
       {/* Categories */}
-      <Tabs value={value} className="w-full" onValueChange={setValue}>
-        <TabsList className="w-full mb-5">
-          <TabsTrigger className="w-40" value="all">
-            All
-          </TabsTrigger>
-          <TabsTrigger className="w-40" value="hashes">
-            Hashes
-          </TabsTrigger>
-          <TabsTrigger className="w-40" value="people">
-            People
-          </TabsTrigger>
-          <TabsTrigger className="w-40" value="media">
-            Media
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent className="flex flex-col px-5" value="all">
-          {/* People */}
-          <div className="flex flex-col gap-3 border-b border-accent1/10 mb-5 pb-5">
-            <div className="flex items-center justify-between">
-              <h1 className="text-heading text-accent1">People</h1>
-              <Button
-                variant={"link"}
-                size={"default"}
-                onClick={() => setValue("people")}
-              >
-                See All
-              </Button>
+      {query.length === 0 ? (
+        <div className="flex items-center justify-center">
+          <h1 className="w-full text-heading text-accent1">
+            {
+              "Just type in any keyword you'd like to search for and we'll do our best to find it!"
+            }
+          </h1>
+        </div>
+      ) : (
+        <Tabs value={value} className="w-full" onValueChange={setValue}>
+          <TabsList className="w-full mb-5">
+            <TabsTrigger className="w-40" value="all">
+              All
+            </TabsTrigger>
+            <TabsTrigger className="w-40" value="hashes">
+              Hashes
+            </TabsTrigger>
+            <TabsTrigger className="w-40" value="people">
+              People
+            </TabsTrigger>
+            <TabsTrigger className="w-40" value="media">
+              Media
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent className="flex flex-col px-5" value="all">
+            {/* People */}
+            <div className="flex flex-col gap-3 border-b border-accent1/10 mb-5 pb-5">
+              <div className="flex items-center justify-between">
+                <h1 className="text-heading text-accent1">People</h1>
+                <Button
+                  variant={"link"}
+                  size={"default"}
+                  onClick={() => setValue("people")}
+                >
+                  See All
+                </Button>
+              </div>
+              {results.results.users.length > 0 && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                  {results.results.users.slice(0, 3).map((result: UserType) => (
+                    <Link
+                      href={`/profile/${result.username}`}
+                      key={result.username}
+                    >
+                      <AccountCard
+                        user={result}
+                        loggedInUser={loggedUsername}
+                      />
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
+            {/* Hashes */}
+            <div className="flex flex-col gap-3 border-b border-accent1/10 mb-5 pb-5">
+              <div className="flex items-center justify-between">
+                <h1 className="text-heading text-accent1">Hashes</h1>
+                <Button
+                  variant={"link"}
+                  size={"default"}
+                  onClick={() => setValue("hashes")}
+                >
+                  See All
+                </Button>
+              </div>
+              {results.results.hashes.length > 0 && (
+                <div className="flex flex-col gap-5">
+                  {results.results.hashes
+                    .slice(0, 10)
+                    .map((result: HashType) => (
+                      <HashCard
+                        key={result._id}
+                        hash={result}
+                        loggedInUser={loggedUsername}
+                      />
+                    ))}
+                </div>
+              )}
+            </div>
+          </TabsContent>
+          <TabsContent className="flex flex-col px-5" value="hashes">
+            {results.results.hashes.length > 0 && (
+              <div className="flex flex-col gap-5">
+                {results.results.hashes.map((result: HashType) => (
+                  <HashCard
+                    key={result._id}
+                    hash={result}
+                    loggedInUser={loggedUsername}
+                  />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+          <TabsContent className="flex flex-col px-5 gap-5" value="people">
             {results.results.users.length > 0 && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                 {results.results.users.slice(0, 3).map((result: UserType) => (
@@ -154,89 +274,38 @@ export default function SearchResults({
                 ))}
               </div>
             )}
-          </div>
-          {/* Hashes */}
-          <div className="flex flex-col gap-3 border-b border-accent1/10 mb-5 pb-5">
-            <div className="flex items-center justify-between">
-              <h1 className="text-heading text-accent1">Hashes</h1>
-              <Button
-                variant={"link"}
-                size={"default"}
-                onClick={() => setValue("hashes")}
-              >
-                See All
-              </Button>
-            </div>
-            {results.results.hashes.length > 0 && (
+            {results.results.users.length > 3 && (
               <div className="flex flex-col gap-5">
-                {results.results.hashes.slice(0, 10).map((result: HashType) => (
-                  <HashCard
-                    key={result._id}
-                    hash={result}
-                    loggedInUser={loggedUsername}
-                  />
+                {results.results.users.slice(3).map((result: UserType) => (
+                  <Link
+                    href={`/profile/${result.username}`}
+                    key={result.username}
+                  >
+                    <AccountLink user={result} loggedInUser={loggedUsername} />
+                  </Link>
                 ))}
               </div>
             )}
-          </div>
-        </TabsContent>
-        <TabsContent className="flex flex-col px-5" value="hashes">
-          {results.results.hashes.length > 0 && (
-            <div className="flex flex-col gap-5">
-              {results.results.hashes.map((result: HashType) => (
-                <HashCard
-                  key={result._id}
-                  hash={result}
-                  loggedInUser={loggedUsername}
-                />
-              ))}
-            </div>
-          )}
-        </TabsContent>
-        <TabsContent className="flex flex-col px-5 gap-5" value="people">
-          {results.results.users.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-              {results.results.users.slice(0, 3).map((result: UserType) => (
-                <Link
-                  href={`/profile/${result.username}`}
-                  key={result.username}
-                >
-                  <AccountCard user={result} loggedInUser={loggedUsername} />
-                </Link>
-              ))}
-            </div>
-          )}
-          {results.results.users.length > 3 && (
-            <div className="flex flex-col gap-5">
-              {results.results.users.slice(3).map((result: UserType) => (
-                <Link
-                  href={`/profile/${result.username}`}
-                  key={result.username}
-                >
-                  <AccountLink user={result} loggedInUser={loggedUsername} />
-                </Link>
-              ))}
-            </div>
-          )}
-        </TabsContent>
-        <TabsContent className="flex flex-col px-5" value="media">
-          {results.results.hashes.length > 0 && (
-            <div className="flex flex-col gap-5">
-              {results.results.hashes.map((result: HashType) => (
-                <>
-                  {result.media.length > 0 && (
-                    <HashCard
-                      key={result._id}
-                      hash={result}
-                      loggedInUser={loggedUsername}
-                    />
-                  )}
-                </>
-              ))}
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
+          </TabsContent>
+          <TabsContent className="flex flex-col px-5" value="media">
+            {results.results.hashes.length > 0 && (
+              <div className="flex flex-col gap-5">
+                {results.results.hashes.map((result: HashType) => (
+                  <>
+                    {result.media.length > 0 && (
+                      <HashCard
+                        key={result._id}
+                        hash={result}
+                        loggedInUser={loggedUsername}
+                      />
+                    )}
+                  </>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 }

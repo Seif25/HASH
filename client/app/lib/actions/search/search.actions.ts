@@ -65,6 +65,19 @@ export async function searchAction({
     })
       .select("name username verified image banner following followers bio")
       .lean();
+  } else if (type === "profile") {
+    users = await UserModel.find({
+      name: {
+        $ne: loggedName,
+        $regex: new RegExp(query.substring(1), "i"),
+      },
+      username: {
+        $ne: loggedUsername,
+        $regex: new RegExp(query.substring(1), "i"),
+      },
+    })
+      .select("name username verified image banner following followers bio")
+      .lean();
   }
   const queryResults = {
     users,
