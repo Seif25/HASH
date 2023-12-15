@@ -4,6 +4,7 @@ import "./globals.css";
 import QueryProvider from "@/app/providers/QueryProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const rubik = Rubik({
   weight: ["300", "400", "700", "900"],
@@ -39,6 +40,7 @@ export default function RootLayout({
           </head>
           <body className={`${rubik.className} app pb-10`}>
             <main>{children}</main>
+            <SpeedInsights />
             <Toaster />
           </body>
           {/* <footer className="grid grid-cols-2 lg:flex items-center justify-center lg:justify-between p-5 bg-black pb-24 lg:pb-5">
