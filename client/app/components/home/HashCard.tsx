@@ -63,7 +63,12 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
   }, [hash, loggedInUser]);
 
   return (
-    <motion.div variants={item} className="bg-accent2 rounded-2xl p-5">
+    <motion.div
+      variants={item}
+      initial="hidden"
+      animate="show"
+      className="bg-accent2 rounded-2xl p-5"
+    >
       {hash.edited && (
         <h3 className="text-accent1/50 font-bold text-[14px] flex items-center gap-2 mb-5">
           <Pencil size={16} />
@@ -125,7 +130,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
                 {hash.media[0].mediaType === "image" ? (
                   <AspectRatio ratio={1 / 1}>
                     <Image
-                      src={hash.media[0].url}
+                      src={`/api/media/download?filename=${hash.media[0].url}&type=image`}
                       alt={hash.media[0].alt}
                       fill
                       priority
@@ -134,7 +139,9 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
                   </AspectRatio>
                 ) : hash.media[0].mediaType === "video" ? (
                   <AspectRatio ratio={16 / 9}>
-                    <HashVideoPreview src={hash.media[0].url} />
+                    <HashVideoPreview
+                      src={`/api/media/download?filename=${hash.media[0].url}&type=video`}
+                    />
                   </AspectRatio>
                 ) : (
                   <></>
@@ -150,7 +157,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
                     {media.mediaType === "image" ? (
                       <AspectRatio ratio={1 / 1}>
                         <Image
-                          src={media.url}
+                          src={`/api/media/download?filename=${media.url}&type=image`}
                           alt={media.alt}
                           fill
                           priority
@@ -168,7 +175,9 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
                       </AspectRatio>
                     ) : media.mediaType === "video" ? (
                       <AspectRatio ratio={16 / 9}>
-                        <HashVideoPreview src={media.url} />
+                        <HashVideoPreview
+                          src={`/api/media/download?filename=${media.url}&type=video`}
+                        />
                       </AspectRatio>
                     ) : (
                       <></>

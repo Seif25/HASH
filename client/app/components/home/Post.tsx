@@ -14,11 +14,12 @@ import { usePathname } from "next/navigation";
 import { CreateHashParams } from "@/app/lib/types/hash.actions.types";
 import { useToast } from "@/components/ui/use-toast";
 import { customAlphabet, nanoid } from "nanoid";
-import { MediaType } from "@/app/lib/types/hash.types";
+import { ContentType, MediaType } from "@/app/lib/types/hash.types";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useUploadThing } from "@/app/lib/uploadthing/uploadThing";
 import { getMediaType } from "@/app/utils/functions/functions";
 import { TextareaAutosize } from "@mui/base/TextareaAutosize";
+import { PutBlobResult } from "@vercel/blob";
 
 interface PostProps {
   loggedInUser: string;
@@ -33,8 +34,6 @@ const file_nanoid = customAlphabet(
 export default function Post({ loggedInUser, profilePic }: PostProps) {
   const { toast } = useToast();
 
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
   const [text, setText] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const pathname = usePathname();
@@ -42,6 +41,7 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
     "We're getting your post ready to share with the world. Hold tight!"
   );
 
+  const [blob, setBlob] = useState<MediaType[]>([]);
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const { startUpload } = useUploadThing("hashMedia");
@@ -55,8 +55,35 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
     inputFileRef.current?.click();
   };
 
-  const createPost = async (e: React.FormEvent<HTMLFormElement>) => {
+  async function uploadFiles(files: File[]): Promise<MediaType[]> {
+    let media: MediaType[] = [];
+    if (files.length === 0) {
+      return media;
+    }
+    for (let index = 0; index < files.length; index++) {
+      const file = files[index];
+      const response = await fetch(`/api/media/upload?filename=${file.name}`, {
+        method: "POST",
+        body: file,
+      });
+
+      const newBlob = (await response.json()) as PutBlobResult;
+
+      const mediaType = newBlob.contentType.split("/")[0] as ContentType;
+      const mediaBlob = {
+        id: file_nanoid(),
+        url: newBlob.url,
+        alt: newBlob.contentDisposition,
+        mediaType,
+      };
+      media = [...media, mediaBlob];
+    }
+    return media;
+  }
+
+  async function createPost(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    let files: File[] = [];
 
     if (text.length === 0 && inputFileRef.current?.files?.length === 0) {
       toast({
@@ -69,38 +96,37 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
 
     setLoading(true);
 
-    const media: MediaType[] = [];
-
-    if (inputFileRef.current?.files) {
-      const files = Array.from(inputFileRef.current?.files);
-
-      const res = await startUpload(files);
-
-      res?.forEach((file) => {
-        const mediaType = getMediaType(file.name);
-        console.log("mediaType: ", mediaType);
-        const mediaBlob = {
-          id: file_nanoid(),
-          url: file.url,
-          alt: file.name,
-          mediaType,
-        };
-        media.push(mediaBlob);
-      });
+    // File<Image, Video, Audio> Upload to @vercel/blob
+    if (inputFileRef.current?.files?.length) {
+      files = Array.from(inputFileRef.current?.files);
     }
+
+    const media = await uploadFiles(files);
+
+    if (text.length === 0 && media.length === 0) {
+      toast({
+        title: "Unable to create Hash",
+        description: "You must add some text or media to your Hash",
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+
     const data = {
       text,
       author: loggedInUser,
       media,
       pathname,
     };
+
     await createHashAction(data as CreateHashParams);
     setText("");
     setLoading(false);
     setAlertMessage(
       "We're getting your post ready to share with the world. Hold tight!"
     );
-  };
+  }
 
   useEffect(() => {
     if (loading) {

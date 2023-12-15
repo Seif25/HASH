@@ -23,8 +23,10 @@ export type MediaType = {
   id: string;
   url: string;
   alt: string;
-  mediaType: "image" | "video" | "audio" | "unknown";
+  mediaType: ContentType;
 };
+
+export type ContentType = "image" | "video" | "audio" | "unknown";
 
 export type RepostType = {
   user: string;
