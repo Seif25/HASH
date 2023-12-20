@@ -1,4 +1,3 @@
-import { Heart } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -10,6 +9,8 @@ import mojs from "@mojs/core";
 import { useEffect, useRef, useState } from "react";
 import { likeHash, unlikeHash } from "@/lib/actions/hash.actions";
 import { usePathname } from "next/navigation";
+import { HeartIcon } from "@heroicons/react/24/solid";
+import { HeartIcon as OutlineHeart } from "@heroicons/react/24/outline";
 
 interface LikeBtnProps {
   count: number;
@@ -91,14 +92,19 @@ export default function LikeBtn({
       <Tooltip>
         <div className="group flex items-center gap-1">
           <TooltipTrigger>
-            <div ref={parentDom} onClick={handleLike}>
-              <Heart
-                size={"24px"}
-                className={`group-hover:text-red-500 ${
-                  liked ? "text-red-700" : "text-accent1"
-                }`}
-                ref={iconRef}
-              />
+            <div
+              ref={parentDom}
+              onClick={handleLike}
+              className="transition-all ease-in-out"
+            >
+              {liked ? (
+                <HeartIcon className="text-red-500 group-hover:text-accent1 size-6" />
+              ) : (
+                <OutlineHeart
+                  className={`group-hover:text-red-500 text-accent1 size-6`}
+                  ref={iconRef}
+                />
+              )}
             </div>
           </TooltipTrigger>
           <span className="text-accent1/50 text-paragraph select-none">

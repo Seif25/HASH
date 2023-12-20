@@ -60,10 +60,11 @@ module.exports = {
         "overlay": "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))"
       },
       colors: {
-        "primary": "#1991fe",
+        "primary": "#1ca0f2",
         "accent1": "#E6EBF0",
-        "accent2": "#13161a",
-        "accent3": "#0671cb",
+        "accent2": "#00080d",
+        "accent3": "#13161a",
+        "accent": "#1ca0f2",
         "dark": "#070f16",
         "logout-btn": "#FF5A5A",
         "navbar-menu": "rgba(240, 245, 255, 0.6)",

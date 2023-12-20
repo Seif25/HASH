@@ -56,9 +56,9 @@ export default function UserConversationsPage({
   }
 
   return (
-    <section className="flex flex-col gap-5 bg-accent2 rounded-2xl lg:mt-5">
+    <section className="flex flex-col gap-5 bg-accent2 rounded-xl lg:mt-5">
       {/* Start new Conversation & Search */}
-      <section className="bg-accent2 rounded-t-2xl h-[10vh] lg:h-[15vh] p-5 flex flex-col gap-5">
+      <section className="bg-accent2 rounded-t-lg h-[10vh] lg:h-[15vh] p-5 flex flex-col gap-5">
         <div className="flex items-center justify-between gap-5">
           <Image
             src={loggedInUser.image ?? "/assets/profile-pic.png"}
@@ -67,7 +67,7 @@ export default function UserConversationsPage({
             height={48}
             className="rounded-full"
           />
-          <div className="flex items-center justify-between px-3 py-2 bg-dark rounded-2xl w-[70%] lg:w-[80%]">
+          <div className="flex items-center justify-between px-3 py-2 bg-dark rounded-xl w-[70%] lg:w-[80%]">
             <input
               type="text"
               className="bg-transparent ring-0 outline-none border-none px-3 w-full"

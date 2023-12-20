@@ -240,7 +240,7 @@ export default function HashVideoPlayer({
         id="video-controls-container"
         className={`absolute bottom-0 left-0 right-0 text-accent1 z-50 lg:opacity-0 transition-all hover:opacity-100 ${
           (paused || isPlaybackSpeed) && "opacity-100"
-        } focus-within:opacity-100 before:bg-gradient-to-t before:from-black before:rounded-b-2xl before:to-transparent before:absolute before:z-[-1] before:w-full before:bottom-0 before:aspect-[6/1]`}
+        } focus-within:opacity-100 before:bg-gradient-to-t before:from-black before:rounded-b-lg before:to-transparent before:absolute before:z-[-1] before:w-full before:bottom-0 before:aspect-[6/1]`}
       >
         <div id="timeline-container">
           <div id="timeline" className="px-3 group/timeline">
@@ -380,7 +380,7 @@ export default function HashVideoPlayer({
       </div>
       <video
         src={src}
-        className="w-full z-10 rounded-2xl "
+        className="w-full z-10 rounded-xl "
         ref={videoRef}
         muted
         autoPlay

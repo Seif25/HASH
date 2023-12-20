@@ -47,7 +47,7 @@ export default function Profile({
     });
   }
   return (
-    <div className="bg-accent2/50 rounded-2xl w-full h-full mt-5 mb-10 lg:mb-5 px-5 lg:px-0">
+    <div className="bg-accent2/50 rounded-xl w-full h-full mt-5 mb-10 lg:mb-5 px-5 lg:px-0">
       <div ref={ref}>
         <ProfileInformation
           username={user.username}
@@ -64,7 +64,7 @@ export default function Profile({
       </div>
       {!inView && (
         <div
-          className="sticky top-0 flex items-center justify-between h-20 w-full p-5 rounded-t-2xl z-[100]"
+          className="sticky top-0 flex items-center justify-between h-20 w-full p-5 rounded-t-lg z-[100]"
           style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${
               user.banner || `/assets/default-banner.png`
@@ -102,7 +102,7 @@ export default function Profile({
       )}
       <Tabs value={tabValue} className="w-full" onValueChange={changeTabs}>
         <div
-          className={`sticky top-20 h-20 flex items-center rounded-b-2xl ${
+          className={`sticky top-20 h-20 flex items-center rounded-b-lg ${
             !inView ? "bg-accent2 pt-5 z-[100]" : "bg-transparent pt-0"
           }`}
         >
@@ -132,7 +132,7 @@ export default function Profile({
         <TabsContent value="posts" className="lg:px-10 flex flex-col gap-5">
           {userHashes.map((hash) => (
             <div
-              className="flex flex-col gap-1 bg-accent2 rounded-2xl"
+              className="flex flex-col gap-1 bg-accent2 rounded-xl"
               key={hash._id.toString()}
             >
               {hash.pinned && loggedInUser === hash.author.username && (
@@ -147,7 +147,7 @@ export default function Profile({
         <TabsContent value="replies" className="lg:px-10 flex flex-col gap-5">
           {replies.map((reply) => (
             <div
-              className="bg-accent2 rounded-2xl pb-5"
+              className="bg-accent2 rounded-xl pb-5"
               key={reply._id.toString()}
             >
               <div className="flex flex-col gap-5">
@@ -165,7 +165,7 @@ export default function Profile({
         >
           {highlights.map((hash) => (
             <div
-              className="flex flex-col gap-1 bg-accent2 rounded-2xl"
+              className="flex flex-col gap-1 bg-accent2 rounded-xl"
               key={hash._id.toString()}
             >
               <h3 className="bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent text-paragraph font-bold flex items-center gap-1 px-5 pt-5">

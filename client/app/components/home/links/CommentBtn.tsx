@@ -19,6 +19,7 @@ import { SummarizedUserType } from "@/app/lib/types/user.types";
 import HashVideoPreview from "../HashVideoPreview";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import CommentField from "./CommentField";
+import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
 
 interface CommentBtnProps {
   count: number;
@@ -44,10 +45,7 @@ export default function CommentBtn({
           <Tooltip>
             <DialogTrigger asChild className="cursor-pointer">
               <TooltipTrigger>
-                <MessageCircle
-                  size={"24px"}
-                  className="text-accent1 group-hover:text-primary"
-                />
+                <ChatBubbleOvalLeftIcon className="text-accent1 group-hover:text-primary size-6" />
               </TooltipTrigger>
             </DialogTrigger>
             <TooltipContent>

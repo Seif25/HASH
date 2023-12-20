@@ -38,7 +38,7 @@ export default async function Page() {
   ) as NotificationType[][];
 
   return (
-    <div className="bg-accent2 my-5 rounded-2xl w-full p-5">
+    <div className="bg-accent2 my-5 rounded-xl w-full p-5">
       <h1 className="text-heading font-bold mb-5">Notifications</h1>
       {/* <div className="grid grid-cols-3 lg:flex items-center gap-5">
         {toggleOptions.map((option) => (
@@ -58,7 +58,7 @@ export default async function Page() {
         {groupedNotifications.map(
           (group: NotificationType[], index: number) => (
             <div
-              className="flex flex-col rounded-2xl bg-dark"
+              className="flex flex-col rounded-xl bg-dark"
               key={`group-${index}`}
             >
               <RemoveNotification type={group[0].type} link={group[0].link} />

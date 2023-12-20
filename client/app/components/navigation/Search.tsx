@@ -41,7 +41,7 @@ export default function Search({}: SearchProps) {
   }
   return (
     <div
-      className={`flex items-center w-full rounded-2xl ${
+      className={`flex items-center w-full rounded-xl ${
         expand ? "bg-accent2 justify-between" : "bg-transparent justify-end"
       } px-2`}
     >

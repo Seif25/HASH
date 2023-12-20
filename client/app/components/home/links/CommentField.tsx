@@ -30,11 +30,11 @@ export default function CommentField({ commenter, hashId }: CommentFieldProps) {
     }
   }
   return (
-    <div className="bg-accent2 rounded-2xl flex items-center justify-between px-5">
+    <div className="bg-accent2 rounded-xl flex items-center justify-between px-5">
       <input
         type="text"
         id="comment-field"
-        className="w-full rounded-2xl p-2 bg-accent2 border-none outline-none ring-0 text-accent1"
+        className="w-full rounded-xl p-2 bg-accent2 border-none outline-none ring-0 text-accent1"
         placeholder="Write a comment..."
         value={value}
         onChange={handleInputChange}

@@ -62,8 +62,8 @@ export default function Premium({ sm = false }: { sm?: boolean }) {
     else setInterval("monthly");
   }
   return (
-    <div className="flex flex-col gap-5 rounded-2xl mt-5 bg-accent2 text-accent1">
-      <div className="flex flex-col gap-5 p-5 rounded-t-2xl">
+    <div className="flex flex-col gap-5 rounded-xl mt-5 bg-accent2 text-accent1">
+      <div className="flex flex-col gap-5 p-5 rounded-t-lg">
         <div className="flex items-center gap-5">
           <BadgeCheck className="text-primary" size={32} />
           <h1 className="text-heading">Subscribe to Premium</h1>
@@ -92,7 +92,7 @@ export default function Premium({ sm = false }: { sm?: boolean }) {
       <div
         className={`flex flex-col ${!sm && "lg:grid lg:grid-cols-3"} gap-5 p-5`}
       >
-        <div className="flex flex-col gap-5 items-center justify-center border border-accent1/10 rounded-2xl p-5">
+        <div className="flex flex-col gap-5 items-center justify-center border border-accent1/10 rounded-xl p-5">
           <h1 className="text-body">Basic</h1>
           {/* <p className="text-paragraph text-accent1/80">
             Includes all the essential features you need
@@ -148,7 +148,7 @@ export default function Premium({ sm = false }: { sm?: boolean }) {
             </Button>
           </div>
         </div>
-        <div className="flex flex-col gap-5 items-center justify-center border border-accent1/10 rounded-2xl p-5 bg-primary shadow-md shadow-primary/30">
+        <div className="flex flex-col gap-5 items-center justify-center border border-accent1/10 rounded-xl p-5 bg-primary shadow-md shadow-primary/30">
           <h1 className="text-body">Pro</h1>
           {/* <p className="text-paragraph text-accent1/80">
             Designed for users who need more advanced features and functionality
@@ -204,7 +204,7 @@ export default function Premium({ sm = false }: { sm?: boolean }) {
             </Button>
           </div>
         </div>
-        <div className="flex flex-col gap-5 items-center justify-center border border-accent1/10 rounded-2xl p-5">
+        <div className="flex flex-col gap-5 items-center justify-center border border-accent1/10 rounded-xl p-5">
           <h1 className="text-body">Plus</h1>
           {/* <p className="text-paragraph text-accent1/80">
             The most comprehensive package

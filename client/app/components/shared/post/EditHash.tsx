@@ -83,7 +83,7 @@ export default function EditHash({
           <DialogTitle>Edit Hash</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-5">
-          <div className="rounded-2xl flex justify-between bg-accent2 px-2">
+          <div className="rounded-xl flex justify-between bg-accent2 px-2">
             <textarea
               id="edit-post-field"
               rows={2}
@@ -91,7 +91,7 @@ export default function EditHash({
               defaultValue={hashText}
               value={text}
               autoFocus
-              className="w-[80%] resize-none bg-accent2 outline-none ring-0 border-none rounded-2xl text-accent1 p-2"
+              className="w-[80%] resize-none bg-accent2 outline-none ring-0 border-none rounded-xl text-accent1 p-2"
               onChange={handleOnChange}
             />
             <div className="flex items-center gap-3 px-5">
@@ -122,7 +122,7 @@ export default function EditHash({
               {hashMedia.map((media) => (
                 <div
                   key={media.id}
-                  className="relative flex items-center justify-center rounded-2xl"
+                  className="relative flex items-center justify-center rounded-xl"
                 >
                   {media.mediaType === "image" ? (
                     <Image
@@ -131,7 +131,7 @@ export default function EditHash({
                       width={200}
                       height={200}
                       className={`
-                        rounded-2xl w-full h-40 object-cover ${
+                        rounded-xl w-full h-40 object-cover ${
                           markedMedia.includes(media.id)
                             ? "filter brightness-50"
                             : ""

@@ -1,4 +1,4 @@
-import { BadgeCheck } from "lucide-react";
+import { CheckBadgeIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,7 @@ export default function HashAuthor({
         <div className="flex flex-col gap-0">
           <div className="flex items-center gap-1">
             <h1 className="text-accent1 text-body">{name}</h1>
-            {verified && <BadgeCheck size={"16px"} className="text-primary" />}
+            {verified && <CheckBadgeIcon className="text-primary size-4" />}
           </div>
           <p className="text-accent1/50 text-paragraph">@{username}</p>
         </div>

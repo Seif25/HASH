@@ -54,7 +54,7 @@ export default function Message({
       {message.deleted ? (
         <div className="flex items-center justify-between text-accent1/50 w-auto max-w-80 p-2 select-none cursor-not-allowed">
           <AlertCircle size={"16px"} className="mr-2" />
-          <p className="rounded-2xl flex items-center italic mr-5">
+          <p className="rounded-xl flex items-center italic mr-5">
             {message.message}
           </p>
           <span className="text-[10px] font-light">

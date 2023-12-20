@@ -51,7 +51,10 @@ export default async function Page() {
                   Filter by type
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[200px]">
+              <DropdownMenuContent
+                align="end"
+                className="w-[200px] flex flex-col gap-2"
+              >
                 <DropdownMenuItem>All</DropdownMenuItem>
                 <DropdownMenuItem>Like</DropdownMenuItem>
                 <DropdownMenuItem>Mention</DropdownMenuItem>

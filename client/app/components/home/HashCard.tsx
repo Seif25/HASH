@@ -67,7 +67,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
       variants={item}
       initial="hidden"
       animate="show"
-      className="bg-accent2 rounded-2xl p-5"
+      className="bg-accent3/20 rounded-xl p-5"
     >
       {hash.edited && (
         <h3 className="text-accent1/50 font-bold text-[14px] flex items-center gap-2 mb-5">
@@ -134,7 +134,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
                       alt={hash.media[0].alt}
                       fill
                       priority
-                      className="rounded-xl aspect-square bg-dark object-cover"
+                      className="rounded-xl aspect-square bg-accent3 object-cover"
                     />
                   </AspectRatio>
                 ) : hash.media[0].mediaType === "video" ? (
@@ -148,11 +148,11 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 w-full h-auto items-center relative">
+              <div className="grid grid-cols-2 gap-3 w-full h-auto items-center relative">
                 {hash.media.slice(0, 3).map((media, index) => (
                   <div
                     key={media.id}
-                    className={`w-[150px] h-[150px] lg:w-[250px] lg:h-[250px] flex items-center justify-center bg-dark rounded-xl`}
+                    className={`w-[150px] h-[150px] lg:w-full lg:h-full flex items-center justify-center bg-accent3 rounded-xl`}
                   >
                     {media.mediaType === "image" ? (
                       <AspectRatio ratio={1 / 1}>
@@ -166,7 +166,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
                           } rounded-xl aspect-square bg-transparent object-cover`}
                         />
                         {hash.media.length > 3 && index === 2 && (
-                          <div className="absolute z-10 bg-accent2/20 w-[150px] h-[150px] lg:w-[250px] lg:h-[250px] rounded-xl flex items-center justify-center top-0">
+                          <div className="absolute z-10 bg-accent2/20 w-[150px] h-[150px] lg:w-full lg:h-full rounded-xl flex items-center justify-center top-0">
                             <h3 className="text-[20px] text-accent1">
                               {`+ ${hash.media.length - 3}`}
                             </h3>

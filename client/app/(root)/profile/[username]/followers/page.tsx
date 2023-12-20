@@ -38,7 +38,7 @@ export default async function Page({
           </TabsTrigger>
         </TabsList>
         <TabsContent value="followers" className="w-full">
-          <div className="w-full bg-accent2 rounded-2xl mt-5 px-2 flex flex-col gap-5">
+          <div className="w-full bg-accent2 rounded-xl mt-5 px-2 flex flex-col gap-5">
             {userFollowing?.followers.map((user) => (
               <div
                 key={user.username}

@@ -9,7 +9,7 @@ export default function BottomBar({
   notificationCount: number;
 }) {
   return (
-    <nav className="fixed bottom-0 rounded-2xl bg-dark flex items-center justify-evenly w-full md:hidden pb-5 pt-2 z-20">
+    <nav className="fixed bottom-0 rounded-xl bg-dark flex items-center justify-evenly w-full md:hidden pb-5 pt-2 z-20">
       {BottomBarLinks.map((link) => (
         <Link href={link.link} key={link.title}>
           {link.title === "Notifications" ? (
@@ -18,7 +18,7 @@ export default function BottomBar({
               sx={{
                 "& .MuiBadge-badge": {
                   color: "#E6EBF0",
-                  backgroundColor: "red",
+                  backgroundColor: "#1ca0f2",
                 },
               }}
             >

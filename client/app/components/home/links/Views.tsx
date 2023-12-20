@@ -5,6 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
 
 interface ViewsProps {
   count: number;
@@ -16,10 +17,7 @@ export default function Views({ count }: ViewsProps) {
       <Tooltip>
         <div className="group flex items-center gap-1">
           <TooltipTrigger>
-            <BarChart
-              size={"24px"}
-              className="text-accent1 group-hover:text-amber-400"
-            />
+            <ArrowTrendingUpIcon className="text-accent1 group-hover:text-amber-400 size-6" />
           </TooltipTrigger>
           <span className="text-accent1/50 text-paragraph select-none">
             {count}

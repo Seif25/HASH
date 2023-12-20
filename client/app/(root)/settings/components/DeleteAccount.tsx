@@ -17,13 +17,13 @@ import Image from "next/image";
 export default function DeleteAccount() {
   return (
     <div className="flex flex-col gap-5 p-5 h-screen overflow-scroll w-full custom-scrollbar">
-      <div className="flex items-center gap-5 bg-transparent rounded-2xl text-accent1">
+      <div className="flex items-center gap-5 bg-transparent rounded-xl text-accent1">
         <Link href={`/settings/account-settings`}>
           <ArrowLeft size={20} className="text-accent1/75 hover:text-primary" />
         </Link>
         <h3 className="text-heading flex-grow">Delete Your Account</h3>
       </div>
-      <div className="flex flex-col w-full gap-5 p-5 rounded-2xl">
+      <div className="flex flex-col w-full gap-5 p-5 rounded-xl">
         <h1 className="text-accent1 font-bold text-heading">
           Account Deletion Confirmation
         </h1>

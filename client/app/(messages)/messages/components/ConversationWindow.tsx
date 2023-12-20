@@ -118,7 +118,7 @@ export default function ConversationWindow({
       {conversation && (
         <section className="flex flex-col items-center justify-center mt-5 w-full">
           {/* Recipient Information */}
-          <nav className="top-20 p-5 h-[10vh] lg:h-[13vh] bg-accent2 rounded-t-2xl w-full z-30 border-b border-accent1/10">
+          <nav className="top-20 p-5 h-[10vh] lg:h-[13vh] bg-accent2 rounded-t-lg w-full z-30 border-b border-accent1/10">
             <div className="flex items-center justify-between">
               <div className="flex items-start">
                 {/* Go Back */}
@@ -191,10 +191,10 @@ export default function ConversationWindow({
                 rounded={
                   message.sender === loggedInUser
                     ? `${
-                        message.isReply ? "rounded-2xl" : "rounded-full"
+                        message.isReply ? "rounded-xl" : "rounded-full"
                       } rounded-tr-sm`
                     : `${
-                        message.isReply ? "rounded-2xl" : "rounded-full"
+                        message.isReply ? "rounded-xl" : "rounded-full"
                       } rounded-tl-sm`
                 }
                 position={
@@ -235,8 +235,8 @@ export default function ConversationWindow({
             </div>
           )}
           {/* Textfield & Options */}
-          <footer className=" bottom-5 flex items-center p-5 h-[10vh] bg-accent2 rounded-b-2xl w-full border-t border-accent1/10">
-            <div className="flex items-center justify-between bg-dark rounded-2xl p-2 w-full">
+          <footer className=" bottom-5 flex items-center p-5 h-[10vh] bg-accent2 rounded-b-lg w-full border-t border-accent1/10">
+            <div className="flex items-center justify-between bg-dark rounded-xl p-2 w-full">
               {/* Emoji & Image */}
               <div className="flex items-center gap-2">
                 <EmojiBtn setMessage={changeMessage} />
@@ -249,7 +249,7 @@ export default function ConversationWindow({
               </div>
               {/* Input Field */}
               <textarea
-                className="bg-transparent w-full ring-0 outline-none border-none px-3 rounded-2xl resize-none"
+                className="bg-transparent w-full ring-0 outline-none border-none px-3 rounded-xl resize-none"
                 rows={1}
                 placeholder="Send a message..."
                 onChange={handleMessageChange}

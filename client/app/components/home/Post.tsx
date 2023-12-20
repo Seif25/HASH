@@ -151,7 +151,7 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
       )}
       <form
         onSubmit={createPost}
-        className="flex items-start justify-start gap-5 rounded-2xl"
+        className="flex items-start justify-start gap-5 rounded-xl"
       >
         <Image
           src={profilePic}
@@ -160,9 +160,9 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
           height={42}
           className="rounded-full"
         />
-        <div className="flex flex-col w-full bg-accent2 rounded-2xl pb-3">
+        <div className="flex flex-col w-full bg-transparent border border-accent rounded-xl pb-3">
           {/* Text Field and Post Button */}
-          <div className="post-field rounded-r-2xl rounded-bl-2xl rounded-tl-none px-2">
+          <div className="post-field rounded-xl px-2 bg-transparent">
             <TextareaAutosize
               id="new-post-field"
               placeholder="What's on your mind?"

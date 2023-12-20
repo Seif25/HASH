@@ -37,7 +37,7 @@ export default function LeftSidebar({
                     sx={{
                       "& .MuiBadge-badge": {
                         color: "#E6EBF0",
-                        backgroundColor: "red",
+                        backgroundColor: "#1ca0f2",
                       },
                     }}
                   >
