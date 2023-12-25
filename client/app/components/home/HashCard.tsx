@@ -23,6 +23,8 @@ import { ArrowPathIcon, PencilIcon } from "@heroicons/react/16/solid";
 interface HashProps {
   hash: HashType;
   loggedInUser: string;
+  following: string[];
+  page?: "home" | "hash";
 }
 
 const item = {
@@ -34,15 +36,17 @@ const item = {
   },
 };
 
-export default function HashCard({ hash, loggedInUser }: HashProps) {
+export default function HashCard({
+  hash,
+  loggedInUser,
+  following,
+  page = "home",
+}: HashProps) {
   const [bookmarked, setBookmarked] = useState(false);
   const [reposted, setReposted] = useState<{ status: boolean; user: string }>({
     status: false,
     user: "",
   });
-  const [visitedUser, setVisitedUser] = useState<string | undefined>(undefined);
-
-  const pathname = usePathname();
 
   useEffect(() => {
     if (hash && loggedInUser) {
@@ -73,7 +77,9 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
       variants={item}
       initial="hidden"
       animate="show"
-      className="bg-white dark:bg-dark rounded-2xl p-5"
+      className={`bg-white dark:bg-dark rounded-2xl p-5 ${
+        page === "hash" && "pb-0"
+      }`}
     >
       {hash.edited && (
         <h3 className="text-accent2/50 dark:text-accent1/50 text-paragraph italic flex items-center gap-2 mb-5">
@@ -122,7 +128,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
       </div>
 
       {/* HASH INFORMATION */}
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 lg:ml-5">
         {/* Hash Text */}
         <Link href={`/hash/${hash._id}`}>
           <h2 className="text-body font-normal text-accent2 dark:text-accent1 px-5 pt-5">
@@ -245,7 +251,10 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
         restriction={hash.restriction ?? ""}
         createdAt={hash.createdAt}
         reposted={reposted}
+        comments={hash.children}
+        following={following}
         setReposted={setReposted}
+        page={page}
       />
     </motion.div>
   );

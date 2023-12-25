@@ -27,9 +27,9 @@ export default function HashAuthor({
   const router = useRouter();
   return (
     <div className="flex flex-col gap-3">
-      <div
-        className="flex items-center gap-5 cursor-pointer"
-        onClick={() => router.push(`/profile/${username}`)}
+      <Link
+        className="flex items-center gap-2 cursor-pointer"
+        href={`/profile/${username}`}
       >
         <Image
           src={image}
@@ -47,16 +47,16 @@ export default function HashAuthor({
             @{username}
           </p>
         </div>
-      </div>
+      </Link>
       {hover && (
         <>
           <div className="flex items-center w-full">
             <h3 className="text-accent2 dark:text-accent1 text-body">{bio}</h3>
           </div>
           <div className="flex items-center gap-10">
-            <div
+            <Link
               className="group flex items-center gap-1 cursor-pointer"
-              onClick={() => router.push(`/profile/${username}/following`)}
+              href={`/profile/${username}/following`}
             >
               <h3 className="text-accent2 dark:text-accent1 text-body">
                 {following}
@@ -64,7 +64,7 @@ export default function HashAuthor({
               <span className="text-accent2/50 dark:text-accent1/50 text-paragraph group-hover:underline">
                 Following
               </span>
-            </div>
+            </Link>
 
             <div
               className="group flex items-center gap-1 cursor-pointer"

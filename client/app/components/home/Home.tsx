@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 
 interface HomeProps {
   loggedInUser: string;
+  following: string[];
 }
 
 const component = {
@@ -20,7 +21,7 @@ const component = {
   },
 };
 
-export default async function Home({ loggedInUser }: HomeProps) {
+export default async function Home({ loggedInUser, following }: HomeProps) {
   const {
     data: result,
     error,
@@ -56,6 +57,7 @@ export default async function Home({ loggedInUser }: HomeProps) {
                 key={hash._id}
                 hash={hash}
                 loggedInUser={loggedInUser}
+                following={following}
               />
             ))}
           </motion.div>
