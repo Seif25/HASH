@@ -29,7 +29,10 @@ export default async function Hash() {
         profilePic={loggedInUser?.image ?? "/assets/profile-pic.png"}
       /> */}
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Home loggedInUser={loggedInUser?.username ?? ""} />
+        <Home
+          loggedInUser={loggedInUser?.username ?? ""}
+          following={loggedInUser?.following ?? []}
+        />
       </HydrationBoundary>
     </section>
   );

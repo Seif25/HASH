@@ -32,12 +32,12 @@ import {
 
 import { PaperAirplaneIcon } from "@heroicons/react/16/solid";
 import { PhotoIcon } from "@heroicons/react/16/solid";
-import { Button } from "@/components/ui/button";
 import { CircularProgress } from "@mui/material";
 
 interface PostProps {
   loggedInUser: string;
   profilePic: string;
+  setOpen: (value: boolean) => void;
 }
 
 const file_nanoid = customAlphabet(
@@ -45,7 +45,7 @@ const file_nanoid = customAlphabet(
   7
 );
 
-export default function Post({ loggedInUser, profilePic }: PostProps) {
+export default function Post({ loggedInUser, profilePic, setOpen }: PostProps) {
   const { toast } = useToast();
 
   const [text, setText] = useState<string>("");
@@ -135,7 +135,9 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
       pathname,
     };
 
-    await createHash(data as CreateHashParams);
+    createHash(data as CreateHashParams).then(() => {
+      setOpen(false);
+    });
     setText("");
     setLoading(false);
     setAlertMessage(
@@ -205,7 +207,7 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
                 maxRows={20}
                 value={text}
                 autoFocus
-                className="w-[80%] resize-none bg-transparent outline-none ring-0 border-none text-accent2 dark:text-accent1 px-5"
+                className="w-full resize-none bg-transparent outline-none ring-0 border-none text-accent2 dark:text-accent1 px-5"
                 onChange={handleOnChange}
                 maxLength={280}
                 minLength={0}

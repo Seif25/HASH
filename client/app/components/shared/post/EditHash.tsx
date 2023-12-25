@@ -18,6 +18,7 @@ import { useState } from "react";
 import EmojiBtn from "../triggers/EmojiBtn";
 import Image from "next/image";
 import HashVideoPreview from "../../home/HashVideoPreview";
+import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 
 interface EditHashProps {
   loggedInUser: string;
@@ -38,7 +39,7 @@ export default function EditHash({
   setOpenEdit,
   pathname,
 }: EditHashProps) {
-  const [text, setText] = useState<string>("");
+  const [text, setText] = useState<string>(hashText);
   const [markedMedia, setMarkedMedia] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -84,13 +85,15 @@ export default function EditHash({
         </DialogHeader>
         <div className="flex flex-col gap-5">
           <div className="rounded-2xl flex justify-between bg-accent1 dark:bg-accent2 px-2">
-            <textarea
+            <TextareaAutosize
               id="edit-post-field"
-              rows={2}
+              minRows={5}
+              maxRows={10}
+              maxLength={280}
               placeholder={hashText}
               value={text}
               autoFocus
-              className="w-[80%] resize-none bg-accent1 dark:bg-accent2 outline-none ring-0 border-none rounded-2xl text-accent2 dark:text-accent1 p-2"
+              className="w-full resize-none bg-accent1 dark:bg-accent2 outline-none ring-0 border-none rounded-2xl text-accent2 dark:text-accent1 p-2"
               onChange={handleOnChange}
             />
             <div className="flex items-center gap-3 px-5">

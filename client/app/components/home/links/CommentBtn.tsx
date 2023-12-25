@@ -1,3 +1,5 @@
+"use client";
+
 import { CheckBadgeIcon } from "@heroicons/react/16/solid";
 import { ChatBubbleOvalLeftIcon } from "@heroicons/react/20/solid";
 
@@ -21,6 +23,7 @@ import { SummarizedUserType } from "@/app/lib/types/user.types";
 import HashVideoPreview from "../HashVideoPreview";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import CommentField from "./CommentField";
+import { useState } from "react";
 
 interface CommentBtnProps {
   count: number;
@@ -39,16 +42,18 @@ export default function CommentBtn({
   commenter,
   hashId,
 }: CommentBtnProps) {
+  const [open, setOpen] = useState<boolean>(false);
   return (
     <div className="group flex items-center gap-1">
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <TooltipProvider>
           <Tooltip>
-            <DialogTrigger asChild className="cursor-pointer">
-              <TooltipTrigger>
-                <ChatBubbleOvalLeftIcon className="size-5 text-accent2 dark:text-accent1 group-hover:text-primary" />
-              </TooltipTrigger>
-            </DialogTrigger>
+            <TooltipTrigger>
+              <ChatBubbleOvalLeftIcon
+                className="cursor-trigger size-5 text-accent2 dark:text-accent1 group-hover:text-primary"
+                onClick={() => setOpen(true)}
+              />
+            </TooltipTrigger>
             <TooltipContent>
               <p>Comment</p>
             </TooltipContent>
@@ -135,7 +140,11 @@ export default function CommentBtn({
               </div>
             </DialogTitle>
             <DialogDescription className="pt-5">
-              <CommentField commenter={commenter} hashId={hashId} />
+              <CommentField
+                commenter={commenter}
+                hashId={hashId}
+                setOpen={setOpen}
+              />
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
