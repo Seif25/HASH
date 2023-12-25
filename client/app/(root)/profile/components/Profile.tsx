@@ -47,7 +47,7 @@ export default function Profile({
     });
   }
   return (
-    <div className="bg-accent2/50 rounded-2xl w-full h-full mt-5 mb-10 lg:mb-5 px-5 lg:px-0">
+    <div className="bg-white/50 dark:bg-black/50 rounded-2xl w-full h-full mt-5 mb-10 lg:mb-5 px-5 lg:px-0">
       <div ref={ref}>
         <ProfileInformation
           username={user.username}
@@ -103,12 +103,16 @@ export default function Profile({
       <Tabs value={tabValue} className="w-full" onValueChange={changeTabs}>
         <div
           className={`sticky top-20 h-20 flex items-center rounded-b-2xl ${
-            !inView ? "bg-accent2 pt-5 z-[100]" : "bg-transparent pt-0"
+            !inView
+              ? "bg-white dark:bg-black pt-5 z-[100]"
+              : "bg-transparent pt-0"
           }`}
         >
           <TabsList
             className={`w-full lg:w-[90%] flex items-center justify-center lg:ml-10 mb-5 ${
-              !inView ? "bg-accent1/5" : "bg-accent2"
+              !inView
+                ? "bg-accent2/5 dark:bg-accent1/5"
+                : "bg-accent1 dark:bg-accent2"
             }`}
           >
             <TabsTrigger className="w-full" value="posts">
@@ -132,11 +136,11 @@ export default function Profile({
         <TabsContent value="posts" className="lg:px-10 flex flex-col gap-5">
           {userHashes.map((hash) => (
             <div
-              className="flex flex-col gap-1 bg-accent2 rounded-2xl"
+              className="flex flex-col gap-1 bg-white dark:bg-black rounded-2xl"
               key={hash._id.toString()}
             >
               {hash.pinned && loggedInUser === hash.author.username && (
-                <h3 className="gradient bg-clip-text text-transparent text-paragraph font-bold flex items-center gap-1 px-5 pt-5">
+                <h3 className="gradient bg-clip-text text-transparent text-paragraph font-bold flex items-center gap-1 p-5">
                   <Pin size={16} className="text-accent3" /> Pinned
                 </h3>
               )}
@@ -147,12 +151,12 @@ export default function Profile({
         <TabsContent value="replies" className="lg:px-10 flex flex-col gap-5">
           {replies.map((reply) => (
             <div
-              className="bg-accent2 rounded-2xl pb-5"
+              className="bg-white dark:bg-black rounded-2xl pb-5"
               key={reply._id.toString()}
             >
               <div className="flex flex-col gap-5">
                 <HashCard hash={reply.parentId} loggedInUser={loggedInUser} />
-                <div className="flex flex-col gap-5 border-l border-accent1/10 px-3 lg:mx-10 mx-5">
+                <div className="flex flex-col gap-5 border-l border-accent2/10 dark:border-accent1/10 px-3 lg:mx-10 mx-5">
                   <HashCard hash={reply as any} loggedInUser={loggedInUser} />
                 </div>
               </div>
@@ -165,7 +169,7 @@ export default function Profile({
         >
           {highlights.map((hash) => (
             <div
-              className="flex flex-col gap-1 bg-accent2 rounded-2xl"
+              className="flex flex-col gap-1 bg-white dark:bg-black rounded-2xl"
               key={hash._id.toString()}
             >
               <h3 className="bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent text-paragraph font-bold flex items-center gap-1 px-5 pt-5">

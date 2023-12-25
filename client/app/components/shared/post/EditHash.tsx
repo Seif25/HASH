@@ -83,15 +83,14 @@ export default function EditHash({
           <DialogTitle>Edit Hash</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-5">
-          <div className="rounded-2xl flex justify-between bg-accent2 px-2">
+          <div className="rounded-2xl flex justify-between bg-accent1 dark:bg-accent2 px-2">
             <textarea
               id="edit-post-field"
               rows={2}
               placeholder={hashText}
-              defaultValue={hashText}
               value={text}
               autoFocus
-              className="w-[80%] resize-none bg-accent2 outline-none ring-0 border-none rounded-2xl text-accent1 p-2"
+              className="w-[80%] resize-none bg-accent1 dark:bg-accent2 outline-none ring-0 border-none rounded-2xl text-accent2 dark:text-accent1 p-2"
               onChange={handleOnChange}
             />
             <div className="flex items-center gap-3 px-5">
@@ -101,10 +100,7 @@ export default function EditHash({
                 size={"icon"}
                 // onClick={triggerUpload}
               >
-                <ImageIcon
-                  size={"20px"}
-                  className="text-accent1 hover:text-primary"
-                />
+                <ImageIcon className="size-4 text-accent2 dark:text-accent1 hover:text-primary" />
               </Button>
               {/* <input
               type="file"

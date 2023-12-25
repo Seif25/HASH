@@ -61,15 +61,15 @@ export default function ProfileInformation({
         alt={username}
         width={84}
         height={84}
-        className="rounded-full object-cover lg:mx-10 mx-5 -mt-10 lg:w-[128px] lg:h-[128px]"
+        className="rounded-full object-cover lg:mx-10 mx-5 -mt-10 size-20"
       />
       {/* NAME / USERNAME */}
       <div className="flex flex-col gap-0 justify-center lg:mx-10 my-5">
         <div className="flex items-center gap-1">
-          <h1 className="text-heading font-bold">{name}</h1>
+          <h1 className="text-body font-bold">{name}</h1>
           {verified && <BadgeCheck size={16} className="text-primary" />}
         </div>
-        <h3 className="text-paragraph font-normal text-accent1/50">
+        <h3 className="text-paragraph font-normal text-accent2/50 dark:text-accent1/50">
           @{username}
         </h3>
         {/* BIO */}
@@ -80,8 +80,8 @@ export default function ProfileInformation({
             href={`/profile/${username}/following`}
             className="flex items-center gap-1 group"
           >
-            <h3 className="text-heading font-bold">{following}</h3>
-            <h3 className="text-paragraph font-normal text-accent1/50 group-hover:underline">
+            <h3 className="text-body font-bold">{following}</h3>
+            <h3 className="text-paragraph font-normal text-accent2/50 dark:text-accent1/50 group-hover:underline">
               Following
             </h3>
           </Link>
@@ -90,8 +90,8 @@ export default function ProfileInformation({
             href={`/profile/${username}/followers`}
             className="flex items-center gap-1 group"
           >
-            <h3 className="text-heading font-bold">{followers}</h3>
-            <h3 className="text-paragraph font-normal text-accent1/50 group-hover:underline">
+            <h3 className="text-body font-bold">{followers}</h3>
+            <h3 className="text-paragraph font-normal text-accent2/50 dark:text-accent1/50 group-hover:underline">
               Followers
             </h3>
           </Link>
@@ -108,8 +108,11 @@ export default function ProfileInformation({
             </Link>
           )}
           <div className="flex items-center gap-1">
-            <CalendarDays className="text-accent1/50" size={16} />
-            <h3 className="text-accent1/50 font-bold">
+            <CalendarDays
+              className="text-accent2/50 dark:text-accent1/50"
+              size={16}
+            />
+            <h3 className="text-accent2/50 dark:text-accent1/50 font-bold text-body">
               Joined {moment(joinedAt).format("MMMM YYYY")}{" "}
             </h3>
           </div>

@@ -16,6 +16,7 @@
     "@ducanh2912/next-pwa": "^9.7.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@heroicons/react": "^2.1.1",
     "@hookform/resolvers": "^3.3.2",
     "@mojs/core": "^1.7.1",
     "@mui/base": "^5.0.0-beta.27",
@@ -77,6 +78,7 @@
     "mongoose": "^7.5.0",
     "nanoid": "^5.0.3",
     "next": "^14.0.0",
+    "next-themes": "^0.2.1",
     "pino": "^8.16.1",
     "popmotion": "^11.0.5",
     "react": "^18.2.0",
@@ -95,6 +97,7 @@
     "typescript": "5.2.2",
     "uploadthing": "^5.6.0",
     "utf-8-validate": "^6.0.3",
+    "vaul": "^0.8.0",
     "winston": "^3.10.0",
     "zod": "^3.22.4"
   },
@@ -106,7 +109,7 @@
     "eslint-plugin-storybook": "^0.6.13",
     "pino-pretty": "^10.2.3",
     "postcss": "^8.4.32",
-    "tailwindcss": "^3.3.6",
+    "tailwindcss": "^3.4.0",
     "tailwindcss-animate": "^1.0.7"
   }
 }

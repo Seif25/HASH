@@ -1,18 +1,22 @@
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { SheetLinks } from "@/app/utils/Links";
 import Image from "next/image";
 import Link from "next/link";
 import LogoutBtn from "../shared/triggers/LogoutBtn";
 import { CheckBadgeIcon } from "@heroicons/react/16/solid";
 
-interface ProfileSheetProps {
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+  DrawerFooter,
+} from "@/components/ui/drawer";
+import { ThemeSwitcher } from "@/app/utils/theme/theme-switcher";
+
+interface ProfileDrawerProps {
   username: string;
   profilePicture: string;
   name: string;
@@ -21,17 +25,17 @@ interface ProfileSheetProps {
   verified: boolean;
 }
 
-export default function ProfileSheet({
+export default function ProfileDrawer({
   username,
   profilePicture,
   name,
   following,
   followers,
   verified,
-}: ProfileSheetProps) {
+}: ProfileDrawerProps) {
   return (
-    <Sheet>
-      <SheetTrigger>
+    <Drawer>
+      <DrawerTrigger>
         <Image
           src={profilePicture}
           alt="HASH"
@@ -39,13 +43,10 @@ export default function ProfileSheet({
           height={48}
           className="rounded-full size-10"
         />
-      </SheetTrigger>
-      <SheetContent
-        side={"left"}
-        className="text-accent2 dark:text-accent1 text-body"
-      >
-        <SheetHeader className="text-accent2 dark:text-accent1">
-          <SheetTitle className="flex flex-col gap-5">
+      </DrawerTrigger>
+      <DrawerContent className="text-accent2 dark:text-accent1 text-body">
+        <DrawerHeader className="text-accent2 dark:text-accent1">
+          <DrawerTitle className="flex flex-col gap-5">
             {/* Profile Picture, Name and Username */}
             <div className="flex items-center gap-5">
               <Link href={`/profile/${username}`}>
@@ -96,8 +97,8 @@ export default function ProfileSheet({
                 </span>
               </Link>
             </div>
-          </SheetTitle>
-          <SheetDescription className="flex flex-col justify-between px-16 pt-10 h-full">
+          </DrawerTitle>
+          <DrawerDescription className="flex flex-col justify-between gap-5 px-16 pt-10 h-full">
             {/* USER NAVIGATION LINKS */}
             <div className="flex flex-col gap-3">
               {SheetLinks.filter((l) => l.section === 1).map((link) => (
@@ -112,8 +113,12 @@ export default function ProfileSheet({
                 </Link>
               ))}
             </div>
+
             {/* SETTINGS AND LOGOUT */}
-            <div className="flex flex-col gap-3 mt-10 border-t border-accent1/10 pt-5">
+            <div className="flex flex-col gap-3 mt-10 border-t border-t-accent2/10 dark:border-accent1/10 pt-5">
+              <div>
+                <ThemeSwitcher variant="sm" />
+              </div>
               {SheetLinks.filter((l) => l.section === 2).map((link) => (
                 <Link
                   href={link.link}
@@ -125,9 +130,9 @@ export default function ProfileSheet({
               ))}
               <LogoutBtn />
             </div>
-          </SheetDescription>
-        </SheetHeader>
-      </SheetContent>
-    </Sheet>
+          </DrawerDescription>
+        </DrawerHeader>
+      </DrawerContent>
+    </Drawer>
   );
 }

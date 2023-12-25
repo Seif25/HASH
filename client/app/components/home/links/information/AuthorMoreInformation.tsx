@@ -69,25 +69,25 @@ export default function AuthorMoreInformation({
           className="flex items-center gap-5 text-red-500 cursor-pointer"
           onClick={handleOpenDeleteDialog}
         >
-          <Trash2 size={"20px"} className="mr-2" />
+          <Trash2 className="size-4 mr-2" />
           <span>Delete Hash</span>
         </DropdownMenuItem>
         <DropdownMenuItem
-          className="flex items-center gap-5 text-accent1 cursor-pointer"
+          className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer"
           onClick={handleOpenEditDialog}
         >
-          <Pencil size={"20px"} className="mr-2" />
+          <Pencil className="size-4 mr-2" />
           <span>Edit Hash</span>
         </DropdownMenuItem>
         {/* Pin Hash */}
         <DropdownMenuItem
-          className="flex items-center gap-5 text-accent1 cursor-pointer"
+          className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer"
           onClick={handlePinHash}
         >
           {!pinned ? (
-            <Pin size={"20px"} className="mr-2" />
+            <Pin className="size-4 mr-2" />
           ) : (
-            <PinOff size={"20px"} className="mr-2 text-primary" />
+            <PinOff className="size-4 mr-2 text-primary" />
           )}
           <span>
             {!pinned
@@ -97,13 +97,13 @@ export default function AuthorMoreInformation({
         </DropdownMenuItem>
         {/* Highlight Hash */}
         <DropdownMenuItem
-          className="flex items-center gap-5 text-accent1 cursor-pointer"
+          className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer"
           onClick={handleHighlightHash}
         >
           {!highlighted ? (
-            <Sparkles size={"20px"} className="mr-2" />
+            <Sparkles className="size-4 mr-2" />
           ) : (
-            <Sparkles size={"20px"} className="mr-2 text-primary" />
+            <Sparkles className="size-4 mr-2 text-primary" />
           )}
           <span>
             {!highlighted
@@ -113,17 +113,17 @@ export default function AuthorMoreInformation({
         </DropdownMenuItem>
         {/* Change Who can Reply */}
         <DropdownMenuItem
-          className="flex items-center gap-5 text-accent1 cursor-pointer"
+          className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer"
           onClick={handleOpenDialog}
         >
           {whoCanReply === "everyone" ? (
-            <Globe2 size={"20px"} className="mr-2 text-primary" />
+            <Globe2 className="size-4 mr-2 text-primary" />
           ) : whoCanReply === "followers only" ? (
-            <UserPlus2 size={"20px"} className="mr-2 text-primary" />
+            <UserPlus2 className="size-4 mr-2 text-primary" />
           ) : whoCanReply === "followed by me" ? (
-            <UserCheck2 size={"20px"} className="mr-2 text-primary" />
+            <UserCheck2 className="size-4 mr-2 text-primary" />
           ) : (
-            <MessageCircle size={"20px"} className="mr-2" />
+            <MessageCircle className="size-4 mr-2" />
           )}
           <span className="flex flex-col gap-1">
             Change Who can Reply
@@ -145,8 +145,8 @@ export default function AuthorMoreInformation({
           </span>
         </DropdownMenuItem>
         {/* View Post Analytics */}
-        <DropdownMenuItem className="flex items-center gap-5 text-accent1 cursor-pointer">
-          <BarChart2 size={"20px"} className="mr-2" />
+        <DropdownMenuItem className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer">
+          <BarChart2 className="size-4 mr-2" />
           <span>View Hash Analytics</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

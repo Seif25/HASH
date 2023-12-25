@@ -16,7 +16,7 @@ export default async function Hash() {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["hashes"],
-    queryFn: () => fetchHashes(1, 10),
+    queryFn: () => fetchHashes(1, 20),
   });
 
   const user = await currentUser();
@@ -24,10 +24,10 @@ export default async function Hash() {
 
   return (
     <section className="flex flex-col px-5 lg:px-0 gap-5 overflow-y-hidden">
-      <Post
+      {/* <Post
         loggedInUser={loggedInUser?.username ?? ""}
         profilePic={loggedInUser?.image ?? "/assets/profile-pic.png"}
-      />
+      /> */}
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Home loggedInUser={loggedInUser?.username ?? ""} />
       </HydrationBoundary>

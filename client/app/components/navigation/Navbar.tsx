@@ -4,6 +4,7 @@ import { UserType } from "@/app/lib/types/user.types";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { BellIcon, SearchIcon } from "lucide-react";
+import ProfileDrawer from "./ProfileDrawer";
 const Search = dynamic(() => import("./Search"), { ssr: false });
 
 interface NavbarProps {
@@ -13,8 +14,18 @@ interface NavbarProps {
 export default function Navbar({ loggedUser }: NavbarProps) {
   return (
     <nav id="navbar" className="navbar">
-      <div className="w-1/2 lg:w-1/3 px-2 flex items-center justify-start">
+      <div className="hidden w-1/3 px-2 lg:flex items-center justify-start">
         <ProfileSheet
+          username={loggedUser.username}
+          profilePicture={loggedUser.image}
+          name={loggedUser.name}
+          following={loggedUser.following.length}
+          followers={loggedUser.followers.length}
+          verified={loggedUser.verified}
+        />
+      </div>
+      <div className="lg:hidden w-1/2 px-2 flex items-center justify-start">
+        <ProfileDrawer
           username={loggedUser.username}
           profilePicture={loggedUser.image}
           name={loggedUser.name}

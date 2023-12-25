@@ -1,4 +1,6 @@
-import { BadgeCheck, MessageCircle, SendHorizonal } from "lucide-react";
+import { CheckBadgeIcon } from "@heroicons/react/16/solid";
+import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
+
 import {
   Tooltip,
   TooltipContent,
@@ -44,10 +46,7 @@ export default function CommentBtn({
           <Tooltip>
             <DialogTrigger asChild className="cursor-pointer">
               <TooltipTrigger>
-                <MessageCircle
-                  size={"24px"}
-                  className="text-accent1 group-hover:text-primary"
-                />
+                <ChatBubbleOvalLeftIcon className="size-4 text-accent2 dark:text-accent1 group-hover:text-primary" />
               </TooltipTrigger>
             </DialogTrigger>
             <TooltipContent>
@@ -66,16 +65,20 @@ export default function CommentBtn({
                   height={32}
                   className="rounded-full"
                 />
-                <h1 className="text-accent1 text-heading">{hashAuthor.name}</h1>
-                <p className="text-accent1/50 text-paragraph">
+                <h1 className="text-accent2 dark:text-accent1 text-heading">
+                  {hashAuthor.name}
+                </h1>
+                <p className="text-accent2/50 dark:text-accent1/50 text-paragraph">
                   @{hashAuthor.username}
                 </p>
                 {hashAuthor.verified && (
-                  <BadgeCheck size={"16px"} className="text-primary" />
+                  <CheckBadgeIcon className="size-4 text-primary" />
                 )}
               </div>
               <div className="flex flex-col gap-3 px-10 pb-5">
-                <h3 className="text-accent1 text-body">{hashText}</h3>
+                <h3 className="text-accent2 dark:text-accent1 text-body">
+                  {hashText}
+                </h3>
                 {/* Hash Media */}
                 {hashMedia.length > 0 && (
                   <div className="flex items-center justify-start w-full h-auto">
@@ -137,7 +140,7 @@ export default function CommentBtn({
           </DialogHeader>
         </DialogContent>
       </Dialog>
-      <span className="text-accent1/50 text-paragraph select-none">
+      <span className="text-accent2/50 dark:text-accent1/50 text-paragraph select-none">
         {count}
       </span>
     </div>
