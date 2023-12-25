@@ -168,7 +168,7 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
         onSubmit={createPost}
         className="flex items-start justify-start gap-2 rounded-xl"
       >
-        <div className="flex flex-col w-full bg-white dark:bg-black rounded-xl p-5 gap-5">
+        <div className="flex flex-col w-full bg-white dark:bg-dark rounded-xl p-5 gap-5">
           <div>
             {/* <Button
               variant={"outline"}

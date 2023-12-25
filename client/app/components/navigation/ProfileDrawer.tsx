@@ -58,7 +58,7 @@ export default function ProfileDrawer({
                   className="rounded-full size-10"
                 />
               </Link>
-              <div className="flex flex-col justify-center gap-0">
+              <div className="flex flex-col justify-start gap-0">
                 <div className="flex items-center gap-1">
                   <h1 className="text-body text-accent2 dark:text-accent1">
                     {name}
@@ -67,7 +67,7 @@ export default function ProfileDrawer({
                     <CheckBadgeIcon className="text-primary size-4" />
                   )}
                 </div>
-                <h3 className="text-body text-accent2/50 dark:text-accent1/50">
+                <h3 className="text-body text-accent2/50 dark:text-accent1/50 flex items-center justify-start">
                   @{username}
                 </h3>
               </div>

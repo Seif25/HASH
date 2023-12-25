@@ -25,8 +25,8 @@ interface HashStatsProps {
   bookmarked: boolean;
   restriction: "everyone" | "followers only" | "followed by me";
   createdAt: Date;
-  reposted: boolean;
-  setReposted: (value: boolean) => void;
+  reposted: { status: boolean; user: string };
+  setReposted: (value: { status: boolean; user: string }) => void;
 }
 
 export default function HashStats({

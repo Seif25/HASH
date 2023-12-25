@@ -16,7 +16,7 @@ export default async function RightSidebar() {
       {recommendedUsers && (
         <>
           {recommendedUsers.length > 0 && (
-            <div className="flex flex-col gap-5 bg-white dark:bg-black p-5 rounded-2xl">
+            <div className="flex flex-col gap-5 bg-white dark:bg-dark p-5 rounded-2xl">
               <h1 className="text-lg font-bold capitalize">who to follow</h1>
               <div className="flex flex-col gap-5">
                 {recommendedUsers?.slice(0, 5).map((user) => (
@@ -57,7 +57,7 @@ export default async function RightSidebar() {
           )}
         </>
       )}
-      <div className="flex flex-col gap-5 bg-white dark:bg-black p-5 rounded-2xl">
+      <div className="flex flex-col gap-5 bg-white dark:bg-dark p-5 rounded-2xl">
         <h1 className="text-lg font-bold capitalize">{"What's happening"}</h1>
         {trendingTags.map((tag) => (
           <h1 key={tag._id.toString()}>{tag.tag}</h1>

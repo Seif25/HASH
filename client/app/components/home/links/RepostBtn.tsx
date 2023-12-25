@@ -1,4 +1,4 @@
-import { ArrowPathRoundedSquareIcon } from "@heroicons/react/16/solid";
+import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import {
   Tooltip,
   TooltipContent,
@@ -7,13 +7,14 @@ import {
 } from "@/components/ui/tooltip";
 import { repostHash, unrepostHash } from "@/lib/actions/hash.actions";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 interface RepostBtnProps {
   count: number;
   loggedInUser: string;
   hashId: string;
-  reposted: boolean;
-  setReposted: (value: boolean) => void;
+  reposted: { status: boolean; user: string };
+  setReposted: (value: { status: boolean; user: string }) => void;
 }
 
 export default function RepostBtn({
@@ -24,21 +25,24 @@ export default function RepostBtn({
   setReposted,
 }: RepostBtnProps) {
   const pathname = usePathname();
+  const [repostCount, setRepostCount] = useState<number>(count);
   async function handleRepost() {
-    if (reposted) {
+    if (reposted.status && reposted.user === loggedInUser) {
       await unrepostHash({
         id: hashId,
         currentUser: loggedInUser,
         pathname,
       });
-      setReposted(false);
+      setRepostCount((oldValue) => oldValue - 1);
+      setReposted({ status: false, user: "" });
     } else {
       await repostHash({
         id: hashId,
         currentUser: loggedInUser,
         pathname,
       });
-      setReposted(true);
+      setRepostCount((oldValue) => oldValue + 1);
+      setReposted({ status: true, user: loggedInUser });
     }
   }
   return (
@@ -46,14 +50,16 @@ export default function RepostBtn({
       <Tooltip>
         <div className="group flex items-center gap-1">
           <TooltipTrigger onClick={handleRepost}>
-            <ArrowPathRoundedSquareIcon
-              className={`size-4 text-accent2 dark:text-accent1 group-hover:text-green-500 ${
-                reposted && "text-green-500 hover:text-green-300"
+            <ArrowPathIcon
+              className={`size-5 ${
+                reposted.user === loggedInUser
+                  ? "text-emerald-500 hover:text-emerald-300"
+                  : "text-accent2 dark:text-accent1 group-hover:text-emerald-500"
               }`}
             />
           </TooltipTrigger>
           <span className="text-accent2/50 dark:text-accent1/50 text-paragraph select-none">
-            {count}
+            {repostCount}
           </span>
         </div>
         <TooltipContent>

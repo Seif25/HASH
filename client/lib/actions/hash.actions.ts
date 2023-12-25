@@ -406,7 +406,7 @@ export async function repostHash({
   // Connect to DB
   connectToDB();
 
-  // console.log(`Attempting to Repost Hash: ${id}`);
+  console.log(id, currentUser, pathname);
 
   try {
     const repost = {

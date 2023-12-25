@@ -9,8 +9,8 @@ import mojs from "@mojs/core";
 import { useEffect, useRef, useState } from "react";
 import { likeHash, unlikeHash } from "@/lib/actions/hash.actions";
 import { usePathname } from "next/navigation";
-import { HeartIcon as NotLikedIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as LikedIcon } from "@heroicons/react/16/solid";
+import { HeartIcon as NotLikedIcon } from "@heroicons/react/20/solid";
+import { HeartIcon as LikedIcon } from "@heroicons/react/20/solid";
 
 interface LikeBtnProps {
   count: number;
@@ -94,9 +94,9 @@ export default function LikeBtn({
           <TooltipTrigger>
             <div ref={parentDom} onClick={handleLike}>
               {liked ? (
-                <LikedIcon className="size-4 text-red-700 hover:text-red-500" />
+                <LikedIcon className="size-5 text-red-700 hover:text-red-500" />
               ) : (
-                <NotLikedIcon className="size-4 ext-accent2 dark:text-accent1 hover:text-red-500" />
+                <NotLikedIcon className="size-5 text-accent2 dark:text-accent1 hover:text-red-500" />
               )}
             </div>
           </TooltipTrigger>

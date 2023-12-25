@@ -27,7 +27,7 @@ export function HashCarouselItem({
       <div className="p-1">
         <Card className="bg-transparent border-none">
           <CardContent
-            className={`w-[400px] h-[400px] flex aspect-square items-center justify-center p-2`}
+            className={`w-[350px] h-[350px] lg:w-[400px] lg:h-[400px] flex aspect-square items-center justify-center p-2`}
           >
             {media.mediaType === "image" ? (
               <Image
