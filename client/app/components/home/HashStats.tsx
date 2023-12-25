@@ -77,7 +77,7 @@ export default function HashStats({
       <Separator />
       <div className="flex items-center justify-between">
         {/* Hash Timestamp */}
-        <p className="text-accent1/50 text-paragraph">
+        <p className="text-accent2/50 dark:text-accent1/50 text-paragraph">
           {moment(createdAt).format("MMM DD YYYY - hh:mm A")}
         </p>
         <div className="flex items-center gap-5">

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Badge from "@mui/material/Badge";
 import LogoutBtn from "../shared/triggers/LogoutBtn";
-import { useEffect } from "react";
+import { ThemeSwitcher } from "@/app/utils/theme/theme-switcher";
 
 interface LeftSidebarProps {
   username: string;
@@ -33,11 +33,12 @@ export default function LeftSidebar({
               {link.title === "Notifications" ? (
                 <>
                   <Badge
-                    badgeContent={notificationCount ?? 0}
+                    variant="dot"
+                    className="size-4"
                     sx={{
                       "& .MuiBadge-badge": {
                         color: "#E6EBF0",
-                        backgroundColor: "red",
+                        backgroundColor: "#1991fe",
                       },
                     }}
                   >
@@ -47,14 +48,17 @@ export default function LeftSidebar({
               ) : (
                 <>{link.icon}</>
               )}
-              <span className="max-lg:hidden hidden group-hover:flex">
+              <span className="max-lg:hidden opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-300">
                 {link.title}
               </span>
             </Link>
           ))}
         </div>
         <div>
-          <LogoutBtn className="max-lg:hidden hidden group-hover:flex" />
+          <ThemeSwitcher />
+        </div>
+        <div>
+          <LogoutBtn className="max-lg:hidden opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-300" />
         </div>
       </div>
     </div>

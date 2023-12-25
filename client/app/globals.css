@@ -4,26 +4,26 @@
 
 /* App Styles */
 .app {
-  @apply bg-gradient-to-b from-[#070f16] via-[#000a13] to-black text-accent1 text-body min-h-screen h-full w-full;
+  @apply bg-gradient-to-b from-accent1 via-[#e4e4e4] to-[#f3f3f3] text-accent2 dark:from-[#070f16] dark:via-[#030b12] dark:to-[#000a13] dark:text-accent1 text-body min-h-screen h-full w-full;
 }
 
 .main {
-  @apply flex min-h-screen h-full flex-1 flex-col items-center w-full mb-10 lg:mb-0;
+  @apply flex h-full flex-1 flex-col items-center w-full mb-10 lg:mb-0;
 }
 
 /* Navigation Styles */
 /*! NAVBAR */
 .navbar {
-  @apply bg-[#070f16] w-full h-[10vh] flex items-center justify-between p-5 z-30;
+  @apply bg-accent1 dark:bg-[#070f16] w-full h-[10vh] flex items-center justify-between p-5 z-30;
 }
 
 /*! LEFT SIDEBAR  */
 .left-sidebar {
-  @apply sticky left-0 top-0 z-20 flex max-h-screen w-[15%] hover:w-[20%] flex-col hover:items-start items-center justify-center overflow-auto p-5 max-md:hidden bg-[#13161a] bg-opacity-0;
+  @apply sticky left-0 top-0 z-20 flex max-h-screen w-[15%] transition-all ease-in duration-200 flex-col items-center justify-center overflow-auto p-5 max-md:hidden;
 }
 
 .left-sidebar-link {
-  @apply text-accent1 text-heading rounded-full hover:bg-primary/10 hover:text-primary p-3 flex items-center gap-3 w-40;
+  @apply text-accent2 dark:text-accent1 text-body rounded-full hover:bg-primary/10 hover:text-primary p-3 flex items-center gap-5 w-40;
 }
 
 .left-sidebar-active-link {
@@ -36,10 +36,10 @@
 }
 
 .sheet-links {
-  @apply text-accent1 text-heading rounded-full hover:bg-primary/10 hover:text-primary p-3 flex items-center gap-3 w-44;
+  @apply text-accent2 dark:text-accent1 text-body rounded-full hover:bg-primary/10 hover:text-primary p-3 flex items-center gap-5 w-40;
 }
 .sheet-config-links {
-  @apply text-accent1 text-heading rounded-full hover:bg-red-500/10 hover:text-red-500 p-3 flex items-center gap-3 w-44;
+  @apply text-accent2 dark:text-accent1 text-body rounded-full hover:bg-red-500/10 hover:text-red-500 p-3 flex items-center gap-5 w-40;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -76,13 +76,16 @@
 }
 
 .post-field {
+  @apply dark:bg-accent2 bg-accent1 dark:focus-within:bg-accent2 focus-within:bg-accent1
+}
+
+.post-field {
   height: 100%;
   width: 100%;
-  background: rgb(19 22 26);
   position: relative;
   padding: 10px;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
 }
 /* .post-field:before {
@@ -95,12 +98,11 @@
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   transform: rotate(135deg) translate(-50%);
-  border-right: 10px solid rgb(19 22 26);
+  border-right: 10px solid black;
 } */
 .post-field:focus-within {
   height: 100%;
   width: 100%;
-  background: rgb(19 22 26);
   position: relative;
   padding: 10px;
 }
@@ -114,7 +116,7 @@
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   transform: rotate(135deg) translate(-50%);
-  border-right: 10px solid rgb(19 22 26);
+  border-right: 10px solid black;
 } */
 
 .video-container {

@@ -18,6 +18,7 @@ import { Pencil, Repeat2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { motion } from "framer-motion";
+import { HashCarousel2 } from "./HashCarousel2";
 interface HashProps {
   hash: HashType;
   loggedInUser: string;
@@ -67,10 +68,10 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
       variants={item}
       initial="hidden"
       animate="show"
-      className="bg-accent2 rounded-2xl p-5"
+      className="bg-white dark:bg-black rounded-2xl p-5"
     >
       {hash.edited && (
-        <h3 className="text-accent1/50 font-bold text-[14px] flex items-center gap-2 mb-5">
+        <h3 className="text-accent2 dark:text-accent1/50 font-bold text-[14px] flex items-center gap-2 mb-5">
           <Pencil size={16} />
           Edited
         </h3>
@@ -117,13 +118,41 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
       <div className="flex flex-col gap-5">
         {/* Hash Text */}
         <Link href={`/hash/${hash._id}`}>
-          <h2 className="text-body lg:text-heading font-normal text-accent1 px-5 pt-5">
+          <h2 className="text-body font-normal text-accent2 dark:text-accent1 px-5 pt-5">
             <HashText text={hash.text} />
           </h2>
         </Link>
 
         {/* Hash Media */}
         {hash.media.length > 0 && (
+          <>
+            {hash.media.length > 1 ? (
+              <div className="w-full flex items-center justify-start px-10">
+                <HashCarousel2 hashMedia={hash.media} />
+              </div>
+            ) : (
+              <div className="w-full flex items-center justify-start">
+                {hash.media[0]?.mediaType === "image" ? (
+                  <Image
+                    src={hash.media[0].url}
+                    alt={hash.media[0].alt}
+                    width={400}
+                    height={400}
+                    priority
+                    className="aspect-square object-cover rounded-xl bg-[#000a13"
+                  />
+                ) : hash.media[0].mediaType === "video" ? (
+                  <AspectRatio ratio={16 / 9}>
+                    <HashVideoPreview src={hash.media[0].url} autoplay={true} />
+                  </AspectRatio>
+                ) : (
+                  <></>
+                )}
+              </div>
+            )}
+          </>
+        )}
+        {/* {hash.media.length > 0 && (
           <div className="flex items-center justify-start w-full h-auto">
             {hash.media.length === 1 ? (
               <div className="w-[450px] bg-transparent">
@@ -167,7 +196,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
                         />
                         {hash.media.length > 3 && index === 2 && (
                           <div className="absolute z-10 bg-accent2/20 w-[150px] h-[150px] lg:w-[250px] lg:h-[250px] rounded-xl flex items-center justify-center top-0">
-                            <h3 className="text-[20px] text-accent1">
+                            <h3 className="text-[20px] text-accent2 dark:text-accent1">
                               {`+ ${hash.media.length - 3}`}
                             </h3>
                           </div>
@@ -188,7 +217,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
               // <HashCarousel HashMedia={hash.media} />
             )}
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Hash Metadata */}

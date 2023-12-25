@@ -1,38 +1,49 @@
-import { BadgeCheck, BadgeDollarSign, Bell, Bookmark, Home, LogOut, Mail, Search, Settings, User2, Users2 } from "lucide-react"
+import { CheckBadgeIcon } from "@heroicons/react/20/solid";
+import { BookmarkIcon } from "@heroicons/react/20/solid"
+import { BanknotesIcon } from "@heroicons/react/20/solid"
+import { Cog6ToothIcon } from "@heroicons/react/20/solid"
+import { UserGroupIcon } from "@heroicons/react/20/solid"
+import { UserIcon } from "@heroicons/react/20/solid"
+
+import { HomeIcon } from "@heroicons/react/20/solid"
+import { EnvelopeIcon } from "@heroicons/react/20/solid"
+import { BellIcon } from "@heroicons/react/20/solid"
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid"
+
 
 export const SheetLinks = [
     {
-        icon: <User2 size={24} />,
+        icon: <UserIcon className="size-4" />,
         title: "Profile",
         link: "/profile/",
         section: 1
     },
     {
-        icon: <Bookmark size={24} />,
+        icon: <BookmarkIcon className="size-4" />,
         title: "Bookmarks",
         link: "/bookmarks/",
         section: 1
     },
     {
-        icon: <Users2 size={24} />,
+        icon: <UserGroupIcon className="size-4" />,
         title: "Communities",
         link: "/communities/",
         section: 1
     },
     {
-        icon: <BadgeCheck size={24} className="text-primary" />,
+        icon: <CheckBadgeIcon className="size-4 text-primary" />,
         title: "Premium",
         link: "/premium/",
         section: 1
     },
     {
-        icon: <BadgeDollarSign size={24} />,
+        icon: <BanknotesIcon className="size-4" />,
         title: "Monetization",
         link: "/monetization/",
         section: 1
     },
     {
-        icon: <Settings size={24} />,
+        icon: <Cog6ToothIcon className="size-4" />,
         title: "Settings",
         link: "/settings/account-settings",
         section: 2
@@ -47,31 +58,31 @@ export const SheetLinks = [
 
 export const LeftSidebarLinks = [
     {
-        icon: <Home size={24} />,
+        icon: <HomeIcon className="size-4" />,
         title: "Home",
         link: "/",
         specific: false
     },
     {
-        icon: <User2 size={24} />,
+        icon: <UserIcon className="size-4" />,
         title: "Profile",
         link: "/profile/",
         specific: true
     },
     {
-        icon: <Mail size={24} />,
+        icon: <EnvelopeIcon className="size-4" />,
         title: "Messages",
         link: "/messages",
         specific: false
     },
     {
-        icon: <Bell size={24} />,
+        icon: <BellIcon className="size-4" />,
         title: "Notifications",
         link: "/notifications/",
         specific: false
     },
     {
-        icon: <Bookmark size={24} />,
+        icon: <BookmarkIcon className="size-4" />,
         title: "Bookmarks",
         link: "/bookmarks/",
         specific: false
@@ -80,31 +91,31 @@ export const LeftSidebarLinks = [
 
 export const BottomBarLinks = [
     {
-        icon: <Home size={24} />,
+        icon: <HomeIcon className="size-4" />,
         title: "Home",
         link: "/",
         specific: false
     },
     {
-        icon: <Bell size={24} />,
+        icon: <BellIcon className="size-4" />,
         title: "Notifications",
         link: "/notifications/",
         specific: false
     },
     {
-        icon: <Search size={24} />,
+        icon: <MagnifyingGlassIcon className="size-4" />,
         title: "Search",
         link: "/search/",
         specific: false
     },
     {
-        icon: <Bookmark size={24} />,
+        icon: <BookmarkIcon className="size-4" />,
         title: "Bookmarks",
         link: "/bookmarks/",
         specific: true
     },
     {
-        icon: <Mail size={24} />,
+        icon: <EnvelopeIcon className="size-4" />,
         title: "Messages",
         link: "/messages",
         specific: false

@@ -11,7 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Smile } from "lucide-react";
+import { FaceSmileIcon } from "@heroicons/react/24/outline";
 import {
   Popover,
   PopoverContent,
@@ -33,10 +33,7 @@ export default function EmojiBtn({ setMessage }: EmojiBtnProps) {
         <Tooltip>
           <PopoverTrigger asChild>
             <TooltipTrigger>
-              <Smile
-                size={"20px"}
-                className="text-accent1 hover:text-primary"
-              />
+              <FaceSmileIcon className="size-4 text-accent2 dark:text-accent1 hover:text-primary" />
             </TooltipTrigger>
           </PopoverTrigger>
           <TooltipContent>

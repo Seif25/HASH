@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Rubik } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/app/providers/QueryProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ThemeProvider } from "./utils/theme/theme-provider";
 
-const rubik = Rubik({
-  weight: ["300", "400", "700", "900"],
+const poppins = Poppins({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   style: ["italic", "normal"],
-  subsets: ["latin"],
+  subsets: ["latin", "devanagari", "latin-ext"],
 });
 
 export const metadata: Metadata = {
@@ -38,21 +39,23 @@ export default function RootLayout({
               content="width=device-width, initial-scale=1"
             />
           </head>
-          <body className={`${rubik.className} app pb-10`}>
-            <main>{children}</main>
+          <body className={`${poppins.className} app pb-10`}>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <main>{children}</main>
+            </ThemeProvider>
             <SpeedInsights />
             <Toaster />
           </body>
           {/* <footer className="grid grid-cols-2 lg:flex items-center justify-center lg:justify-between p-5 bg-black pb-24 lg:pb-5">
-          <Image src="/logo.png" alt="hash" width={50} height={50} />
-          <p className="text-[12px] lg:text-paragraph text-accent1/50">
-          &copy; {new Date().getFullYear()} Hash. All rights reserved.
-          </p>
-          <p className="lg:hidden text-transparent">HASH</p>
-          <p className="text-[12px] lg:text-paragraph text-accent1/50 font-bold">
-          Hash v1.5.0-alpha.1
-          </p>
-        </footer> */}
+            <Image src="/logo.png" alt="hash" width={50} height={50} />
+            <p className="text-[12px] lg:text-paragraph text-accent1/50">
+            &copy; {new Date().getFullYear()} Hash. All rights reserved.
+            </p>
+            <p className="lg:hidden text-transparent">HASH</p>
+            <p className="text-[12px] lg:text-paragraph text-accent1/50 font-bold">
+            Hash v1.5.0-alpha.1
+            </p>
+          </footer> */}
         </html>
       </QueryProvider>
     </ClerkProvider>

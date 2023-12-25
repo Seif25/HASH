@@ -120,10 +120,7 @@ export default function InformationBtn({
             <div className="group">
               <DropdownMenuTrigger>
                 <TooltipTrigger>
-                  <MoreVertical
-                    size={"24px"}
-                    className="text-accent1 group-hover:text-primary"
-                  />
+                  <MoreVertical className="size-4 text-accent2 dark:text-accent1 group-hover:text-primary" />
                 </TooltipTrigger>
               </DropdownMenuTrigger>
             </div>
@@ -209,7 +206,9 @@ export default function InformationBtn({
                 <Label
                   htmlFor="everyone"
                   className={`flex items-center gap-1 ${
-                    whoCanReply === "everyone" ? "text-primary" : "text-accent1"
+                    whoCanReply === "everyone"
+                      ? "text-primary"
+                      : "text-accent2 dark:text-accent1"
                   }`}
                 >
                   <Globe2 size={"20px"} />
@@ -228,7 +227,7 @@ export default function InformationBtn({
                   className={`flex items-center gap-1 ${
                     whoCanReply === "followers only"
                       ? "text-primary"
-                      : "text-accent1"
+                      : "text-accent2 dark:text-accent1"
                   }`}
                 >
                   <UserPlus2 size={"20px"} />
@@ -247,7 +246,7 @@ export default function InformationBtn({
                   className={`flex items-center gap-1 ${
                     whoCanReply === "followed by me"
                       ? "text-primary"
-                      : "text-accent1"
+                      : "text-accent2 dark:text-accent1"
                   }`}
                 >
                   <UserCheck2 size={"20px"} />
@@ -264,7 +263,7 @@ export default function InformationBtn({
               onClick={saveRestriction}
             >
               {loading ? (
-                <Loader2 className="text-accent1 animate-spin" />
+                <Loader2 className="text-accent2 dark:text-accent1 animate-spin" />
               ) : (
                 "Save Changes"
               )}

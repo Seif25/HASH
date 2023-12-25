@@ -42,7 +42,9 @@ export default function Search({}: SearchProps) {
   return (
     <div
       className={`flex items-center w-full rounded-2xl ${
-        expand ? "bg-accent2 justify-between" : "bg-transparent justify-end"
+        expand
+          ? "bg-accent-1 dark:bg-accent2 justify-between"
+          : "bg-transparent justify-end"
       } px-2`}
     >
       <motion.div
@@ -61,7 +63,10 @@ export default function Search({}: SearchProps) {
           onKeyDown={handleKeyDown}
         />
         <button onClick={handleSearchQuery} disabled={query.length === 0}>
-          <SearchIcon size={"24px"} className="text-accent1" />
+          <SearchIcon
+            size={"24px"}
+            className="text-accent2 dark:text-accent1"
+          />
         </button>
       </motion.div>
       <motion.div
@@ -77,7 +82,10 @@ export default function Search({}: SearchProps) {
         className={`flex items-center`}
       >
         <button onClick={() => setExpand(!expand)}>
-          <SearchIcon size={"24px"} className="text-accent1" />
+          <SearchIcon
+            size={"24px"}
+            className="text-accent2 dark:text-accent1"
+          />
         </button>
       </motion.div>
     </div>

@@ -11,7 +11,6 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import EmojiBtn from "../shared/triggers/EmojiBtn";
 import { createHashAction } from "@/app/lib/actions/hash/hash.actions";
 import { usePathname } from "next/navigation";
-import { CreateHashParams } from "@/app/lib/types/hash.actions.types";
 import { useToast } from "@/components/ui/use-toast";
 import { customAlphabet, nanoid } from "nanoid";
 import { ContentType, MediaType } from "@/app/lib/types/hash.types";
@@ -20,6 +19,21 @@ import { useUploadThing } from "@/app/lib/uploadthing/uploadThing";
 import { getMediaType } from "@/app/utils/functions/functions";
 import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import { PutBlobResult } from "@vercel/blob";
+import { createHash } from "@/lib/actions/hash.actions";
+import { CreateHashParams } from "@/app/utils/actions/types/hash.actions.types";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import { PaperAirplaneIcon } from "@heroicons/react/16/solid";
+import { PhotoIcon } from "@heroicons/react/16/solid";
+import { Button } from "@/components/ui/button";
+import { CircularProgress } from "@mui/material";
 
 interface PostProps {
   loggedInUser: string;
@@ -115,12 +129,13 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
 
     const data = {
       text,
-      author: loggedInUser,
+      username: loggedInUser,
+      community: null,
       media,
       pathname,
     };
 
-    await createHashAction(data as CreateHashParams);
+    await createHash(data as CreateHashParams);
     setText("");
     setLoading(false);
     setAlertMessage(
@@ -151,56 +166,97 @@ export default function Post({ loggedInUser, profilePic }: PostProps) {
       )}
       <form
         onSubmit={createPost}
-        className="flex items-start justify-start gap-5 rounded-2xl"
+        className="flex items-start justify-start gap-2 rounded-xl"
       >
-        <Image
-          src={profilePic}
-          alt={loggedInUser}
-          width={42}
-          height={42}
-          className="rounded-full"
-        />
-        <div className="flex flex-col w-full bg-accent2 rounded-2xl pb-3">
+        <div className="flex flex-col w-full bg-white dark:bg-black rounded-xl p-5 gap-5">
+          <div>
+            {/* <Button
+              variant={"outline"}
+              size={"sm"}
+              className="border-primary w-24 h-7 text-primary"
+            >
+              Public
+            </Button> */}
+            <Select>
+              <SelectTrigger className="w-auto">
+                <SelectValue placeholder="Public" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="public">Public</SelectItem>
+                <SelectItem value="close-friends">Close Friends</SelectItem>
+                <SelectItem value="community">Community</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           {/* Text Field and Post Button */}
-          <div className="post-field rounded-r-2xl rounded-bl-2xl rounded-tl-none px-2">
-            <TextareaAutosize
-              id="new-post-field"
-              placeholder="What's on your mind?"
-              minRows={1}
-              maxRows={6}
-              value={text}
-              className="w-[80%] resize-none bg-transparent outline-none ring-0 border-none text-accent1 px-2"
-              onChange={handleOnChange}
+          <div className="post-field rounded-xl px-2">
+            <Image
+              src={profilePic}
+              alt={loggedInUser}
+              width={42}
+              height={42}
+              className="rounded-full size-8"
             />
+            <div className="flex flex-col gap-2 w-full mt-2">
+              <TextareaAutosize
+                id="new-post-field"
+                placeholder="What's on your mind?"
+                minRows={10}
+                maxRows={20}
+                value={text}
+                autoFocus
+                className="w-[80%] resize-none bg-transparent outline-none ring-0 border-none text-accent2 dark:text-accent1 px-5"
+                onChange={handleOnChange}
+                maxLength={280}
+                minLength={0}
+              />
+              <Select>
+                <SelectTrigger className="w-auto max-w-80">
+                  <SelectValue placeholder="Everyone can reply" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="everyone">Everyone can reply</SelectItem>
+                  <SelectItem value="you-follow">People you follow</SelectItem>
+                  <SelectItem value="you-mention">
+                    People you mention
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex items-center justify-between gap-3 p-3 border-t border-accent2/10 dark:border-accent1/10">
+                <div className="flex items-center gap-3">
+                  <EmojiBtn setMessage={setText} />
+                  <button onClick={triggerUpload}>
+                    <PhotoIcon className="size-4 text-accent2 dark:text-accent1 hover:text-primary" />
+                  </button>
+                  <input
+                    type="file"
+                    name="media-upload"
+                    id="media-upload"
+                    ref={inputFileRef}
+                    accept="image/*,video/*"
+                    multiple
+                    hidden
+                  />
+                </div>
+                <CircularProgress
+                  variant="determinate"
+                  className="text-primary size-4"
+                  size={16}
+                  value={(text.length / 280) * 100}
+                />
+              </div>
+            </div>
             <button
               className="text-primary disabled:text-accent1/50 w-[20%] flex items-end justify-end"
               type="submit"
               // disabled={text.length === 0 && blob.length === 0}
             >
               {!loading ? (
-                <SendHorizontal size={"16px"} />
+                <PaperAirplaneIcon className="size-4" />
               ) : (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
             </button>
-          </div>
-          <div className="flex items-center gap-3 px-5">
-            <EmojiBtn setMessage={setText} />
-            <button onClick={triggerUpload}>
-              <ImageIcon
-                size={"20px"}
-                className="text-accent1 hover:text-primary"
-              />
-            </button>
-            <input
-              type="file"
-              name="media-upload"
-              id="media-upload"
-              ref={inputFileRef}
-              accept="image/*,video/*"
-              multiple
-              hidden
-            />
           </div>
         </div>
       </form>

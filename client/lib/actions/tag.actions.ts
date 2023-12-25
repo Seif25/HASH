@@ -39,3 +39,20 @@ export async function suggestTags(query: string): Promise<TagType[]> {
     );
   }
 }
+
+export async function getTrendingTags(): Promise<TagType[]> {
+  await connectToDB();
+
+  try {
+    return await TagModel.find({
+      lastUsed: { $gte: moment().subtract(6, "hour").toDate() },
+      count: { $gte: 1 },
+    })
+      .sort({ count: -1 })
+      .limit(10)
+      .select("tag lastUsed");
+  } catch (error: any) {
+    console.log(error);
+    return [];
+  }
+}

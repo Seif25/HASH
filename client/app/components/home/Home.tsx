@@ -27,7 +27,7 @@ export default async function Home({ loggedInUser }: HomeProps) {
     isLoading,
   } = useQuery({
     queryKey: ["hashes"],
-    queryFn: () => fetchHashes(1, 10),
+    queryFn: () => fetchHashes(1, 20),
     refetchInterval: 300000,
   });
 
@@ -49,7 +49,7 @@ export default async function Home({ loggedInUser }: HomeProps) {
             variants={component}
             initial="hidden"
             animate="show"
-            className="flex flex-col gap-5 h-full w-full"
+            className="flex flex-col gap-5 h-full w-full mt-5"
           >
             {result.hashes?.map((hash) => (
               <HashCard
