@@ -15,15 +15,15 @@ export function HashCarousel2({ hashMedia }: { hashMedia: MediaType[] }) {
       opts={{
         align: "start",
       }}
-      className="w-[400px]"
+      className="w-[350px] lg:w-[400px]"
     >
       <CarouselContent>
         {hashMedia.map((media, index) => (
           <HashCarouselItem key={media.id} media={media} index={index} />
         ))}
       </CarouselContent>
-      <CarouselPrevious variant={"icon"} />
-      <CarouselNext variant={"icon"} />
+      <CarouselPrevious variant={"icon"} className="hidden lg:flex" />
+      <CarouselNext variant={"icon"} className="hidden lg:flex" />
     </Carousel>
   );
 }

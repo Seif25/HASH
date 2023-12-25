@@ -1,5 +1,5 @@
 import { CheckBadgeIcon } from "@heroicons/react/16/solid";
-import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleOvalLeftIcon } from "@heroicons/react/20/solid";
 
 import {
   Tooltip,
@@ -46,7 +46,7 @@ export default function CommentBtn({
           <Tooltip>
             <DialogTrigger asChild className="cursor-pointer">
               <TooltipTrigger>
-                <ChatBubbleOvalLeftIcon className="size-4 text-accent2 dark:text-accent1 group-hover:text-primary" />
+                <ChatBubbleOvalLeftIcon className="size-5 text-accent2 dark:text-accent1 group-hover:text-primary" />
               </TooltipTrigger>
             </DialogTrigger>
             <TooltipContent>

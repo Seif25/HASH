@@ -34,21 +34,21 @@ module.exports = {
         "16px",
         {
           lineHeight: "140%",
-          fontWeight: "700",
+          fontWeight: "500",
         },
       ],
       "body": [
         "14px",
         {
           lineHeight: "140%",
-          fontWeight: "400",
+          fontWeight: "300",
         },
       ],
       "paragraph": [
-        "14px",
+        "12px",
         {
           lineHeight: "140%",
-          fontWeight: "700",
+          fontWeight: "600",
         },
       ]
     },
@@ -64,7 +64,7 @@ module.exports = {
         "accent1": "#E6EBF0",
         "accent2": "#13161a",
         "accent3": "#0671cb",
-        "dark": "#070f16",
+        "dark": "#060a0e",
         "logout-btn": "#FF5A5A",
         "navbar-menu": "rgba(240, 245, 255, 0.6)",
         glassmorphism: "rgba(240, 245, 255, 0.60)",

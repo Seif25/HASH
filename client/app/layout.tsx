@@ -46,7 +46,7 @@ export default function RootLayout({
             <SpeedInsights />
             <Toaster />
           </body>
-          {/* <footer className="grid grid-cols-2 lg:flex items-center justify-center lg:justify-between p-5 bg-black pb-24 lg:pb-5">
+          {/* <footer className="grid grid-cols-2 lg:flex items-center justify-center lg:justify-between p-5 bg-dark pb-24 lg:pb-5">
             <Image src="/logo.png" alt="hash" width={50} height={50} />
             <p className="text-[12px] lg:text-paragraph text-accent1/50">
             &copy; {new Date().getFullYear()} Hash. All rights reserved.

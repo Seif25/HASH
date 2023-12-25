@@ -19,6 +19,7 @@ import { usePathname } from "next/navigation";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { motion } from "framer-motion";
 import { HashCarousel2 } from "./HashCarousel2";
+import { ArrowPathIcon, PencilIcon } from "@heroicons/react/16/solid";
 interface HashProps {
   hash: HashType;
   loggedInUser: string;
@@ -35,7 +36,10 @@ const item = {
 
 export default function HashCard({ hash, loggedInUser }: HashProps) {
   const [bookmarked, setBookmarked] = useState(false);
-  const [reposted, setReposted] = useState(false);
+  const [reposted, setReposted] = useState<{ status: boolean; user: string }>({
+    status: false,
+    user: "",
+  });
   const [visitedUser, setVisitedUser] = useState<string | undefined>(undefined);
 
   const pathname = usePathname();
@@ -47,18 +51,19 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
       );
       setBookmarked(found ? true : false);
 
-      if (pathname.includes(loggedInUser)) {
-        const isReposted = hash.reposts.find(
-          (user) => user.user === loggedInUser
-        );
-        setReposted(isReposted ? true : false);
-      } else {
-        const visitedUser = pathname.split("/").at(-1);
-        setVisitedUser(visitedUser);
-        const isReposted = hash.reposts.find(
-          (user) => user.user === visitedUser
-        );
-        setReposted(isReposted ? true : false);
+      if (hash.reposts) {
+        const found = hash.reposts.find((user) => user.user === loggedInUser);
+        if (found) {
+          setReposted({ status: true, user: loggedInUser });
+        } else {
+          const following = hash.author.following;
+          const foundFollowing = hash.reposts.find((user) =>
+            following.includes(user.user)
+          );
+          if (foundFollowing) {
+            setReposted({ status: true, user: foundFollowing.user });
+          }
+        }
       }
     }
   }, [hash, loggedInUser]);
@@ -68,19 +73,21 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
       variants={item}
       initial="hidden"
       animate="show"
-      className="bg-white dark:bg-black rounded-2xl p-5"
+      className="bg-white dark:bg-dark rounded-2xl p-5"
     >
       {hash.edited && (
-        <h3 className="text-accent2 dark:text-accent1/50 font-bold text-[14px] flex items-center gap-2 mb-5">
-          <Pencil size={16} />
+        <h3 className="text-accent2/50 dark:text-accent1/50 text-paragraph italic flex items-center gap-2 mb-5">
+          <PencilIcon className="size-4" />
           Edited
         </h3>
       )}
 
-      {reposted && (
-        <h3 className="text-green-500 font-bold text-[14px] flex items-center gap-1 mb-2">
-          <Repeat2 size={24} />
-          {visitedUser ? `${visitedUser} Reposted` : "You Reposted"}
+      {reposted.status && (
+        <h3 className="text-emerald-500 font-bold text-paragraph flex items-center gap-2 mb-5 capitalize">
+          <ArrowPathIcon className="size-4" />
+          {reposted.user === loggedInUser
+            ? "You Reposted"
+            : `${reposted.user} Reposted`}
         </h3>
       )}
 
@@ -127,7 +134,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
         {hash.media.length > 0 && (
           <>
             {hash.media.length > 1 ? (
-              <div className="w-full flex items-center justify-start px-10">
+              <div className="w-full flex items-center justify-start lg:px-10">
                 <HashCarousel2 hashMedia={hash.media} />
               </div>
             ) : (
@@ -225,7 +232,7 @@ export default function HashCard({ hash, loggedInUser }: HashProps) {
         hashId={hash._id}
         commentCount={hash.children.length}
         likeCount={hash.likes.length}
-        repostCount={hash.reposts.length}
+        repostCount={hash.reposts?.length ?? 0}
         viewCount={hash.views}
         loggedInUser={loggedInUser}
         hashMedia={hash.media}

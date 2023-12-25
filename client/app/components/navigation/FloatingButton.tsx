@@ -14,12 +14,12 @@ export default async function FloatingButton() {
         <Button
           size={"icon"}
           variant={"icon"}
-          className="bg-primary fixed bottom-20 right-5 z-20 hover:z-30 hover:scale-110 transition-all text-accent1 size-10"
+          className="bg-primary fixed bottom-24 right-5 z-20 hover:z-30 hover:scale-110 transition-all text-accent1 size-10"
         >
           <Feather />
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-white dark:bg-black border-white dark:border-black">
+      <DialogContent className="bg-white dark:bg-dark border-white dark:border-dark">
         <Post
           loggedInUser={loggedInUser?.username ?? ""}
           profilePic={userInfo?.image ?? "/assets/profile-pic.png"}

@@ -91,31 +91,31 @@ export const LeftSidebarLinks = [
 
 export const BottomBarLinks = [
     {
-        icon: <HomeIcon className="size-4" />,
+        icon: <HomeIcon className="size-5" />,
         title: "Home",
         link: "/",
         specific: false
     },
     {
-        icon: <BellIcon className="size-4" />,
+        icon: <BellIcon className="size-5" />,
         title: "Notifications",
         link: "/notifications/",
         specific: false
     },
     {
-        icon: <MagnifyingGlassIcon className="size-4" />,
+        icon: <MagnifyingGlassIcon className="size-5" />,
         title: "Search",
         link: "/search/",
         specific: false
     },
     {
-        icon: <BookmarkIcon className="size-4" />,
+        icon: <BookmarkIcon className="size-5" />,
         title: "Bookmarks",
         link: "/bookmarks/",
         specific: true
     },
     {
-        icon: <EnvelopeIcon className="size-4" />,
+        icon: <EnvelopeIcon className="size-5" />,
         title: "Messages",
         link: "/messages",
         specific: false

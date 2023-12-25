@@ -1,5 +1,5 @@
 import { BookmarkMinus, BookmarkPlus, Link2, Mail, Share2 } from "lucide-react";
-import { ArrowUpOnSquareIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon } from "@heroicons/react/16/solid";
 import {
   Tooltip,
   TooltipContent,
@@ -60,7 +60,7 @@ export default function ShareBtn({
           <div className="group">
             <DropdownMenuTrigger asChild>
               <TooltipTrigger>
-                <ArrowUpOnSquareIcon className="size-4 text-accent2 dark:text-accent1 group-hover:text-primary" />
+                <ArrowUpTrayIcon className="size-4 text-accent2 dark:text-accent1 group-hover:text-primary" />
               </TooltipTrigger>
             </DropdownMenuTrigger>
           </div>

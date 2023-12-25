@@ -4,7 +4,7 @@
 
 /* App Styles */
 .app {
-  @apply bg-gradient-to-b from-accent1 via-[#e4e4e4] to-[#f3f3f3] text-accent2 dark:from-[#070f16] dark:via-[#030b12] dark:to-[#000a13] dark:text-accent1 text-body min-h-screen h-full w-full;
+  @apply bg-gradient-to-b from-accent1 via-[#e4e4e4] to-[#f3f3f3] text-accent2 dark:from-accent2 dark:via-[#0f0f0f] dark:to-[#0d0d0d] dark:text-accent1 text-body min-h-screen h-full w-full;
 }
 
 .main {
@@ -14,7 +14,7 @@
 /* Navigation Styles */
 /*! NAVBAR */
 .navbar {
-  @apply bg-accent1 dark:bg-[#070f16] w-full h-[10vh] flex items-center justify-between p-5 z-30;
+  @apply bg-transparent w-full h-[10vh] flex items-center justify-between p-5 z-30;
 }
 
 /*! LEFT SIDEBAR  */

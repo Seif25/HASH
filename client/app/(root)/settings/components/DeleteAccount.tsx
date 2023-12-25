@@ -32,7 +32,7 @@ export default function DeleteAccount() {
         </p>
         <p className="text-body text-accent1">
           Deleting your account is a{" "}
-          <span className="font-black uppercase text-[16px] text-red-700 underline">
+          <span className="font-dark uppercase text-[16px] text-red-700 underline">
             permanent action
           </span>
           . Once you confirm, your account and all data associated with it will
@@ -96,7 +96,7 @@ export default function DeleteAccount() {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter className="gap-10 mt-10 w-full">
-                <AlertDialogCancel className="w-40 hover:bg-accent1 hover:text-black">
+                <AlertDialogCancel className="w-40 hover:bg-accent1 hover:text-dark">
                   Cancel
                 </AlertDialogCancel>
                 <Button

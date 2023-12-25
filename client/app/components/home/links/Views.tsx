@@ -1,4 +1,4 @@
-import { ChartBarIcon } from "@heroicons/react/16/solid";
+import { ChartBarIcon } from "@heroicons/react/20/solid";
 import {
   Tooltip,
   TooltipContent,
@@ -16,7 +16,7 @@ export default function Views({ count }: ViewsProps) {
       <Tooltip>
         <div className="group flex items-center gap-1">
           <TooltipTrigger>
-            <ChartBarIcon className="size-4 text-accent2 dark:text-accent1 group-hover:text-amber-400" />
+            <ChartBarIcon className="size-5 text-accent2 dark:text-accent1 group-hover:text-amber-400" />
           </TooltipTrigger>
           <span className="text-accent2/50 dark:text-accent1/50 text-paragraph select-none">
             {count}
