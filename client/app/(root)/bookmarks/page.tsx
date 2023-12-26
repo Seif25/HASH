@@ -14,6 +14,7 @@ export default async function Page() {
           hash={bookmark}
           loggedInUser={user?.username ?? ""}
           key={bookmark._id}
+          page="home"
         />
       ))}
     </div>
