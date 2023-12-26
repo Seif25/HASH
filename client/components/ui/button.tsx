@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default: "blue-gradient text-light hover:bg-light/80 transition-all",
         destructive: "bg-red-700 text-light hover:bg-red-700/90 transition-all",
         outline:
-          "border border-accent1 bg-transparent hover:bg-primary text-accent1 transition-all",
+          "border border-accent2 dark:border-accent1 bg-transparent hover:bg-primary text-accent2 dark:text-accent1 transition-all",
         icon: "group rounded-full bg-transparent transition-all",
         link: "text-blue underline-offset-4 hover:underline transition-all",
       },

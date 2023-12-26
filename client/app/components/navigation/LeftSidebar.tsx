@@ -32,18 +32,22 @@ export default function LeftSidebar({
             >
               {link.title === "Notifications" ? (
                 <>
-                  <Badge
-                    variant="dot"
-                    className="size-4"
-                    sx={{
-                      "& .MuiBadge-badge": {
-                        color: "#E6EBF0",
-                        backgroundColor: "#1991fe",
-                      },
-                    }}
-                  >
-                    {link.icon}
-                  </Badge>
+                  {notificationCount > 0 ? (
+                    <Badge
+                      variant="dot"
+                      className="size-4"
+                      sx={{
+                        "& .MuiBadge-badge": {
+                          color: "#E6EBF0",
+                          backgroundColor: "#1991fe",
+                        },
+                      }}
+                    >
+                      {link.icon}
+                    </Badge>
+                  ) : (
+                    <>{link.icon}</>
+                  )}
                 </>
               ) : (
                 <>{link.icon}</>

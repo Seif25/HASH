@@ -1,6 +1,6 @@
 "use client";
 
-import { HashType } from "@/app/lib/types/hash.types";
+import { DetailedHashType, HashType } from "@/app/lib/types/hash.types";
 import {
   HoverCard,
   HoverCardContent,
@@ -21,10 +21,11 @@ import { motion } from "framer-motion";
 import { HashCarousel2 } from "./HashCarousel2";
 import { ArrowPathIcon, PencilIcon } from "@heroicons/react/16/solid";
 interface HashProps {
-  hash: HashType;
+  hash: HashType | DetailedHashType;
   loggedInUser: string;
   following?: string[];
   page?: "home" | "hash";
+  variant?: "parent" | "child" | "default";
 }
 
 const item = {
@@ -41,6 +42,7 @@ export default function HashCard({
   loggedInUser,
   following,
   page = "home",
+  variant = "default",
 }: HashProps) {
   const [bookmarked, setBookmarked] = useState(false);
   const [reposted, setReposted] = useState<{ status: boolean; user: string }>({
@@ -78,8 +80,8 @@ export default function HashCard({
       initial="hidden"
       animate="show"
       className={`bg-white dark:bg-dark rounded-2xl p-5 ${
-        page === "hash" && "pb-0"
-      }`}
+        (page === "hash" || variant === "parent") && "pb-0"
+      } ${variant === "child" && "pt-2"}`}
     >
       {hash.edited && (
         <h3 className="text-accent2/50 dark:text-accent1/50 text-paragraph italic flex items-center gap-2 mb-5">
@@ -127,45 +129,58 @@ export default function HashCard({
         </HoverCard>
       </div>
 
-      {/* HASH INFORMATION */}
-      <div className="flex flex-col gap-5 lg:ml-5">
-        {/* Hash Text */}
-        <Link href={`/hash/${hash._id}`}>
-          <h2 className="text-body font-normal text-accent2 dark:text-accent1 px-5 pt-5">
-            <HashText text={hash.text} />
-          </h2>
-        </Link>
+      <div
+        className={`flex flex-col ${
+          variant === "parent" &&
+          "border-l border-accent2/10 dark:border-accent1/10 ml-5 mt-2 mb-1"
+        }`}
+      >
+        {/* HASH INFORMATION */}
+        <div className="flex flex-col gap-5 lg:ml-5">
+          {/* Hash Text */}
+          <Link href={`/hash/${hash._id}`}>
+            <h2
+              className={`text-body font-normal text-accent2 dark:text-accent1 px-5 ${
+                variant === "parent" ? "pt-0" : "pt-5"
+              }`}
+            >
+              <HashText text={hash.text} />
+            </h2>
+          </Link>
 
-        {/* Hash Media */}
-        {hash.media.length > 0 && (
-          <>
-            {hash.media.length > 1 ? (
-              <div className="w-full flex items-center justify-start lg:px-10">
-                <HashCarousel2 hashMedia={hash.media} />
-              </div>
-            ) : (
-              <div className="w-full flex items-center justify-start">
-                {hash.media[0]?.mediaType === "image" ? (
-                  <Image
-                    src={hash.media[0].url}
-                    alt={hash.media[0].alt}
-                    width={400}
-                    height={400}
-                    priority
-                    className="aspect-square object-cover rounded-xl bg-[#000a13"
-                  />
-                ) : hash.media[0].mediaType === "video" ? (
-                  <AspectRatio ratio={16 / 9}>
-                    <HashVideoPreview src={hash.media[0].url} autoplay={true} />
-                  </AspectRatio>
-                ) : (
-                  <></>
-                )}
-              </div>
-            )}
-          </>
-        )}
-        {/* {hash.media.length > 0 && (
+          {/* Hash Media */}
+          {hash.media.length > 0 && (
+            <>
+              {hash.media.length > 1 ? (
+                <div className="w-full flex items-center justify-start lg:px-10">
+                  <HashCarousel2 hashMedia={hash.media} />
+                </div>
+              ) : (
+                <div className="w-full flex items-center justify-start">
+                  {hash.media[0]?.mediaType === "image" ? (
+                    <Image
+                      src={hash.media[0].url}
+                      alt={hash.media[0].alt}
+                      width={400}
+                      height={400}
+                      priority
+                      className="aspect-square object-cover rounded-xl bg-[#000a13"
+                    />
+                  ) : hash.media[0].mediaType === "video" ? (
+                    <AspectRatio ratio={16 / 9}>
+                      <HashVideoPreview
+                        src={hash.media[0].url}
+                        autoplay={true}
+                      />
+                    </AspectRatio>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+          {/* {hash.media.length > 0 && (
           <div className="flex items-center justify-start w-full h-auto">
             {hash.media.length === 1 ? (
               <div className="w-[450px] bg-transparent">
@@ -231,31 +246,32 @@ export default function HashCard({
             )}
           </div>
         )} */}
-      </div>
+        </div>
 
-      {/* Hash Metadata */}
-      <HashStats
-        hashId={hash._id}
-        commentCount={hash.children.length}
-        likeCount={hash.likes.length}
-        repostCount={hash.reposts?.length ?? 0}
-        viewCount={hash.views}
-        loggedInUser={loggedInUser}
-        hashMedia={hash.media}
-        hashAuthor={hash.author}
-        hashText={hash.text}
-        hashLikes={hash.likes}
-        pinned={hash.pinned}
-        highlighted={hash.highlighted}
-        bookmarked={bookmarked}
-        restriction={hash.restriction ?? ""}
-        createdAt={hash.createdAt}
-        reposted={reposted}
-        comments={hash.children}
-        following={following}
-        setReposted={setReposted}
-        page={page}
-      />
+        {/* Hash Metadata */}
+        <HashStats
+          hashId={hash._id}
+          commentCount={hash.children.length}
+          likeCount={hash.likes.length}
+          repostCount={hash.reposts?.length ?? 0}
+          viewCount={hash.views}
+          loggedInUser={loggedInUser}
+          hashMedia={hash.media}
+          hashAuthor={hash.author}
+          hashText={hash.text}
+          hashLikes={hash.likes}
+          pinned={hash.pinned}
+          highlighted={hash.highlighted}
+          bookmarked={bookmarked}
+          restriction={hash.restriction ?? ""}
+          createdAt={hash.createdAt}
+          reposted={reposted}
+          comments={hash.children}
+          following={following}
+          setReposted={setReposted}
+          page={page}
+        />
+      </div>
     </motion.div>
   );
 }

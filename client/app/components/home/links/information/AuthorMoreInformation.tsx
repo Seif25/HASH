@@ -3,25 +3,25 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import {
-  deleteHashAction,
   highlightHashAction,
   pinHashAction,
   unhighlightHashAction,
   unpinHashAction,
 } from "@/app/lib/actions/hash/hash.actions";
 import {
-  BarChart2,
   Globe2,
   MessageCircle,
   Pencil,
   Pin,
   PinOff,
-  Sparkles,
   Trash2,
   UserCheck2,
   UserPlus2,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { ChartBarIcon } from "@heroicons/react/16/solid";
+import { SparklesIcon as NotHighlightedIcon } from "@heroicons/react/24/outline";
+import { SparklesIcon as HighlightedIcon } from "@heroicons/react/16/solid";
 
 interface AuthorMoreInformationProps {
   hashId: string;
@@ -101,9 +101,9 @@ export default function AuthorMoreInformation({
           onClick={handleHighlightHash}
         >
           {!highlighted ? (
-            <Sparkles className="size-4 mr-2" />
+            <NotHighlightedIcon className="size-4 mr-2" />
           ) : (
-            <Sparkles className="size-4 mr-2 text-primary" />
+            <HighlightedIcon className="size-4 mr-2 text-primary" />
           )}
           <span>
             {!highlighted
@@ -146,7 +146,7 @@ export default function AuthorMoreInformation({
         </DropdownMenuItem>
         {/* View Post Analytics */}
         <DropdownMenuItem className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer">
-          <BarChart2 className="size-4 mr-2" />
+          <ChartBarIcon className="size-4 mr-2" />
           <span>View Hash Analytics</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

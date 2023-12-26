@@ -10,6 +10,7 @@ import {
 import { UserFollowingType, UserType } from "../../types/user.types";
 import { HashType } from "../../types/hash.types";
 import HashModel from "../../models/hash.model";
+import NotificationModel from "../../models/notification.model";
 
 /**
  * Fetch user's information using their username
@@ -180,13 +181,14 @@ export async function newCommentAction({
   media: HashType[];
 }) {
   try {
-    const hash = await HashModel.create({
+    const hash = (await HashModel.create({
       author: commenter,
       text,
       media,
-    });
+      parentId: hashId,
+    })) as HashType;
     if (hash) {
-      await HashModel.findByIdAndUpdate(hashId, {
+      const parentHash = await HashModel.findByIdAndUpdate(hashId, {
         $push: { children: hash._id },
       });
       await UserModel.findOneAndUpdate(
@@ -195,8 +197,88 @@ export async function newCommentAction({
           $push: { hashes: hash._id },
         }
       );
+      if (parentHash.author !== commenter) {
+        const existingNotification = await NotificationModel.findOne({
+          source: commenter,
+          user: parentHash.author,
+          type: "reply",
+        });
+        if (existingNotification) {
+          await NotificationModel.findByIdAndUpdate(existingNotification._id, {
+            createdAt: Date.now(),
+          });
+        } else {
+          await NotificationModel.create({
+            user: parentHash.author,
+            message: "commented on your hash",
+            link: `/hash/${hash._id.toString()}`,
+            type: "reply",
+            source: commenter,
+          });
+        }
+      }
     }
   } catch (error: any) {
     console.log(error);
+  }
+}
+
+export async function followUserAction({
+  loggedInUser,
+  userToFollow,
+  pathname,
+}: {
+  loggedInUser: string;
+  userToFollow: string;
+  pathname: string;
+}): Promise<void> {
+  try {
+    await UserModel.updateOne(
+      { username: loggedInUser },
+      { $push: { following: userToFollow } }
+    );
+    await UserModel.updateOne(
+      { username: userToFollow },
+      { $push: { followers: loggedInUser } }
+    );
+
+    await NotificationModel.create({
+      user: userToFollow,
+      message: "started following you",
+      link: `/profile/${loggedInUser}`,
+      type: "follow",
+      source: loggedInUser,
+    });
+
+    revalidatePath(pathname);
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+}
+
+export async function unfollowUserAction({
+  loggedInUser,
+  userToUnfollow,
+  pathname,
+}: {
+  loggedInUser: string;
+  userToUnfollow: string;
+  pathname: string;
+}): Promise<void> {
+  try {
+    await UserModel.updateOne(
+      { username: loggedInUser },
+      { $pull: { following: userToUnfollow } }
+    );
+    await UserModel.updateOne(
+      { username: userToUnfollow },
+      { $pull: { followers: loggedInUser } }
+    );
+
+    revalidatePath(pathname);
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.message);
   }
 }

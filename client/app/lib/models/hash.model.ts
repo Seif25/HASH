@@ -14,7 +14,7 @@ const hashSchema = new mongoose.Schema({
     default: null,
   },
   createdAt: { type: Date, default: Date.now },
-  parentId: { type: String, default: null },
+  parentId: { type: String, default: null, ref: "Hash" },
   children: [
     {
       type: mongoose.Schema.Types.ObjectId,
