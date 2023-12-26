@@ -29,7 +29,7 @@ interface HashStatsProps {
   createdAt: Date;
   reposted: { status: boolean; user: string };
   comments: HashType[];
-  following: string[];
+  following?: string[];
   setReposted: (value: { status: boolean; user: string }) => void;
   page?: "home" | "hash";
 }
@@ -63,24 +63,26 @@ export default function HashStats({
     }[]
   >([]);
   useEffect(() => {
-    comments.forEach((comment) => {
-      if (comment.author?.following?.includes(loggedInUser)) {
-        const data = {
-          user: comment.author.name,
-          avatar: comment.author.image,
-        };
-        setFriends((prev) => {
-          // Check if the user already exists in the friends array
-          if (!prev.some((friend) => friend.user === data.user)) {
-            // If the user doesn't exist, add the new data
-            return [...prev, data];
-          } else {
-            // If the user already exists, return the previous state
-            return prev;
-          }
-        });
-      }
-    });
+    if (following) {
+      comments.forEach((comment) => {
+        if (comment.author?.following?.includes(loggedInUser)) {
+          const data = {
+            user: comment.author.name,
+            avatar: comment.author.image,
+          };
+          setFriends((prev) => {
+            // Check if the user already exists in the friends array
+            if (!prev.some((friend) => friend.user === data.user)) {
+              // If the user doesn't exist, add the new data
+              return [...prev, data];
+            } else {
+              // If the user already exists, return the previous state
+              return prev;
+            }
+          });
+        }
+      });
+    }
 
     return () => setFriends([]);
   }, [comments, following]);

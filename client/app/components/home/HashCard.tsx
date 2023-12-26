@@ -23,7 +23,7 @@ import { ArrowPathIcon, PencilIcon } from "@heroicons/react/16/solid";
 interface HashProps {
   hash: HashType;
   loggedInUser: string;
-  following: string[];
+  following?: string[];
   page?: "home" | "hash";
 }
 
