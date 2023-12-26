@@ -8,7 +8,7 @@ import {
 } from "@/app/lib/types/hash.actions.types";
 import { MongooseError } from "mongoose";
 import { revalidatePath } from "next/cache";
-import { HashType } from "../../types/hash.types";
+import { DetailedHashType, HashType } from "../../types/hash.types";
 import UserModel from "../../models/user.model";
 
 /**
@@ -79,6 +79,16 @@ export async function editHashAction({
 export async function fetchHashByIdAction(hashId: string) {
   const Query = HashModel.findById({ _id: hashId })
     .populate({
+      path: "parentId",
+      model: "Hash",
+      populate: {
+        path: "author",
+        model: "User",
+        foreignField: "username",
+        select: "username name image followers following verified bio",
+      },
+    })
+    .populate({
       path: "author",
       model: "User",
       foreignField: "username",
@@ -96,8 +106,8 @@ export async function fetchHashByIdAction(hashId: string) {
     })
     .lean();
 
-  const hash = (await Query.exec()) as HashType;
-  const JsonHash = JSON.parse(JSON.stringify(hash)) as HashType;
+  const hash = (await Query.exec()) as DetailedHashType;
+  const JsonHash = JSON.parse(JSON.stringify(hash)) as DetailedHashType;
 
   return JsonHash;
 }

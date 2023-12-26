@@ -1,7 +1,6 @@
 import {
   Globe2,
   Loader2,
-  MessageCircle,
   MoreVertical,
   UserCheck2,
   UserPlus2,

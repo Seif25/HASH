@@ -1,5 +1,10 @@
 import { BookmarkMinus, BookmarkPlus, Link2, Mail, Share2 } from "lucide-react";
-import { ArrowUpTrayIcon } from "@heroicons/react/16/solid";
+import {
+  ArrowUpTrayIcon,
+  BookmarkIcon,
+  BookmarkSlashIcon,
+  EnvelopeIcon,
+} from "@heroicons/react/16/solid";
 import {
   Tooltip,
   TooltipContent,
@@ -85,7 +90,7 @@ export default function ShareBtn({
             </DropdownMenuItem>
             {/* Send as a DM */}
             <DropdownMenuItem className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer">
-              <Mail className="size-4 mr-2" />
+              <EnvelopeIcon className="size-4 mr-2" />
               <span>Send via Direct Messages</span>
             </DropdownMenuItem>
             {/* Bookmark Hash */}
@@ -94,9 +99,9 @@ export default function ShareBtn({
               onClick={handleBookmarkHash}
             >
               {!bookmarked ? (
-                <BookmarkPlus className="size-4 mr-2" />
+                <BookmarkIcon className="size-4 mr-2" />
               ) : (
-                <BookmarkMinus className="size-4 mr-2" />
+                <BookmarkSlashIcon className="size-4 mr-2" />
               )}
               <span>
                 {!bookmarked ? "Bookmark Hash" : "Remove Hash from Bookmarks"}

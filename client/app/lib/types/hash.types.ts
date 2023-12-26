@@ -19,6 +19,25 @@ export type HashType = {
   edited: boolean;
 };
 
+export type DetailedHashType = {
+  _id: string;
+  parentId: HashType;
+  text: string;
+  author: UserType;
+  community: string[] | null;
+  children: HashType[];
+  media: MediaType[];
+  likes: string[];
+  reposts: RepostType[];
+  views: number;
+  createdAt: Date;
+  pinned: boolean;
+  highlighted: boolean;
+  bookmarkedBy: string[];
+  restriction: "everyone" | "followers only" | "followed by me";
+  edited: boolean;
+};
+
 export type MediaType = {
   id: string;
   url: string;

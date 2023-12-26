@@ -13,19 +13,27 @@ export default function BottomBar({
       {BottomBarLinks.map((link) => (
         <Link href={link.link} key={link.title}>
           {link.title === "Notifications" ? (
-            <Badge
-              variant="dot"
-              sx={{
-                "& .MuiBadge-badge": {
-                  color: "#E6EBF0",
-                  backgroundColor: "rgb(25 145 254)",
-                },
-              }}
-            >
-              <Button variant={"icon"} className="hover:text-primary">
-                {link.icon}
-              </Button>
-            </Badge>
+            <>
+              {notificationCount > 0 ? (
+                <Badge
+                  variant="dot"
+                  sx={{
+                    "& .MuiBadge-badge": {
+                      color: "#E6EBF0",
+                      backgroundColor: "rgb(25 145 254)",
+                    },
+                  }}
+                >
+                  <Button variant={"icon"} className="hover:text-primary">
+                    {link.icon}
+                  </Button>
+                </Badge>
+              ) : (
+                <Button variant={"icon"} className="hover:text-primary">
+                  {link.icon}
+                </Button>
+              )}
+            </>
           ) : (
             <Button variant={"icon"} className="hover:text-primary">
               {link.icon}

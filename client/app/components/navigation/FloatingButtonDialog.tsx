@@ -24,7 +24,7 @@ export default function FloatingButtonDialog({
       <Button
         size={"icon"}
         variant={"icon"}
-        className="bg-primary fixed bottom-24 right-5 z-20 hover:z-30 hover:scale-110 transition-all text-accent1 size-10"
+        className="bg-primary fixed bottom-24 right-5 lg:left-[80%] lg:bottom-5 z-20 hover:z-30 hover:scale-110 transition-all text-accent1 size-10"
         onClick={() => setOpen(true)}
       >
         <Feather />
