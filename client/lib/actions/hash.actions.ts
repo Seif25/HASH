@@ -16,6 +16,7 @@ import { revalidatePath } from "next/cache";
 import mongoose, { MongooseError } from "mongoose";
 import User from "../../app/lib/models/user.model";
 import Tag from "../../app/lib/models/tag.model";
+import NotificationModel from "@/app/lib/models/notification.model";
 // import { logger } from "../logs/logger";
 
 // *SETTING UP LOGGER
@@ -325,7 +326,7 @@ export async function likeHash({
   HashModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id), {
     $push: { likes: currentUser },
   })
-    .then(() => {
+    .then((res) => {
       // console.info(`${currentUser} liked hash: ${id}`);
       // Add like to user's likes
       User.findOneAndUpdate(
@@ -335,7 +336,15 @@ export async function likeHash({
         }
       )
         .then(() => {
-          // console.info(`Updated likes for: ${currentUser}`);
+          if (currentUser !== res.author) {
+            NotificationModel.create({
+              user: res.author,
+              type: "like",
+              source: currentUser,
+              link: `/hash/${res._id.toString()}`,
+              message: "liked your hash",
+            });
+          }
         })
         .catch((error: MongooseError) => {
           throw new Error(

@@ -15,8 +15,20 @@ export type HashType = {
   pinned: boolean;
   highlighted: boolean;
   bookmarkedBy: string[];
-  restriction: "everyone" | "followers only" | "followed by me";
+  restriction: "everyone" | "mentioned only" | "followed by me";
   edited: boolean;
+};
+
+export type SummarizedHashType = {
+  _id: string;
+  text: string;
+  media: MediaType[];
+  likes: string[];
+  reposts: RepostType[];
+  views: number;
+  createdAt: Date;
+  author: UserType;
+  children: string[];
 };
 
 export type DetailedHashType = {
@@ -34,7 +46,7 @@ export type DetailedHashType = {
   pinned: boolean;
   highlighted: boolean;
   bookmarkedBy: string[];
-  restriction: "everyone" | "followers only" | "followed by me";
+  restriction: "everyone" | "mentioned only" | "followed by me";
   edited: boolean;
 };
 

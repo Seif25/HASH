@@ -8,19 +8,20 @@ import {
 } from "@tanstack/react-query";
 import { currentUser } from "@clerk/nextjs";
 import { fetchUser } from "@/lib/actions/user.actions";
+import { fetchHashesAction } from "../lib/actions/hash/hash.actions";
 
 export const revalidate = 0;
 
 export default async function Hash() {
+  const user = await currentUser();
+  const loggedInUser = await fetchUser(user?.username ?? "");
+
   // Fetch Recommended Hashes for User
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["hashes"],
-    queryFn: () => fetchHashes(1, 20),
+    queryFn: () => fetchHashesAction(user?.username ?? "", 1, 20),
   });
-
-  const user = await currentUser();
-  const loggedInUser = await fetchUser(user?.username ?? "");
 
   return (
     <section className="flex flex-col px-5 lg:px-0 gap-5 overflow-y-hidden">

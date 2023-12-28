@@ -45,8 +45,8 @@ export default async function Page({
   const selectedOption = views?.find((v) => v.href === params.option);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-6 gap-5 mt-5 w-full h-full bg-accent2 rounded-2xl">
-      <div className="hidden lg:block col-span-1 lg:col-span-2 bg-accent2 lg:bg-accent1/10 h-full rounded-2xl lg:rounded-l-2xl lg:rounded-r-none w-full p-5">
+    <div className="grid grid-cols-1 lg:grid-cols-6 gap-5 mt-5 w-full h-full bg-accent2 rounded-xl">
+      <div className="hidden lg:block col-span-1 lg:col-span-2 bg-accent2 lg:bg-accent1/10 h-full rounded-xl lg:rounded-l-2xl lg:rounded-r-none w-full p-5">
         <div className="flex flex-col gap-5 justify-center">
           {settings.map((setting) => (
             <Link href={`/settings/${setting.href}`} key={setting.title}>
@@ -56,7 +56,7 @@ export default async function Page({
                   params.setting === setting.href
                     ? "bg-primary"
                     : "bg-transparent"
-                } hover:bg-primary rounded-2xl text-accent1 cursor-pointer`}
+                } hover:bg-primary rounded-xl text-accent1 cursor-pointer`}
               >
                 <h3 className="text-body">{setting.title}</h3>
                 <ChevronRight size={20} className="text-accent1/30" />
@@ -65,7 +65,7 @@ export default async function Page({
           ))}
         </div>
       </div>
-      <div className="col-span-1 lg:col-span-4 bg-accent2 h-full rounded-2xl w-full">
+      <div className="col-span-1 lg:col-span-4 bg-accent2 h-full rounded-xl w-full">
         <div className="flex flex-col gap-5 justify-center">
           {selectedOption?.component}
         </div>

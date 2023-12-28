@@ -19,6 +19,8 @@ export type UserType = {
   hashes: HashType[];
   likes?: HashType[];
   fcmToken?: string;
+  blocked: string[];
+  notInterested: string[];
 };
 
 export type SummarizedUserType = {
@@ -29,6 +31,8 @@ export type SummarizedUserType = {
   following: string[];
   followers: string[];
   fcmToken?: string;
+  blocked: string[];
+  notInterested: string[];
 };
 
 export type UserFollowingType = {

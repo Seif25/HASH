@@ -12,7 +12,7 @@ export default async function ({ params }: { params: { hashId: string } }) {
   const user = await currentUser();
   const loggedInUser = await fetchUserAction(user?.username ?? "");
   return (
-    <div className="mt-5 bg-white dark:bg-dark rounded-2xl mb-5 pb-5">
+    <div className="mt-5 bg-white dark:bg-dark rounded-xl mb-5 pb-5">
       <div className="flex flex-col">
         {hash.parentId && (
           <HashCard

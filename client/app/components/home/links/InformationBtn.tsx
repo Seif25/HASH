@@ -1,4 +1,5 @@
 import {
+  AtSign,
   Globe2,
   Loader2,
   MoreVertical,
@@ -56,7 +57,7 @@ interface InformationBtnProps {
   hashId: string;
   pinned: boolean;
   highlighted: boolean;
-  restriction: "everyone" | "followers only" | "followed by me";
+  restriction: "everyone" | "mentioned only" | "followed by me";
   hashMedia: MediaType[];
   hashText: string;
 }
@@ -75,7 +76,7 @@ export default function InformationBtn({
   const [open, setOpen] = useState<boolean>(false);
   const [openRestriction, setOpenRestriction] = useState<boolean>(false);
   const [whoCanReply, changeRestriction] = useState<
-    "everyone" | "followers only" | "followed by me"
+    "everyone" | "mentioned only" | "followed by me"
   >(restriction);
   const [loading, setLoading] = useState<boolean>(false);
   const [openEdit, setOpenEdit] = useState<boolean>(false);
@@ -127,6 +128,7 @@ export default function InformationBtn({
               <ViewerMoreInformation
                 loggedInUser={loggedInUser}
                 hashAuthor={hashAuthor}
+                hashId={hashId}
               />
             ) : (
               <AuthorMoreInformation
@@ -210,27 +212,27 @@ export default function InformationBtn({
                       : "text-accent2 dark:text-accent1"
                   }`}
                 >
-                  <Globe2 size={"20px"} />
+                  <Globe2 className="size-5" />
                   <span>Everyone Can Reply</span>
                 </Label>
               </div>
-              {/* Author's followers only */}
+              {/* Author's mentioned only */}
               <div className="flex items-center space-x-2">
                 <RadioGroupItem
-                  value="followers only"
-                  id="followers only"
+                  value="mentioned only"
+                  id="mentioned only"
                   // onClick={handleRestrictionChange}
                 />
                 <Label
-                  htmlFor="followers only"
+                  htmlFor="mentioned only"
                   className={`flex items-center gap-1 ${
-                    whoCanReply === "followers only"
+                    whoCanReply === "mentioned only"
                       ? "text-primary"
                       : "text-accent2 dark:text-accent1"
                   }`}
                 >
-                  <UserPlus2 size={"20px"} />
-                  <span>Only Your Followers Can Reply</span>
+                  <AtSign className="size-5" />
+                  <span>Only People You Mention Can Reply</span>
                 </Label>
               </div>
               {/* People the Author is following */}
@@ -248,7 +250,7 @@ export default function InformationBtn({
                       : "text-accent2 dark:text-accent1"
                   }`}
                 >
-                  <UserCheck2 size={"20px"} />
+                  <UserCheck2 className="size-5" />
                   <span>Only People You Follow Can Reply</span>
                 </Label>
               </div>

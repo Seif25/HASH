@@ -39,7 +39,7 @@ export default async function Page({
           </Link>
         </TabsList>
         <TabsContent value="following" className="w-full">
-          <div className="w-full bg-accent2 rounded-2xl mt-5 px-2 flex flex-col gap-5">
+          <div className="w-full bg-accent2 rounded-xl mt-5 px-2 flex flex-col gap-5">
             {userFollowing?.following.map((user) => (
               <div
                 key={user.username}

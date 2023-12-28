@@ -60,7 +60,9 @@ export async function checkIfUserExistsAction(
   username: string
 ): Promise<boolean> {
   try {
-    const user = await UserModel.findOne({ username }).select("username");
+    const user = await UserModel.findOne({ username }).select(
+      "username blocked"
+    );
     if (!user) return false;
     return true;
   } catch (error: any) {
@@ -277,6 +279,83 @@ export async function unfollowUserAction({
     );
 
     revalidatePath(pathname);
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+}
+
+export async function blockUserAction({
+  loggedInUser,
+  userToBlock,
+  pathname,
+}: {
+  loggedInUser: string;
+  userToBlock: string;
+  pathname: string | null;
+}): Promise<void> {
+  try {
+    await UserModel.findOneAndUpdate(
+      { username: userToBlock },
+      {
+        $push: { blocked: loggedInUser },
+        $pull: { following: loggedInUser, followers: loggedInUser },
+      }
+    );
+    await UserModel.findOneAndUpdate(
+      { username: loggedInUser },
+      { $pull: { following: userToBlock, followers: userToBlock } }
+    );
+    if (pathname) {
+      revalidatePath(pathname);
+    }
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+}
+
+export async function unBlockUserAction({
+  loggedInUser,
+  userToUnBlock,
+  pathname,
+}: {
+  loggedInUser: string;
+  userToUnBlock: string;
+  pathname: string | null;
+}): Promise<void> {
+  try {
+    await UserModel.findOneAndUpdate(
+      { username: userToUnBlock },
+      { $pull: { blocked: loggedInUser } }
+    );
+    if (pathname) {
+      revalidatePath(pathname);
+    }
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+}
+
+export async function markHashAsNotInterestingAction({
+  loggedInUser,
+  hashId,
+  pathname,
+}: {
+  loggedInUser: string;
+  hashId: string;
+  pathname: string | null;
+}): Promise<void> {
+  try {
+    await UserModel.updateOne(
+      { username: loggedInUser },
+      { $push: { notInterested: hashId } }
+    );
+
+    if (pathname) {
+      revalidatePath(pathname);
+    }
   } catch (error: any) {
     console.log(error);
     throw new Error(error.message);

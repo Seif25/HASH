@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import HashVideoPreview from "./HashVideoPreview";
 import HashCarousel from "./HashCarousel";
-import { Pencil, Repeat2 } from "lucide-react";
+import { AtSign, Pencil, Repeat2, UserCheck2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { motion } from "framer-motion";
@@ -79,7 +79,7 @@ export default function HashCard({
       variants={item}
       initial="hidden"
       animate="show"
-      className={`bg-white dark:bg-dark rounded-2xl p-5 ${
+      className={`bg-white dark:bg-dark rounded-xl p-5 ${
         (page === "hash" || variant === "parent") && "pb-0"
       } ${variant === "child" && "pt-2"}`}
     >
@@ -132,7 +132,7 @@ export default function HashCard({
       <div
         className={`flex flex-col ${
           variant === "parent" &&
-          "border-l border-accent2/10 dark:border-accent1/10 ml-5 mt-2 mb-1"
+          "border-l border-accent2/10 dark:border-accent1/10 lg:ml-5 mt-2 mb-1"
         }`}
       >
         {/* HASH INFORMATION */}
@@ -164,7 +164,7 @@ export default function HashCard({
                       width={400}
                       height={400}
                       priority
-                      className="aspect-square object-cover rounded-xl bg-[#000a13"
+                      className="aspect-square object-cover rounded-xl bg-[#000a13]"
                     />
                   ) : hash.media[0].mediaType === "video" ? (
                     <AspectRatio ratio={16 / 9}>
@@ -271,6 +271,32 @@ export default function HashCard({
           setReposted={setReposted}
           page={page}
         />
+
+        {/* Permission */}
+        {hash.restriction && (
+          <div className="pb-0 text-primary text-[10px] font-bold">
+            {hash.restriction !== "everyone" && (
+              <h1 className="px-5 ml-5 mt-5 text-inherit flex items-center gap-1">
+                <span>
+                  {hash.restriction === "followed by me" ? (
+                    <UserCheck2 className="size-4 text-inherit" />
+                  ) : (
+                    <AtSign className="size-4 text-inherit" />
+                  )}
+                </span>
+                <span>
+                  {hash.restriction === "followed by me"
+                    ? hash.author.username === loggedInUser
+                      ? "Only People You Follow Can Reply"
+                      : `Only People ${hash.author.username} Follows Can Reply`
+                    : hash.author.username === loggedInUser
+                    ? "Only People You Mentioned Can Reply"
+                    : `Only People ${hash.author.username} Mentioned Can Reply`}
+                </span>
+              </h1>
+            )}
+          </div>
+        )}
       </div>
     </motion.div>
   );

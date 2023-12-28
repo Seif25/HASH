@@ -23,8 +23,10 @@ export async function generateMetadata(
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: { conversationId: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const user = await currentUser();
 
@@ -49,6 +51,7 @@ export default async function Page({
     <ConversationWindow
       loggedInUser={user?.username ?? ""}
       conversation={conversation[0]}
+      searchParams={searchParams}
     />
   );
 }

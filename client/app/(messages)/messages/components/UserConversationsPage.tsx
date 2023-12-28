@@ -56,25 +56,25 @@ export default function UserConversationsPage({
   }
 
   return (
-    <section className="flex flex-col gap-5 bg-accent2 rounded-2xl lg:mt-5">
+    <section className="flex flex-col gap-5 bg-white dark:bg-dark rounded-xl lg:mt-5">
       {/* Start new Conversation & Search */}
-      <section className="bg-accent2 rounded-t-2xl h-[10vh] lg:h-[15vh] p-5 flex flex-col gap-5">
+      <section className="bg-white dark:bg-dark rounded-t-2xl h-[10vh] lg:h-[15vh] p-5 flex flex-col gap-5">
         <div className="flex items-center justify-between gap-5">
           <Image
             src={loggedInUser.image ?? "/assets/profile-pic.png"}
             alt={loggedInUser.username}
             width={48}
             height={48}
-            className="rounded-full"
+            className="rounded-full size-10 object-cover"
           />
-          <div className="flex items-center justify-between px-3 py-2 bg-dark rounded-2xl w-[70%] lg:w-[80%]">
+          <div className="flex items-center justify-between px-3 py-2 bg-white dark:bg-dark rounded-xl w-[70%] lg:w-[80%]">
             <input
               type="text"
               className="bg-transparent ring-0 outline-none border-none px-3 w-full"
               placeholder="Looking for a conversation?"
               onChange={handleConversationSearch}
             />
-            <Search size={"24px"} className="text-accent1" />
+            <Search className="size-5 text-accent2 dark:text-accent1" />
           </div>
           {/* New Conversation */}
           <NewConversationWindow
@@ -85,8 +85,10 @@ export default function UserConversationsPage({
       </section>
       {/* Conversations */}
       {/* Most Recent Conversations */}
-      <div className="lg:hidden flex flex-col px-5 gap-3 border-b border-accent1/10 pb-5">
-        <h3 className="text-heading text-accent1/50 font-bold">Most Recent</h3>
+      <div className="lg:hidden flex flex-col px-5 gap-3 border-b border-accent2/10 dark:border-accent1/10 pb-5">
+        <h3 className="text-body text-accent2/50 dark:text-accent1/50">
+          Most Recent
+        </h3>
         <div className="flex items-center justify-center lg:justify-start gap-5">
           {MostRecent.slice(0, 4).map((conversation, index) => (
             <div className="rounded-full" key={`recent-${index}`}>
@@ -112,7 +114,10 @@ export default function UserConversationsPage({
             </div>
           ))}
           <div className="flex items-center justify-center">
-            <ArrowRight size={"24px"} className="text-accent1" />
+            <ArrowRight
+              size={"24px"}
+              className="text-accent2 dark:text-accent1"
+            />
           </div>
         </div>
       </div>
@@ -122,7 +127,7 @@ export default function UserConversationsPage({
           {/* New Conversations */}
           {LatestConversations.length > 0 && (
             <div className="flex flex-col gap-3 w-full">
-              <h3 className="text-heading text-accent1/50 font-bold px-5">
+              <h3 className="text-body text-accent2/50 dark:text-accent1/50 px-5">
                 New
               </h3>
               {LatestConversations.map((conversation, index) => (
@@ -141,7 +146,7 @@ export default function UserConversationsPage({
           {/* Opened Conversations */}
           {OpenedConversations.length > 0 && (
             <div className="flex flex-col gap-3 w-full">
-              <h3 className="text-heading text-accent1/50 font-bold px-5">
+              <h3 className="text-body text-accent2/50 dark:text-accent1/50 px-5">
                 Opened
               </h3>
               {OpenedConversations.map((conversation, index) => (
@@ -166,7 +171,7 @@ export default function UserConversationsPage({
             "flex flex-col items-center justify-center p-5 w-full"
           }`}
         >
-          <h3 className="text-heading text-accent1/50 font-bold px-5 w-full">
+          <h3 className="text-body text-accent2/50 dark:text-accent1/50 px-5 w-full">
             {queryResults.length === 0
               ? "No Conversations Found"
               : "Search Results"}

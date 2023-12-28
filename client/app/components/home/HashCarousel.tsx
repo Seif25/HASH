@@ -87,7 +87,7 @@ export default function HashCarousel({
           <div
             id={media.id}
             key={media.id}
-            className={`absolute flex items-center justify-start inset-0 rounded-2xl ${
+            className={`absolute flex items-center justify-start inset-0 rounded-xl ${
               active === index ? "block" : "hidden"
             }`}
           >

@@ -26,7 +26,8 @@ export default async function Page({
 }: {
   params: { username: string };
 }) {
-  const loggedInUser = await currentUser();
+  const _currentUser = await currentUser();
+  const loggedInUser = await fetchUser(_currentUser?.username ?? "");
   const user: UserType | null = await fetchUser(params.username);
   const replies: FetchUserReplies[] = await fetchUserReplies(params.username);
 

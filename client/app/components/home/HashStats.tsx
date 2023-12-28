@@ -25,7 +25,7 @@ interface HashStatsProps {
   pinned: boolean;
   highlighted: boolean;
   bookmarked: boolean;
-  restriction: "everyone" | "followers only" | "followed by me";
+  restriction: "everyone" | "mentioned only" | "followed by me";
   createdAt: Date;
   reposted: { status: boolean; user: string };
   comments: HashType[];
@@ -99,6 +99,7 @@ export default function HashStats({
           hashText={hashText}
           commenter={loggedInUser}
           hashId={hashId}
+          restriction={restriction}
         />
         <LikeBtn
           count={likeCount}

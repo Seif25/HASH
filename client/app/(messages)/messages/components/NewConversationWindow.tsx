@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/dialog";
 import { MailPlus } from "lucide-react";
 import NewConversationCard from "./NewConversationCard";
-import { currentUser } from "@clerk/nextjs";
 
 interface NewConversationWindowProps {
   following: SummarizedUserType[];
   loggedInUser: string;
+  open?: boolean;
 }
 
 export default async function NewConversationWindow({
@@ -31,11 +31,8 @@ export default async function NewConversationWindow({
         <Dialog>
           <DialogTrigger asChild>
             <TooltipTrigger asChild>
-              <button className="rounded-full w-[48px] h-[48px] bg-primary flex items-center justify-center group hover:scale-110">
-                <MailPlus
-                  className="text-accent1 group-hover:text-dark"
-                  size={"24px"}
-                />
+              <button className="rounded-full size-10 bg-primary flex items-center justify-center group hover:scale-110">
+                <MailPlus className="text-accent1 size-5" />
               </button>
             </TooltipTrigger>
           </DialogTrigger>

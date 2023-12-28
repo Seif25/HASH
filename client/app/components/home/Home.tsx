@@ -5,6 +5,7 @@ import { fetchHashes } from "@/lib/actions/hash.actions";
 import { useQuery } from "@tanstack/react-query";
 import HashSkeleton from "./HashSkeleton";
 import { motion } from "framer-motion";
+import { fetchHashesAction } from "@/app/lib/actions/hash/hash.actions";
 
 interface HomeProps {
   loggedInUser: string;
@@ -28,7 +29,7 @@ export default async function Home({ loggedInUser, following }: HomeProps) {
     isLoading,
   } = useQuery({
     queryKey: ["hashes"],
-    queryFn: () => fetchHashes(1, 20),
+    queryFn: () => fetchHashesAction(loggedInUser, 1, 20),
     refetchInterval: 300000,
   });
 

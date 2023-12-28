@@ -50,6 +50,20 @@ const userSchema = new mongoose.Schema({
   ],
   joinedAt: { type: Date, default: Date.now },
   fcmToken: { type: String },
+  blocked: [
+    {
+      type: String,
+      ref: "User",
+      default: [],
+    },
+  ],
+  notInterested: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Hash",
+      default: [],
+    },
+  ],
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
