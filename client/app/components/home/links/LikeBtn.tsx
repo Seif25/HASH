@@ -56,14 +56,14 @@ export default function LikeBtn({
       await unlikeHash({
         id: hashId,
         currentUser: loggedInUser,
-        pathname,
+        pathname: pathname ?? "",
       });
       setLiked(false);
     } else {
       await likeHash({
         id: hashId,
         currentUser: loggedInUser,
-        pathname,
+        pathname: pathname ?? "",
       });
       setLiked(true);
     }

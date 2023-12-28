@@ -56,9 +56,9 @@ export default function SearchResults({
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    searchParams.get("q") && setQuery(searchParams.get("q") as string);
-    searchParams.get("type") &&
-      setType(searchParams.get("type") as "query" | "hashtag" | "profile");
+    searchParams?.get("q") && setQuery(searchParams?.get("q") as string);
+    searchParams?.get("type") &&
+      setType(searchParams?.get("type") as "query" | "hashtag" | "profile");
     setUpdate(true);
     setLoading(false);
   }, [searchParams]);

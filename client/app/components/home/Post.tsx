@@ -132,7 +132,7 @@ export default function Post({ loggedInUser, profilePic, setOpen }: PostProps) {
       username: loggedInUser,
       community: null,
       media,
-      pathname,
+      pathname: pathname ?? "",
     };
 
     createHash(data as CreateHashParams).then(() => {

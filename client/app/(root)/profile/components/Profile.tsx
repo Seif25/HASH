@@ -54,7 +54,7 @@ export default function Profile({
     await unBlockUserAction({
       loggedInUser,
       userToUnBlock: user.username,
-      pathname,
+      pathname: pathname ?? "",
     });
   }
 

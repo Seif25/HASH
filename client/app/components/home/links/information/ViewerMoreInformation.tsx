@@ -38,13 +38,13 @@ export default function ViewerMoreInformation({
       await unfollowUserAction({
         loggedInUser,
         userToUnfollow: hashAuthor.username,
-        pathname,
+        pathname: pathname ?? "",
       });
     } else {
       await followUserAction({
         loggedInUser,
         userToFollow: hashAuthor.username,
-        pathname,
+        pathname: pathname ?? "",
       });
     }
   }
@@ -53,7 +53,7 @@ export default function ViewerMoreInformation({
     await markHashAsNotInterestingAction({
       loggedInUser,
       hashId,
-      pathname,
+      pathname: pathname ?? "",
     });
   }
 
@@ -61,7 +61,7 @@ export default function ViewerMoreInformation({
     await blockUserAction({
       loggedInUser,
       userToBlock: hashAuthor.username,
-      pathname,
+      pathname: pathname ?? "",
     });
   }
   return (

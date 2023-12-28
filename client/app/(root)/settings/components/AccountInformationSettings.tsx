@@ -88,7 +88,7 @@ export default function AccountInformationSettings({
         ...form.getValues(),
         name: `${form.getValues("firstName")} ${form.getValues("lastName")}`,
       },
-      pathname,
+      pathname: pathname ?? "",
     });
     toast({
       title: "Account Information Updated!",

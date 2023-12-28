@@ -71,7 +71,7 @@ export default function EditHash({
       hashId,
       text: editedText,
       media: editedMedia,
-      pathname,
+      pathname: pathname ?? "",
     });
     setLoading(false);
     setOpenEdit(false);

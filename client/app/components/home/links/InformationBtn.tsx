@@ -107,7 +107,7 @@ export default function InformationBtn({
     await changeRestrictionAction({
       hashId,
       restriction: whoCanReply,
-      pathname,
+      pathname: pathname ?? "",
     });
     setLoading(false);
     setOpenRestriction(false);
@@ -166,7 +166,9 @@ export default function InformationBtn({
               <Button
                 variant={"destructive"}
                 size={"default"}
-                onClick={() => deleteHashAction({ hashId, pathname })}
+                onClick={() =>
+                  deleteHashAction({ hashId, pathname: pathname ?? "" })
+                }
               >
                 Delete
               </Button>
@@ -182,7 +184,7 @@ export default function InformationBtn({
         loggedInUser={loggedInUser}
         hashMedia={hashMedia}
         hashText={hashText}
-        pathname={pathname}
+        pathname={pathname ?? ""}
       />
       {/* Restrictions Dialog */}
       <Dialog open={openRestriction} onOpenChange={setOpenRestriction}>
