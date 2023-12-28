@@ -148,7 +148,11 @@ export default function Profile({
           )}
         </div>
       )}
-      <Tabs value={tabValue} className="w-full" onValueChange={changeTabs}>
+      <Tabs
+        value={tabValue}
+        className="w-full pb-10"
+        onValueChange={changeTabs}
+      >
         <div
           className={`sticky top-20 h-20 flex items-center rounded-b-2xl ${
             !inView

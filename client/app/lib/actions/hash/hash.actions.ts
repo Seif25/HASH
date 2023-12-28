@@ -110,6 +110,7 @@ export async function fetchHashesAction(
           $or: [
             { author: { $in: following } },
             { author: { $in: recommendedUsers } },
+            { author: { $in: userInformation.username } },
           ],
         },
       ],
@@ -268,6 +269,21 @@ export async function deleteHashAction({ hashId, pathname }: DeleteHashParams) {
     });
 
   revalidatePath(pathname);
+}
+
+export async function viewHashAction({
+  loggedInUser,
+  hashId,
+}: {
+  loggedInUser: string;
+  hashId: string;
+}): Promise<void> {
+  await HashModel.findByIdAndUpdate(
+    { _id: hashId },
+    { $push: { views: loggedInUser } }
+  );
+
+  revalidatePath(`/hash/${hashId}`);
 }
 
 /**

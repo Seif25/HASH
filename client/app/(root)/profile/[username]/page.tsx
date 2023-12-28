@@ -26,23 +26,33 @@ export default async function Page({
 }: {
   params: { username: string };
 }) {
-  const _currentUser = await currentUser();
-  const loggedInUser = await fetchUser(_currentUser?.username ?? "");
+  const loggedInUser = await currentUser();
+  // const loggedInUser = await fetchUser(_currentUser?.username ?? "");
   const user: UserType | null = await fetchUser(params.username);
   const replies: FetchUserReplies[] = await fetchUserReplies(params.username);
 
   const userHashes = user?.hashes as HashType[];
-  const highlights = userHashes.filter((hash) => hash.highlighted);
+  const highlights = userHashes.filter(
+    (hash) => hash.highlighted && hash.author.username === params.username
+  );
 
-  userHashes.sort((a, b) => {
-    if (a.pinned && !b.pinned) {
-      return -1;
-    }
-    if (!a.pinned && b.pinned) {
-      return 1;
-    }
-    return 0;
-  });
+  // userHashes.sort((a, b) => {
+  //   if (a.pinned && !b.pinned) {
+  //     return -1;
+  //   }
+  //   if (!a.pinned && b.pinned) {
+  //     return 1;
+  //   }
+  //   return 0;
+  // });
+
+  const pinned = userHashes.filter(
+    (hash) => hash.pinned && hash.author.username === params.username
+  );
+  const remainingHashes = userHashes.filter(
+    (hash) => !(hash.pinned && hash.author.username === params.username)
+  );
+  const hashes = [...pinned, ...remainingHashes];
 
   const mediaHashes = user?.hashes.filter((hash) => hash.media.length > 0);
 
@@ -55,7 +65,7 @@ export default async function Page({
           loggedInUser={loggedInUser?.username ?? ""}
           user={user}
           replies={replies}
-          userHashes={userHashes}
+          userHashes={hashes}
           highlights={highlights}
           mediaHashes={mediaHashes ?? []}
           likedHashes={likedHashes ?? []}

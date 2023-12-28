@@ -73,7 +73,7 @@ export default function ProfileInformation({
           @{username}
         </h3>
         {/* BIO */}
-        <h3 className="text-body my-3">{bio}</h3>
+        <h3 className="text-body my-3 whitespace-pre-wrap">{bio}</h3>
         {/* FOLLOWING / FOLLOWERS */}
         <div className="flex items-center gap-10 justify-normal mb-3">
           <Link

@@ -45,6 +45,7 @@ export default function HashCard({
   variant = "default",
 }: HashProps) {
   const [bookmarked, setBookmarked] = useState(false);
+  const [zoomOut, setZoomOut] = useState(false);
   const [reposted, setReposted] = useState<{ status: boolean; user: string }>({
     status: false,
     user: "",
@@ -164,7 +165,10 @@ export default function HashCard({
                       width={400}
                       height={400}
                       priority
-                      className="aspect-square object-cover rounded-xl bg-[#000a13]"
+                      className={`aspect-square ${
+                        zoomOut ? "object-contain" : "object-cover"
+                      } rounded-xl bg-[#000a13]`}
+                      onClick={() => setZoomOut((oldValue) => !oldValue)}
                     />
                   ) : hash.media[0].mediaType === "video" ? (
                     <AspectRatio ratio={16 / 9}>
@@ -254,7 +258,7 @@ export default function HashCard({
           commentCount={hash.children.length}
           likeCount={hash.likes.length}
           repostCount={hash.reposts?.length ?? 0}
-          viewCount={hash.views}
+          viewCount={hash.views.length}
           loggedInUser={loggedInUser}
           hashMedia={hash.media}
           hashAuthor={hash.author}
@@ -276,7 +280,7 @@ export default function HashCard({
         {hash.restriction && (
           <div className="pb-0 text-primary text-[10px] font-bold">
             {hash.restriction !== "everyone" && (
-              <h1 className="px-5 ml-5 mt-5 text-inherit flex items-center gap-1">
+              <h1 className="px-5 lg:ml-5 mt-5 text-inherit flex items-center gap-1">
                 <span>
                   {hash.restriction === "followed by me" ? (
                     <UserCheck2 className="size-4 text-inherit" />
