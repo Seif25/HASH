@@ -132,7 +132,7 @@ export default function Post({ loggedInUser, profilePic, setOpen }: PostProps) {
       username: loggedInUser,
       community: null,
       media,
-      pathname,
+      pathname: pathname ?? "",
     };
 
     createHash(data as CreateHashParams).then(() => {
@@ -254,7 +254,7 @@ export default function Post({ loggedInUser, profilePic, setOpen }: PostProps) {
               // disabled={text.length === 0 && blob.length === 0}
             >
               {!loading ? (
-                <PaperAirplaneIcon className="size-4" />
+                <SendHorizontal className="size-4" />
               ) : (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}

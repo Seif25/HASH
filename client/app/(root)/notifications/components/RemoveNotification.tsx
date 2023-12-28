@@ -18,7 +18,7 @@ export default function RemoveNotification({
     await removeNotificationAction({
       type,
       link,
-      pathname,
+      pathname: pathname ?? "",
     });
     // alert(JSON.stringify({ type, link, pathname }));
   }

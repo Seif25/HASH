@@ -44,7 +44,7 @@ export default function ReplyMessage({
         className="flex flex-col flex-grow border-l-accent1 border-l-4 pl-2 cursor-pointer"
         onClick={handleScroll}
       >
-        <h1 className="text-body text-accent1 font-bold">@{sender}</h1>
+        <h1 className="text-body text-accent1">@{sender}</h1>
         <p className="text-[14px] text-accent1/50">
           {replyMessage.length > 250
             ? replyMessage.slice(0, 250) + "..."
@@ -67,7 +67,7 @@ export default function ReplyMessage({
           </p>
         ) : (
           <p
-            className={`${rounded} text-accent1 w-auto max-w-80 max-h-20 p-2 select-none ${color} line-clamp-6 overflow-y-hidden`}
+            className={`${rounded} text-accent1 w-auto max-w-80 max-h-20 p-2 select-none line-clamp-6 overflow-y-hidden`}
           >
             {message}
           </p>

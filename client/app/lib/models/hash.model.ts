@@ -59,7 +59,7 @@ const hashSchema = new mongoose.Schema({
   ],
   restriction: {
     type: String,
-    enum: ["everyone", "followers only", "followed by me"],
+    enum: ["everyone", "mentioned only", "followed by me"],
     default: "everyone",
   },
   edited: {

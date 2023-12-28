@@ -5,10 +5,11 @@ import {
 import {
   highlightHashAction,
   pinHashAction,
-  unhighlightHashAction,
+  unHighlightHashAction,
   unpinHashAction,
 } from "@/app/lib/actions/hash/hash.actions";
 import {
+  AtSign,
   Globe2,
   MessageCircle,
   Pencil,
@@ -28,7 +29,7 @@ interface AuthorMoreInformationProps {
   pinned: boolean;
   highlighted: boolean;
   closeDropdown: (value: boolean) => void;
-  whoCanReply: "everyone" | "followers only" | "followed by me" | "";
+  whoCanReply: "everyone" | "mentioned only" | "followed by me" | "";
   handleOpenDialog: () => void;
   handleOpenEditDialog: () => void;
   handleOpenDeleteDialog: () => void;
@@ -47,17 +48,17 @@ export default function AuthorMoreInformation({
 
   function handlePinHash() {
     if (pinned) {
-      unpinHashAction({ hashId, pathname });
+      unpinHashAction({ hashId, pathname: pathname ?? "/" });
     } else {
-      pinHashAction({ hashId, pathname });
+      pinHashAction({ hashId, pathname: pathname ?? "/" });
     }
   }
 
   function handleHighlightHash() {
     if (highlighted) {
-      unhighlightHashAction({ hashId, pathname });
+      unHighlightHashAction({ hashId, pathname: pathname ?? "/" });
     } else {
-      highlightHashAction({ hashId, pathname });
+      highlightHashAction({ hashId, pathname: pathname ?? "/" });
     }
   }
 
@@ -118,8 +119,8 @@ export default function AuthorMoreInformation({
         >
           {whoCanReply === "everyone" ? (
             <Globe2 className="size-4 mr-2 text-primary" />
-          ) : whoCanReply === "followers only" ? (
-            <UserPlus2 className="size-4 mr-2 text-primary" />
+          ) : whoCanReply === "mentioned only" ? (
+            <AtSign className="size-4 mr-2 text-primary" />
           ) : whoCanReply === "followed by me" ? (
             <UserCheck2 className="size-4 mr-2 text-primary" />
           ) : (
@@ -130,9 +131,9 @@ export default function AuthorMoreInformation({
             <span className="text-paragraph text-primary text-[12px]">
               {whoCanReply === "everyone" ? (
                 <span className="flex items-center gap-1">Everyone</span>
-              ) : whoCanReply === "followers only" ? (
+              ) : whoCanReply === "mentioned only" ? (
                 <span className="flex items-center gap-1">
-                  Only Your Followers Can Reply
+                  Only People You Mention Can Reply
                 </span>
               ) : whoCanReply === "followed by me" ? (
                 <span className="flex items-center gap-1">

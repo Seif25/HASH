@@ -76,19 +76,21 @@ export async function createNotification({
   }
 }
 
-// export async function watchNotifications({
-//   username,
+// export async function watchNotificationAction({
+//   currentUser,
 // }: {
-//   username: string;
-// }): Promise<NotificationWatchType | null> {
-//   NotificationModel.watch().on("change", (data: NotificationWatchType) => {
-//     if (data) {
-//       if (data.operationType === "insert" || data.operationType === "update") {
-//         if (data.fullDocument.user === username) {
-//           return data;
-//         }
-//       }
-//     }
+//   currentUser: string;
+// }) {
+//   const notificationStream = NotificationModel.watch([
+//     {
+//       $match: {
+//         "fullDocument.user": currentUser,
+//         operationType: { $in: ["insert", "update", "replace"] },
+//       },
+//     },
+//   ]);
+//   notificationStream.on("change", (change) => {
+
 //   });
-//   return null;
+//   notificationStream.close();
 // }

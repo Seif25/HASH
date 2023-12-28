@@ -287,6 +287,7 @@ export async function getRecommendedUsers(
       $and: [
         { followers: { $nin: [username] } }, // exclude users that have the username in their followers list
         { username: { $ne: username } }, // exclude the username itself
+        { blocked: { $nin: [username] } }, // exclude users that have the username in their blocked list
       ],
     })
       .select("name username following followers image verified")

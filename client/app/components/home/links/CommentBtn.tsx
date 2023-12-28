@@ -23,7 +23,7 @@ import { SummarizedUserType } from "@/app/lib/types/user.types";
 import HashVideoPreview from "../HashVideoPreview";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import CommentField from "./CommentField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface CommentBtnProps {
   count: number;
@@ -32,6 +32,7 @@ interface CommentBtnProps {
   hashText: string;
   hashAuthor: SummarizedUserType;
   hashId: string;
+  restriction: "everyone" | "mentioned only" | "followed by me";
 }
 
 export default function CommentBtn({
@@ -41,18 +42,40 @@ export default function CommentBtn({
   hashAuthor,
   commenter,
   hashId,
+  restriction,
 }: CommentBtnProps) {
   const [open, setOpen] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (commenter !== hashAuthor.username) {
+      if (restriction === "everyone") {
+        setDisabled(false);
+      } else if (restriction === "mentioned only") {
+        setDisabled(hashText.includes(`@${commenter}`) ? false : true);
+      } else if (restriction === "followed by me") {
+        setDisabled(hashAuthor.followers.includes(commenter) ? false : true);
+      }
+    }
+  }, [restriction]);
+
   return (
     <div className="group flex items-center gap-1">
       <Dialog open={open} onOpenChange={setOpen}>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <ChatBubbleOvalLeftIcon
-                className="cursor-trigger size-5 text-accent2 dark:text-accent1 group-hover:text-primary"
+              <button
                 onClick={() => setOpen(true)}
-              />
+                className="flex items-center disabled:text-accent2/50 dark:disabled:text-accent1/50"
+                disabled={disabled}
+              >
+                <ChatBubbleOvalLeftIcon
+                  className={`size-5 ${
+                    disabled ? "text-inherit" : "text-accent2 dark:text-accent1"
+                  } ${!disabled && "group-hover:text-primary"}`}
+                />
+              </button>
             </TooltipTrigger>
             <TooltipContent>
               <p>Comment</p>
@@ -149,7 +172,7 @@ export default function CommentBtn({
           </DialogHeader>
         </DialogContent>
       </Dialog>
-      <span className="text-accent2/50 dark:text-accent1/50 text-paragraph select-none">
+      <span className="text-accent2/50 dark:text-accent1/50 text-paragraph select-none flex items-center">
         {count}
       </span>
     </div>

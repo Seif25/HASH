@@ -31,7 +31,7 @@ export default function RepostBtn({
       await unrepostHash({
         id: hashId,
         currentUser: loggedInUser,
-        pathname,
+        pathname: pathname ?? "",
       });
       setRepostCount((oldValue) => oldValue - 1);
       setReposted({ status: false, user: "" });
@@ -39,7 +39,7 @@ export default function RepostBtn({
       await repostHash({
         id: hashId,
         currentUser: loggedInUser,
-        pathname,
+        pathname: pathname ?? "",
       });
       setRepostCount((oldValue) => oldValue + 1);
       setReposted({ status: true, user: loggedInUser });

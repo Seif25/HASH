@@ -9,6 +9,8 @@ import { MoreVertical, Pin, Sparkles, UserPlus2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { unBlockUserAction } from "@/app/lib/actions/user/user.actions";
+import { usePathname } from "next/navigation";
 
 interface ProfileProps {
   loggedInUser: string;
@@ -29,6 +31,7 @@ export default function Profile({
   mediaHashes,
   likedHashes,
 }: ProfileProps) {
+  const pathname = usePathname();
   const [ref, inView] = useInView({
     threshold: 0,
     triggerOnce: false,
@@ -46,8 +49,53 @@ export default function Profile({
       inline: "start",
     });
   }
+
+  async function handleUnBlock() {
+    await unBlockUserAction({
+      loggedInUser,
+      userToUnBlock: user.username,
+      pathname: pathname ?? "",
+    });
+  }
+
+  if (user?.blocked.includes(loggedInUser)) {
+    return (
+      <div className="bg-white/50 dark:bg-dark/50 rounded-xl w-full h-full mt-5 mb-10 lg:mb-5 px-5 pb-5 lg:px-0">
+        <ProfileInformation
+          username={user.username}
+          name={user.name}
+          image={user.image}
+          banner={user.banner}
+          verified={user.verified}
+          bio={user.bio}
+          joinedAt={user.joinedAt}
+          website={user.website}
+          following={user.following.length}
+          followers={user.followers.length}
+        />
+        <div className="flex flex-col gap-1 justify-center px-10">
+          <h1 className="text-body font-bold text-accent2 dark:text-accent1 capitalize">
+            You Blocked this user!
+          </h1>
+          <div className="flex items-center gap-5">
+            <p className="text-paragraph text-accent2/50 dark:text-accent1/50 capitalize">
+              do you wish to unblock them?
+            </p>
+            <Button
+              variant={"link"}
+              className="capitalize text-[12px] hover:text-primary"
+              onClick={handleUnBlock}
+            >
+              unblock user
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-white/50 dark:bg-dark/50 rounded-2xl w-full h-full mt-5 mb-10 lg:mb-5 px-5 lg:px-0">
+    <div className="bg-white/50 dark:bg-dark/50 rounded-xl w-full h-full mt-5 mb-10 lg:mb-5 px-5 lg:px-0">
       <div ref={ref}>
         <ProfileInformation
           username={user.username}
@@ -136,7 +184,7 @@ export default function Profile({
         <TabsContent value="posts" className="lg:px-10 flex flex-col gap-5">
           {userHashes.map((hash) => (
             <div
-              className="flex flex-col gap-1 bg-white dark:bg-dark rounded-2xl"
+              className="flex flex-col gap-1 bg-white dark:bg-dark rounded-xl"
               key={hash._id.toString()}
             >
               {hash.pinned && loggedInUser === hash.author.username && (
@@ -151,7 +199,7 @@ export default function Profile({
         <TabsContent value="replies" className="lg:px-10 flex flex-col gap-5">
           {replies.map((reply) => (
             <div
-              className="bg-white dark:bg-dark rounded-2xl pb-5"
+              className="bg-white dark:bg-dark rounded-xl pb-5"
               key={reply._id.toString()}
             >
               <div className="flex flex-col gap-5">
@@ -169,7 +217,7 @@ export default function Profile({
         >
           {highlights.map((hash) => (
             <div
-              className="flex flex-col gap-1 bg-white dark:bg-dark rounded-2xl"
+              className="flex flex-col gap-1 bg-white dark:bg-dark rounded-xl"
               key={hash._id.toString()}
             >
               <h3 className="bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent text-paragraph font-bold flex items-center gap-1 px-5 pt-5">

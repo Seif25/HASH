@@ -4,8 +4,11 @@ import "./globals.css";
 import QueryProvider from "@/app/providers/QueryProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "./utils/theme/theme-provider";
+import NotificationAlert from "./components/shared/schedule/NotificationAlert";
+import { SocketProvider } from "./providers/SocketProvider";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -41,10 +44,14 @@ export default function RootLayout({
           </head>
           <body className={`${poppins.className} app pb-10`}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              {/* <NotificationAlert /> */}
+              {/* <SocketProvider> */}
               <main>{children}</main>
+              {/* </SocketProvider> */}
             </ThemeProvider>
             <SpeedInsights />
             <Toaster />
+            <SonnerToaster />
           </body>
           {/* <footer className="grid grid-cols-2 lg:flex items-center justify-center lg:justify-between p-5 bg-dark pb-24 lg:pb-5">
             <Image src="/logo.png" alt="hash" width={50} height={50} />

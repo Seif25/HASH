@@ -10,7 +10,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "blue-gradient text-light hover:bg-light/80 transition-all",
-        destructive: "bg-red-700 text-light hover:bg-red-700/90 transition-all",
+        destructive:
+          "bg-red-700 text-accent1 hover:bg-red-700/90 transition-all",
         outline:
           "border border-accent2 dark:border-accent1 bg-transparent hover:bg-primary text-accent2 dark:text-accent1 transition-all",
         icon: "group rounded-full bg-transparent transition-all",

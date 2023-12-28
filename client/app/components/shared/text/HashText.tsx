@@ -9,7 +9,7 @@ export default function HashText({ text }: { text: string }) {
   });
 
   return (
-    <div className="whitespace-pre-wrap">
+    <div className="whitespace-pre-wrap text-pretty">
       {words.map((word) => {
         if (word.startsWith("#")) {
           return <HashTag key={word}>{word.trim()}</HashTag>;

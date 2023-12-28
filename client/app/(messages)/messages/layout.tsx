@@ -60,7 +60,9 @@ export default async function MainLayout({
         </main>
       </section>
       {/* <FloatingButton /> */}
-      <BottomBar notificationCount={notificationCount} />
+      <div className="flex items-center justify-center">
+        <BottomBar notificationCount={notificationCount} />
+      </div>
     </div>
   );
 }

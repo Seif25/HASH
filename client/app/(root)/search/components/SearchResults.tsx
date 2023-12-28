@@ -56,9 +56,9 @@ export default function SearchResults({
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    searchParams.get("q") && setQuery(searchParams.get("q") as string);
-    searchParams.get("type") &&
-      setType(searchParams.get("type") as "query" | "hashtag" | "profile");
+    searchParams?.get("q") && setQuery(searchParams?.get("q") as string);
+    searchParams?.get("type") &&
+      setType(searchParams?.get("type") as "query" | "hashtag" | "profile");
     setUpdate(true);
     setLoading(false);
   }, [searchParams]);
@@ -128,7 +128,7 @@ export default function SearchResults({
             />
           </Button>
         </div>
-        <div className="flex items-center justify-between rounded-2xl bg-accent2 p-1 col-span-9">
+        <div className="flex items-center justify-between rounded-xl bg-accent2 p-1 col-span-9">
           <input
             type="text"
             className="bg-accent2 w-full rounded-full ringo-0 outline-none border-none px-3 py-1 text-accent1"

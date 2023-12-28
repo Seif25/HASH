@@ -13,18 +13,22 @@ import {
   UserPlusIcon,
 } from "@heroicons/react/16/solid";
 import {
+  blockUserAction,
   followUserAction,
+  markHashAsNotInterestingAction,
   unfollowUserAction,
 } from "@/app/lib/actions/user/user.actions";
 import { usePathname } from "next/navigation";
 
 interface ViewerMoreInformationProps {
   loggedInUser: string;
+  hashId: string;
   hashAuthor: SummarizedUserType;
 }
 
 export default function ViewerMoreInformation({
   loggedInUser,
+  hashId,
   hashAuthor,
 }: ViewerMoreInformationProps) {
   const pathname = usePathname();
@@ -34,20 +38,39 @@ export default function ViewerMoreInformation({
       await unfollowUserAction({
         loggedInUser,
         userToUnfollow: hashAuthor.username,
-        pathname,
+        pathname: pathname ?? "",
       });
     } else {
       await followUserAction({
         loggedInUser,
         userToFollow: hashAuthor.username,
-        pathname,
+        pathname: pathname ?? "",
       });
     }
+  }
+
+  async function handleNotInterested() {
+    await markHashAsNotInterestingAction({
+      loggedInUser,
+      hashId,
+      pathname: pathname ?? "",
+    });
+  }
+
+  async function handleBlock() {
+    await blockUserAction({
+      loggedInUser,
+      userToBlock: hashAuthor.username,
+      pathname: pathname ?? "",
+    });
   }
   return (
     <DropdownMenuContent>
       {/* Not Interested */}
-      <DropdownMenuItem className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer">
+      <DropdownMenuItem
+        className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer"
+        onClick={handleNotInterested}
+      >
         <Frown className="size-4 mr-2" />
         <span>Not Interested in this Hash</span>
       </DropdownMenuItem>
@@ -68,20 +91,23 @@ export default function ViewerMoreInformation({
         </span>
       </DropdownMenuItem>
       {/* Mute Author */}
-      <DropdownMenuItem className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer">
+      {/* <DropdownMenuItem className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer">
         <BellSnoozeIcon className="size-4 mr-2" />
         <span>Mute @{hashAuthor.username}</span>
-      </DropdownMenuItem>
+      </DropdownMenuItem> */}
       {/* Block Author */}
-      <DropdownMenuItem className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer">
+      <DropdownMenuItem
+        className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer"
+        onClick={handleBlock}
+      >
         <NoSymbolIcon className="size-4 mr-2" />
         <span>Block @{hashAuthor.username}</span>
       </DropdownMenuItem>
       {/* Mute Conversation */}
-      <DropdownMenuItem className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer">
+      {/* <DropdownMenuItem className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer">
         <SpeakerXMarkIcon className="size-4 mr-2" />
         <span>Mute Conversation</span>
-      </DropdownMenuItem>
+      </DropdownMenuItem> */}
       {/* Report Hash */}
       <DropdownMenuItem className="flex items-center gap-5 text-accent2 dark:text-accent1 cursor-pointer">
         <FlagIcon className="size-4 mr-2" />

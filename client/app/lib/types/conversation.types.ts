@@ -1,3 +1,4 @@
+import { SummarizedHashType } from "./hash.types";
 import { SummarizedUserType } from "./user.types";
 
 export type ConversationType = {
@@ -42,4 +43,5 @@ export type MessageType = {
   timestamp: Date;
   deleted?: boolean;
   isReply?: { replyTo: string | null };
+  hash?: SummarizedHashType;
 };

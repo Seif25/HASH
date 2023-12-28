@@ -88,7 +88,7 @@ export default function AccountInformationSettings({
         ...form.getValues(),
         name: `${form.getValues("firstName")} ${form.getValues("lastName")}`,
       },
-      pathname,
+      pathname: pathname ?? "",
     });
     toast({
       title: "Account Information Updated!",
@@ -130,7 +130,7 @@ export default function AccountInformationSettings({
         className="flex flex-col gap-5 p-5 h-screen overflow-scroll custom-scrollbar"
       >
         {/* Header & Submit Button */}
-        <div className="flex items-center gap-5 bg-transparent rounded-2xl text-accent1">
+        <div className="flex items-center gap-5 bg-transparent rounded-xl text-accent1">
           <Link href={`/settings/account-settings`}>
             <ArrowLeft
               size={20}
@@ -164,9 +164,9 @@ export default function AccountInformationSettings({
           </TooltipProvider>
         </div>
         {/* Profile Information */}
-        <div className="flex flex-col gap-5 rounded-2xl">
+        <div className="flex flex-col gap-5 rounded-xl">
           {/* Section Header */}
-          <div className="flex flex-col gap-2 lg:bg-accent1/10 p-5 rounded-2xl">
+          <div className="flex flex-col gap-2 lg:bg-accent1/10 p-5 rounded-xl">
             <h3 className="text-heading">Profile Information</h3>
             <p className="text-[12px] text-accent1/70 font-bold">
               This information will be displayed publicly so be careful what you
@@ -174,7 +174,7 @@ export default function AccountInformationSettings({
             </p>
           </div>
           {/* Form Fields */}
-          <div className="grid grid-cols-12 gap-5 p-5 rounded-2xl">
+          <div className="grid grid-cols-12 gap-5 p-5 rounded-xl">
             {/* Profile Picture */}
             <div className={`flex flex-col gap-2 col-span-12`}>
               <Label htmlFor="pip">Profile Picture</Label>
@@ -408,14 +408,14 @@ export default function AccountInformationSettings({
           </div>
         </div>
         {/* Account Information */}
-        <div className="flex flex-col gap-5 rounded-2xl">
-          <div className="flex flex-col gap-2 lg:bg-accent1/10 p-5 rounded-2xl">
+        <div className="flex flex-col gap-5 rounded-xl">
+          <div className="flex flex-col gap-2 lg:bg-accent1/10 p-5 rounded-xl">
             <h3 className="text-heading">Account Information</h3>
             <p className="text-[12px] text-accent1/70 font-bold">
               This information is private. No one will see it but you.
             </p>
           </div>
-          <div className="grid grid-cols-12 gap-5 p-5 rounded-2xl">
+          <div className="grid grid-cols-12 gap-5 p-5 rounded-xl">
             {/* Phone Number & DoB */}
             <FormField
               control={form.control}

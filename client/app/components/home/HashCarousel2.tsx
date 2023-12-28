@@ -13,9 +13,9 @@ export function HashCarousel2({ hashMedia }: { hashMedia: MediaType[] }) {
   return (
     <Carousel
       opts={{
-        align: "center",
+        align: "start",
       }}
-      className="w-[350px] lg:w-full"
+      className="lg:w-full"
     >
       <CarouselContent>
         {hashMedia.map((media, index) => (
