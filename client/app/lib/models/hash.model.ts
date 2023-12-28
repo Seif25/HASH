@@ -2,7 +2,13 @@ import mongoose from "mongoose";
 
 const hashSchema = new mongoose.Schema({
   text: { type: String, default: "" },
-  views: { type: Number, default: 0, required: true },
+  views: [
+    {
+      type: String,
+      default: [],
+      ref: "User",
+    },
+  ],
   author: {
     type: String,
     ref: "User",

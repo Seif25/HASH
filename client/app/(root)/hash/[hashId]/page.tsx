@@ -1,19 +1,60 @@
 import HashCard from "@/app/components/home/HashCard";
 import CommentField from "@/app/components/home/links/CommentField";
-import { fetchHashByIdAction } from "@/app/lib/actions/hash/hash.actions";
+import {
+  fetchHashByIdAction,
+  viewHashAction,
+} from "@/app/lib/actions/hash/hash.actions";
 import { fetchUserAction } from "@/app/lib/actions/user/user.actions";
-import { DetailedHashType, HashType } from "@/app/lib/types/hash.types";
+import { DetailedHashType } from "@/app/lib/types/hash.types";
 import { currentUser } from "@clerk/nextjs";
-import { SendHorizonal } from "lucide-react";
+import type { Metadata, ResolvingMetadata } from "next";
+
+type Props = {
+  params: { hashId: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const hashId = params.hashId;
+
+  // fetch data
+  const hash = (await fetchHashByIdAction(hashId)) as DetailedHashType;
+
+  // optionally access and extend (rather than replace) parent metadata
+  let images: string[] = [];
+  if (hash.media.length > 0) {
+    hash.media.forEach((source) => {
+      images.push(source.url);
+    });
+  }
+
+  return {
+    title: `@${hash.author.username} on Hash / ${hash.text}`,
+    openGraph: {
+      images: images,
+    },
+  };
+}
 
 export default async function ({ params }: { params: { hashId: string } }) {
   const { hashId } = params;
   const hash = (await fetchHashByIdAction(hashId)) as DetailedHashType;
   const user = await currentUser();
   const loggedInUser = await fetchUserAction(user?.username ?? "");
+
+  if (!hash.views.includes(loggedInUser.username)) {
+    await viewHashAction({
+      loggedInUser: loggedInUser.username,
+      hashId,
+    });
+  }
   return (
     <div className="mt-5 bg-white dark:bg-dark rounded-xl mb-5 pb-5">
-      <div className="flex flex-col">
+      <div className="flex flex-col pt-5">
         {hash.parentId && (
           <HashCard
             hash={hash.parentId}

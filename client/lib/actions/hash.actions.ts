@@ -490,21 +490,21 @@ export async function unrepostHash({
  * @returns {Promise<void>}
  * @throws {MongooseError}
  */
-export async function view(id: string): Promise<void> {
-  // Connect to DB
-  connectToDB();
+// export async function view(id: string): Promise<void> {
+//   // Connect to DB
+//   connectToDB();
 
-  try {
-    await HashModel.findByIdAndUpdate(
-      new mongoose.Types.ObjectId(id),
-      {
-        $inc: { views: 1 },
-      },
-      { upsert: true }
-    );
+//   try {
+//     await HashModel.findByIdAndUpdate(
+//       new mongoose.Types.ObjectId(id),
+//       {
+//         $inc: { views: 1 },
+//       },
+//       { upsert: true }
+//     );
 
-    revalidatePath(`/hash/${id}`);
-  } catch (error: any) {
-    throw new Error(`Error finding hash: ${error.message}`);
-  }
-}
+//     revalidatePath(`/hash/${id}`);
+//   } catch (error: any) {
+//     throw new Error(`Error finding hash: ${error.message}`);
+//   }
+// }

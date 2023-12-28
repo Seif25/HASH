@@ -110,12 +110,27 @@ export default function Post({ loggedInUser, profilePic, setOpen }: PostProps) {
 
     setLoading(true);
 
+    let media: MediaType[] = [];
     // File<Image, Video, Audio> Upload to @vercel/blob
     if (inputFileRef.current?.files?.length) {
       files = Array.from(inputFileRef.current?.files);
+
+      const res = await startUpload(files);
+
+      res?.forEach((file) => {
+        const mediaType = getMediaType(file.name);
+        console.log("mediaType: ", mediaType);
+        const mediaBlob = {
+          id: file_nanoid(),
+          url: file.url,
+          alt: file.name,
+          mediaType,
+        };
+        media.push(mediaBlob);
+      });
     }
 
-    const media = await uploadFiles(files);
+    // const media = await uploadFiles(files);
 
     if (text.length === 0 && media.length === 0) {
       toast({

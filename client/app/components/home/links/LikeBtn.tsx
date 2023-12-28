@@ -5,7 +5,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 //@ts-ignore
-import mojs from "@mojs/core";
+// import mojs from "@mojs/core";
 import { useEffect, useRef, useState } from "react";
 import { likeHash, unlikeHash } from "@/lib/actions/hash.actions";
 import { usePathname } from "next/navigation";
@@ -26,9 +26,9 @@ export default function LikeBtn({
   likes,
 }: LikeBtnProps) {
   const pathname = usePathname();
-  const parentDom = useRef<HTMLDivElement>(null);
-  const burstAnimation = useRef(null);
-  const iconRef = useRef<SVGSVGElement>(null);
+  // const parentDom = useRef<HTMLDivElement>(null);
+  // const burstAnimation = useRef(null);
+  // const iconRef = useRef<SVGSVGElement>(null);
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
@@ -36,20 +36,20 @@ export default function LikeBtn({
     setLiked(found ? true : false);
   }, [loggedInUser, likes]);
 
-  useEffect(() => {
-    if (burstAnimation.current) return;
+  // useEffect(() => {
+  //   if (burstAnimation.current) return;
 
-    burstAnimation.current = new mojs.Burst({
-      parent: parentDom.current,
-      radius: { 0: 100 },
-      count: 10,
-      easing: "ease.in-out",
-      isShowStart: true,
-      children: {
-        fill: { "#1991fe": "#ef4444" },
-      },
-    });
-  }, []);
+  //   burstAnimation.current = new mojs.Burst({
+  //     parent: parentDom.current,
+  //     radius: { 0: 100 },
+  //     count: 10,
+  //     easing: "ease.in-out",
+  //     isShowStart: true,
+  //     children: {
+  //       fill: { "#1991fe": "#ef4444" },
+  //     },
+  //   });
+  // }, []);
 
   const handleLike = async (e: { pageX: any; pageY: any }) => {
     if (liked) {
@@ -92,7 +92,7 @@ export default function LikeBtn({
       <Tooltip>
         <div className="group flex items-center gap-1">
           <TooltipTrigger>
-            <div ref={parentDom} onClick={handleLike}>
+            <div onClick={handleLike}>
               {liked ? (
                 <LikedIcon className="size-5 text-red-700 hover:text-red-500" />
               ) : (

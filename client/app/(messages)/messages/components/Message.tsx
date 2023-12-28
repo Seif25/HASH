@@ -144,7 +144,7 @@ export default function Message({
                           <div className="flex items-center gap-1">
                             <ChartBarIcon className="text-accent1 size-4" />
                             <h3 className="text-[12px] text-accent1">
-                              {hash.views}
+                              {hash.views.length}
                             </h3>
                           </div>
                         </div>

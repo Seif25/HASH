@@ -10,7 +10,7 @@ export type HashType = {
   media: MediaType[];
   likes: string[];
   reposts: RepostType[];
-  views: number;
+  views: string[];
   createdAt: Date;
   pinned: boolean;
   highlighted: boolean;
@@ -25,7 +25,7 @@ export type SummarizedHashType = {
   media: MediaType[];
   likes: string[];
   reposts: RepostType[];
-  views: number;
+  views: string[];
   createdAt: Date;
   author: UserType;
   children: string[];
@@ -41,7 +41,7 @@ export type DetailedHashType = {
   media: MediaType[];
   likes: string[];
   reposts: RepostType[];
-  views: number;
+  views: string[];
   createdAt: Date;
   pinned: boolean;
   highlighted: boolean;

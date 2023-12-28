@@ -2,10 +2,9 @@
 
 import { newCommentAction } from "@/app/lib/actions/user/user.actions";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, SendHorizonal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { PaperAirplaneIcon } from "@heroicons/react/16/solid";
 import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 
 interface CommentFieldProps {
@@ -61,7 +60,7 @@ export default function CommentField({
         {loading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin text-primary" />
         ) : (
-          <PaperAirplaneIcon className="size-4 text-primary" />
+          <SendHorizonal className="size-4 text-primary" />
         )}
       </Button>
     </div>

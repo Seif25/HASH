@@ -10,7 +10,6 @@ export default async function RightSidebar() {
   const user = await currentUser();
   const recommendedUsers = await getRecommendedUsers(user?.username ?? "");
   const trendingTags = await getTrendingTags();
-  console.log(trendingTags);
   return (
     <div className="right-sidebar custom-scrollbar">
       {recommendedUsers && (
