@@ -16,7 +16,7 @@ export default function DownloadData() {
   const verified = false;
   return (
     <div className="flex flex-col gap-5 p-5 h-screen overflow-scroll w-full custom-scrollbar">
-      <div className="flex items-center gap-5 bg-transparent rounded-xl text-accent1">
+      <div className="flex items-center gap-5 bg-transparent rounded-lg text-accent1">
         <Link href={`/settings/account-settings`}>
           <ArrowLeft size={20} className="text-accent1/75 hover:text-primary" />
         </Link>
@@ -51,7 +51,7 @@ export default function DownloadData() {
           <p className="text-accent1 font-bold text-body capitalize">
             To proceed please Re-enter your password
           </p>
-          <div className="flex items-center border border-accent1/10 rounded-xl gap-1">
+          <div className="flex items-center border border-accent1/10 rounded-lg gap-1">
             <Input
               id="password"
               type="password"

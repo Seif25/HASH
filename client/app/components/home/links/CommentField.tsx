@@ -40,10 +40,10 @@ export default function CommentField({
     }
   }
   return (
-    <div className="bg-accent1 dark:bg-accent2 rounded-xl flex items-center justify-between px-5">
+    <div className="bg-accent1 dark:bg-accent2 rounded-lg flex items-center justify-between px-5">
       <TextareaAutosize
         id="comment-field"
-        className="w-full rounded-xl p-2 resize-none bg-accent1 dark:bg-accent2 border-none outline-none ring-0 text-accent2 dark:text-accent1"
+        className="w-full rounded-lg p-2 resize-none bg-accent1 dark:bg-accent2 border-none outline-none ring-0 text-accent2 dark:text-accent1"
         placeholder="Write a comment..."
         minRows={1}
         maxRows={5}

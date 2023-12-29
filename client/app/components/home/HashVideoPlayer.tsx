@@ -380,7 +380,7 @@ export default function HashVideoPlayer({
       </div>
       <video
         src={src}
-        className="w-full z-10 rounded-xl "
+        className="w-full z-10 rounded-lg "
         ref={videoRef}
         muted
         autoPlay

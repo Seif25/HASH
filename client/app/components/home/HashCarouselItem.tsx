@@ -36,7 +36,7 @@ export function HashCarouselItem({
                 width={400}
                 height={400}
                 priority
-                className={`aspect-square w-11/12 lg:w-full h-auto bg-[#000a13] rounded-xl ${
+                className={`aspect-square w-11/12 lg:w-full h-auto bg-[#000a13] rounded-lg ${
                   pinched === index ? "object-contain" : "object-cover"
                 }`}
               />

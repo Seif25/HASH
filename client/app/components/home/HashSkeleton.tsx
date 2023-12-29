@@ -7,7 +7,7 @@ export default function HashSkeleton() {
         .fill(0)
         .map((_, i) => (
           <div
-            className="flex flex-col gap-5 bg-accent2 rounded-xl p-5"
+            className="flex flex-col gap-5 bg-accent2 rounded-lg p-5"
             key={i}
           >
             <div className="flex items-center space-x-4 w-full">

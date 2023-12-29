@@ -183,9 +183,9 @@ export default function Post({ loggedInUser, profilePic, setOpen }: PostProps) {
       )}
       <form
         onSubmit={createPost}
-        className="flex items-start justify-start gap-2 rounded-xl"
+        className="flex items-start justify-start gap-2 rounded-lg"
       >
-        <div className="flex flex-col w-full bg-white dark:bg-dark rounded-xl p-5 gap-5">
+        <div className="flex flex-col w-full bg-white dark:bg-dark rounded-lg p-5 gap-5">
           <div>
             {/* <Button
               variant={"outline"}
@@ -206,7 +206,7 @@ export default function Post({ loggedInUser, profilePic, setOpen }: PostProps) {
             </Select>
           </div>
           {/* Text Field and Post Button */}
-          <div className="post-field rounded-xl px-2">
+          <div className="post-field rounded-lg px-2">
             <Image
               src={profilePic}
               alt={loggedInUser}

@@ -51,7 +51,9 @@ export default function HashAuthor({
       {hover && (
         <>
           <div className="flex items-center w-full">
-            <h3 className="text-accent2 dark:text-accent1 text-body">{bio}</h3>
+            <h3 className="text-accent2 dark:text-accent1 text-body whitespace-pre-wrap">
+              {bio}
+            </h3>
           </div>
           <div className="flex items-center gap-10">
             <Link

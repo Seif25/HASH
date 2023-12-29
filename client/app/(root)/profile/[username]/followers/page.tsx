@@ -1,10 +1,9 @@
 import { fetchUserFollowersAction } from "@/app/lib/actions/user/user.actions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { MoreVertical } from "lucide-react";
 import { currentUser } from "@clerk/nextjs";
+import UsersCardGroup from "../../components/UsersCardGroup";
+import UserCardSkeleton from "../../components/UserCardSkeleton";
 export default async function Page({
   params,
 }: {
@@ -13,7 +12,7 @@ export default async function Page({
   const loggedInUser = await currentUser();
   const userFollowing = await fetchUserFollowersAction(params?.username ?? "");
   return (
-    <div className="flex flex-col mt-5 w-full">
+    <div className="flex flex-col mt-5 w-full bg-white dark:bg-dark rounded-lg px-5 pt-5">
       <Tabs defaultValue="followers" className="w-full">
         <TabsList className="w-full">
           <Link
@@ -21,71 +20,33 @@ export default async function Page({
             className="w-1/2"
           >
             <TabsTrigger value="#" className="w-full flex items-center gap-2">
-              <span className="text-accent1/50 font-bold text-[12px]">
+              <span className="text-accent2/50 dark:text-accent1/50 font-bold text-[12px]">
                 {userFollowing?.following.length}
               </span>
-              following
+              Following
             </TabsTrigger>
           </Link>
           <TabsTrigger
             value="followers"
             className="w-1/2 flex items-center gap-2"
           >
-            <span className="text-accent1/50 font-bold text-[12px]">
+            <span className="text-accent2/50 dark:text-accent1/50 font-bold text-[12px]">
               {userFollowing?.followers.length}
             </span>
-            <p>followers</p>
+            <p>Followers</p>
           </TabsTrigger>
         </TabsList>
         <TabsContent value="followers" className="w-full">
-          <div className="w-full bg-accent2 rounded-xl mt-5 px-2 flex flex-col gap-5">
-            {userFollowing?.followers.map((user) => (
-              <div
-                key={user.username}
-                className="p-5 flex items-center justify-between"
-              >
-                <Link href={`/profile/${user.username}`} key={user.username}>
-                  <div className="flex items-center gap-2">
-                    <Image
-                      src={user.image ?? "/assets/profile-pic.png"}
-                      alt={user.username}
-                      width={48}
-                      height={48}
-                      className="rounded-full object-cover"
-                    />
-                    <div className="flex flex-col gap-1">
-                      <h1 className="text-body text-accent1">{user.name}</h1>
-                      <h1 className="text-paragraph font-bold text-accent1/50">
-                        @{user.username}
-                      </h1>
-                    </div>
-                  </div>
-                </Link>
-                <div className="flex items-center gap-1">
-                  {user.username !== loggedInUser?.username && (
-                    <Button
-                      variant={"outline"}
-                      size={"default"}
-                      className="text-accent1"
-                    >
-                      {user.followers?.includes(loggedInUser?.username ?? "")
-                        ? "Following"
-                        : loggedInUser?.username === params.username
-                        ? "Follow Back"
-                        : "Follow"}
-                    </Button>
-                  )}
-                  <Button
-                    variant={"icon"}
-                    size={"icon"}
-                    className="text-accent1 hover:text-primary"
-                  >
-                    <MoreVertical size={24} />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
+          {userFollowing ? (
+            <UsersCardGroup
+              users={userFollowing.followers ?? []}
+              loggedInUser={loggedInUser?.username ?? ""}
+              variant="followers"
+              params={params}
+            />
+          ) : (
+            <UserCardSkeleton />
+          )}
         </TabsContent>
       </Tabs>
     </div>

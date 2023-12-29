@@ -235,11 +235,11 @@ export async function followUserAction({
   pathname: string;
 }): Promise<void> {
   try {
-    await UserModel.updateOne(
+    await UserModel.findOneAndUpdate(
       { username: loggedInUser },
       { $push: { following: userToFollow } }
     );
-    await UserModel.updateOne(
+    await UserModel.findOneAndUpdate(
       { username: userToFollow },
       { $push: { followers: loggedInUser } }
     );

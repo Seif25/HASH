@@ -34,7 +34,7 @@ export default async function Page({ searchParams }: Props) {
   });
 
   return (
-    <div className="mt-5 bg-accent2/50 rounded-xl p-5">
+    <div className="mt-5 bg-accent2/50 rounded-lg p-5">
       <SearchResults
         initialQuery={query}
         initialType={type}

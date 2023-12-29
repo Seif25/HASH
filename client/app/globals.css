@@ -32,7 +32,7 @@
 
 /*! RIGHT SIDEBAR  */
 .right-sidebar {
-  @apply z-20 flex h-full w-[20%] flex-col justify-between gap-12 overflow-auto rounded-xl p-5 max-xl:hidden bg-opacity-100;
+  @apply z-20 flex h-full w-[20%] flex-col justify-between gap-12 overflow-auto rounded-lg p-5 max-xl:hidden bg-opacity-100;
 }
 
 .sheet-links {

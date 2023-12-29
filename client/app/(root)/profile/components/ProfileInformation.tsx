@@ -34,7 +34,7 @@ export default function ProfileInformation({
     <div ref={ref}>
       {banner ? (
         <section
-          className="rounded-xl p-10"
+          className="rounded-lg p-10"
           style={{
             backgroundImage: `url(${
               banner ||
@@ -47,7 +47,7 @@ export default function ProfileInformation({
         ></section>
       ) : (
         <section
-          className="rounded-xl p-5 bg-accent2 flex items-start justify-end"
+          className="rounded-lg p-5 bg-accent2 flex items-start justify-end"
           style={{
             backgroundSize: "cover",
             width: "100%",

@@ -179,7 +179,7 @@ export default function ConversationWindow({
       {conversation && (
         <section className="flex flex-col items-center justify-center mt-5 w-full">
           {/* Recipient Information */}
-          <nav className="top-20 p-5 h-[10vh] lg:h-[13vh] bg-white dark:bg-dark lg:rounded-t-xl w-full z-30 border-b border-accent2/10 dark:border-accent1/10">
+          <nav className="top-20 p-5 h-[10vh] lg:h-[13vh] bg-white dark:bg-dark lg:rounded-t-lg w-full z-30 border-b border-accent2/10 dark:border-accent1/10">
             <div className="flex items-center justify-between">
               <div className="flex items-start">
                 {/* Go Back */}
@@ -242,10 +242,10 @@ export default function ConversationWindow({
                 rounded={
                   message.sender === loggedInUser
                     ? `${
-                        message.isReply ? "rounded-xl" : "rounded-full"
+                        message.isReply ? "rounded-lg" : "rounded-full"
                       } rounded-tr-xl`
                     : `${
-                        message.isReply ? "rounded-xl" : "rounded-full"
+                        message.isReply ? "rounded-lg" : "rounded-full"
                       } rounded-tl-xl`
                 }
                 position={
@@ -265,7 +265,7 @@ export default function ConversationWindow({
           {/* Attached Hash Section */}
           {showHashSection && hash && (
             <div className="flex lg:px-5 justify-between bg-white dark:bg-dark border-t border-accent2/10 dark:border-accent1/10 bottom-[84px] lg:h-[50vh] h-[70vh] w-full py-1">
-              <div className="lg:w-1/2 w-full h-full bg-accent1 dark:bg-accent2 lg:rounded-xl flex flex-col justify-between gap-5 p-5">
+              <div className="lg:w-1/2 w-full h-full bg-accent1 dark:bg-accent2 lg:rounded-lg flex flex-col justify-between gap-5 p-5">
                 {/* Author Information */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1">
@@ -307,7 +307,7 @@ export default function ConversationWindow({
                               alt={hash.media[0].alt}
                               width={200}
                               height={200}
-                              className="rounded-xl w-auto max-w-[350px] h-auto lg:max-h-[150px] max-h-[250px] object-cover bg-dark"
+                              className="rounded-lg w-auto max-w-[350px] h-auto lg:max-h-[150px] max-h-[250px] object-cover bg-dark"
                             />
                           </div>
                         ) : hash.media[0].mediaType === "video" ? (
@@ -384,8 +384,8 @@ export default function ConversationWindow({
             </div>
           )}
           {/* Textfield & Options */}
-          <footer className="mb-10 bottom-5 flex items-center p-5 h-[10vh] bg-white dark:bg-dark lg:rounded-b-xl w-full border-t border-accent2/10 dark:border-accent1/10">
-            <div className="flex items-center justify-between bg-white dark:bg-dark rounded-xl p-2 w-full">
+          <footer className="mb-10 bottom-5 flex items-center p-5 h-[10vh] bg-white dark:bg-dark lg:rounded-b-lg w-full border-t border-accent2/10 dark:border-accent1/10">
+            <div className="flex items-center justify-between bg-white dark:bg-dark rounded-lg p-2 w-full">
               {/* Emoji & Image */}
               <div className="flex items-center gap-2">
                 <EmojiBtn setMessage={changeMessage} />
@@ -395,7 +395,7 @@ export default function ConversationWindow({
               </div>
               {/* Input Field */}
               <textarea
-                className="bg-transparent w-full ring-0 outline-none border-none px-3 rounded-xl resize-none"
+                className="bg-transparent w-full ring-0 outline-none border-none px-3 rounded-lg resize-none"
                 rows={1}
                 placeholder="Send a message..."
                 onChange={handleMessageChange}

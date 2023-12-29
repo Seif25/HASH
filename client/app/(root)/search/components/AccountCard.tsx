@@ -11,10 +11,10 @@ export default function AccountCard({
   loggedInUser: string;
 }) {
   return (
-    <div className="flex flex-col h-full rounded-xl bg-accent2">
+    <div className="flex flex-col h-full rounded-lg bg-accent2">
       {user.banner ? (
         <section
-          className="rounded-xl p-10"
+          className="rounded-lg p-10"
           style={{
             backgroundImage: `url(${user.banner})`,
             backgroundSize: "cover",
@@ -24,7 +24,7 @@ export default function AccountCard({
         ></section>
       ) : (
         <section
-          className="rounded-xl p-5 bg-accent2 flex items-start justify-end"
+          className="rounded-lg p-5 bg-accent2 flex items-start justify-end"
           style={{
             backgroundSize: "cover",
             width: "100%",

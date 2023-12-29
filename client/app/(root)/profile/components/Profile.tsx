@@ -60,7 +60,7 @@ export default function Profile({
 
   if (user?.blocked.includes(loggedInUser)) {
     return (
-      <div className="bg-white/50 dark:bg-dark/50 rounded-xl w-full h-full mt-5 mb-10 lg:mb-5 px-5 pb-5 lg:px-0">
+      <div className="bg-white/50 dark:bg-dark/50 rounded-lg w-full h-full mt-5 mb-10 lg:mb-5 px-5 pb-5 lg:px-0">
         <ProfileInformation
           username={user.username}
           name={user.name}
@@ -95,7 +95,7 @@ export default function Profile({
   }
 
   return (
-    <div className="bg-white/50 dark:bg-dark/50 rounded-xl w-full h-full mt-5 mb-10 lg:mb-5 px-5 lg:px-0">
+    <div className="bg-white/50 dark:bg-dark/50 rounded-lg w-full h-full mt-5 mb-10 lg:mb-5 px-5 lg:px-0">
       <div ref={ref}>
         <ProfileInformation
           username={user.username}
@@ -188,7 +188,7 @@ export default function Profile({
         <TabsContent value="posts" className="lg:px-10 flex flex-col gap-5">
           {userHashes.map((hash) => (
             <div
-              className="flex flex-col gap-1 bg-white dark:bg-dark rounded-xl"
+              className="flex flex-col gap-1 bg-white dark:bg-dark rounded-lg"
               key={hash._id.toString()}
             >
               {hash.pinned && loggedInUser === hash.author.username && (
@@ -203,7 +203,7 @@ export default function Profile({
         <TabsContent value="replies" className="lg:px-10 flex flex-col gap-5">
           {replies.map((reply) => (
             <div
-              className="bg-white dark:bg-dark rounded-xl pb-5"
+              className="bg-white dark:bg-dark rounded-lg pb-5"
               key={reply._id.toString()}
             >
               <div className="flex flex-col gap-5">
@@ -221,7 +221,7 @@ export default function Profile({
         >
           {highlights.map((hash) => (
             <div
-              className="flex flex-col gap-1 bg-white dark:bg-dark rounded-xl"
+              className="flex flex-col gap-1 bg-white dark:bg-dark rounded-lg"
               key={hash._id.toString()}
             >
               <h3 className="bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent text-paragraph font-bold flex items-center gap-1 px-5 pt-5">

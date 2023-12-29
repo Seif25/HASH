@@ -14,7 +14,7 @@ import { clerkClient } from "@clerk/nextjs";
 export default function ChangePassword() {
   return (
     <div className="flex flex-col gap-5 p-5 h-screen overflow-scroll w-full custom-scrollbar">
-      <div className="flex items-center gap-5 bg-transparent rounded-xl text-accent1">
+      <div className="flex items-center gap-5 bg-transparent rounded-lg text-accent1">
         <Link href={`/settings/account-settings`}>
           <ArrowLeft size={20} className="text-accent1/75 hover:text-primary" />
         </Link>
@@ -35,11 +35,11 @@ export default function ChangePassword() {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="grid grid-cols-12 gap-5 p-5 rounded-xl">
+      <div className="grid grid-cols-12 gap-5 p-5 rounded-lg">
         {/* Current Password */}
         <div className="flex flex-col gap-2 col-span-12">
           <Label htmlFor="password">Current Password</Label>
-          <div className="flex items-center border border-accent1/10 rounded-xl gap-1">
+          <div className="flex items-center border border-accent1/10 rounded-lg gap-1">
             <Input
               id="password"
               type="password"
@@ -55,7 +55,7 @@ export default function ChangePassword() {
         {/* New Password */}
         <div className="flex flex-col gap-2 col-span-12">
           <Label htmlFor="new-password">New Password</Label>
-          <div className="flex items-center border border-accent1/10 rounded-xl gap-1">
+          <div className="flex items-center border border-accent1/10 rounded-lg gap-1">
             <Input
               id="new-password"
               type="password"
@@ -71,7 +71,7 @@ export default function ChangePassword() {
         {/* Confirm Password */}
         <div className="flex flex-col gap-2 col-span-12">
           <Label htmlFor="confirm-password">Confirm Password</Label>
-          <div className="flex items-center border border-accent1/10 rounded-xl gap-1">
+          <div className="flex items-center border border-accent1/10 rounded-lg gap-1">
             <Input
               id="confirm-password"
               type="password"

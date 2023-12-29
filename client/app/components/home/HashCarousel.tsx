@@ -87,7 +87,7 @@ export default function HashCarousel({
           <div
             id={media.id}
             key={media.id}
-            className={`absolute flex items-center justify-start inset-0 rounded-xl ${
+            className={`absolute flex items-center justify-start inset-0 rounded-lg ${
               active === index ? "block" : "hidden"
             }`}
           >
@@ -97,7 +97,7 @@ export default function HashCarousel({
                   src={media.url}
                   alt={media.alt}
                   fill
-                  className="rounded-xl aspect-auto object-contain block"
+                  className="rounded-lg aspect-auto object-contain block"
                 />
               </div>
             ) : media.mediaType === "video" ? (

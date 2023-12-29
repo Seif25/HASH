@@ -56,7 +56,7 @@ export default function UserConversationsPage({
   }
 
   return (
-    <section className="flex flex-col gap-5 bg-white dark:bg-dark rounded-xl lg:mt-5">
+    <section className="flex flex-col gap-5 bg-white dark:bg-dark rounded-lg lg:mt-5">
       {/* Start new Conversation & Search */}
       <section className="bg-white dark:bg-dark rounded-t-2xl h-[10vh] lg:h-[15vh] p-5 flex flex-col gap-5">
         <div className="flex items-center justify-between gap-5">
@@ -67,7 +67,7 @@ export default function UserConversationsPage({
             height={48}
             className="rounded-full size-10 object-cover"
           />
-          <div className="flex items-center justify-between px-3 py-2 bg-white dark:bg-dark rounded-xl w-[70%] lg:w-[80%]">
+          <div className="flex items-center justify-between px-3 py-2 bg-white dark:bg-dark rounded-lg w-[70%] lg:w-[80%]">
             <input
               type="text"
               className="bg-transparent ring-0 outline-none border-none px-3 w-full"

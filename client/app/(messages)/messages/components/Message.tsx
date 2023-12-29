@@ -67,7 +67,7 @@ export default function Message({
       {message.deleted ? (
         <div className="flex items-center justify-between text-accent2/50 dark:text-accent1/50 w-auto p-2 select-none cursor-not-allowed">
           <AlertCircle className="size-4 mr-2" />
-          <p className="rounded-xl flex items-center italic text-[14px] mr-5">
+          <p className="rounded-lg flex items-center italic text-[14px] mr-5">
             {message.message}
           </p>
           <span className="text-[10px] font-light">

@@ -11,7 +11,7 @@ export default function AccountLink({
   loggedInUser: string;
 }) {
   return (
-    <div className="flex items-center gap-5 w-full rounded-xl bg-accent2 px-5 py-3">
+    <div className="flex items-center gap-5 w-full rounded-lg bg-accent2 px-5 py-3">
       <Image
         src={user.image}
         alt={user.username}

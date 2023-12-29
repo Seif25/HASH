@@ -119,7 +119,7 @@ export default function CommentBtn({
                               alt={hashMedia[0].alt}
                               fill
                               priority
-                              className="rounded-xl aspect-square bg-transparent object-contain"
+                              className="rounded-lg aspect-square bg-transparent object-contain"
                             />
                           </AspectRatio>
                         ) : hashMedia[0].mediaType === "video" ? (
@@ -135,7 +135,7 @@ export default function CommentBtn({
                         {hashMedia.map((media, index) => (
                           <div
                             key={media.id}
-                            className={`w-[150px] h-[150px] flex items-center justify-center bg-dark rounded-xl`}
+                            className={`w-[150px] h-[150px] flex items-center justify-center bg-dark rounded-lg`}
                           >
                             {media.mediaType === "image" ? (
                               <AspectRatio ratio={1 / 1}>
@@ -144,7 +144,7 @@ export default function CommentBtn({
                                   alt={media.alt}
                                   fill
                                   priority
-                                  className={`rounded-xl aspect-square bg-transparent object-contain`}
+                                  className={`rounded-lg aspect-square bg-transparent object-contain`}
                                 />
                               </AspectRatio>
                             ) : media.mediaType === "video" ? (

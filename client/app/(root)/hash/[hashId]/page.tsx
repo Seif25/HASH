@@ -53,7 +53,7 @@ export default async function ({ params }: { params: { hashId: string } }) {
     });
   }
   return (
-    <div className="mt-5 bg-white dark:bg-dark rounded-xl mb-5 pb-5">
+    <div className="mt-5 bg-white dark:bg-dark rounded-lg mb-5 pb-5">
       <div className="flex flex-col pt-5">
         {hash.parentId && (
           <HashCard

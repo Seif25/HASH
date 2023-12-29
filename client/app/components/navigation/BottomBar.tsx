@@ -9,7 +9,7 @@ export default function BottomBar({
   notificationCount: number;
 }) {
   return (
-    <nav className="fixed bottom-5 my-0 mx-auto rounded-xl bg-white dark:bg-dark flex items-center justify-evenly w-[95%] md:hidden p-3 z-20">
+    <nav className="fixed bottom-5 my-0 mx-auto rounded-lg bg-white dark:bg-dark flex items-center justify-evenly w-[95%] md:hidden p-3 z-20">
       {BottomBarLinks.map((link) => (
         <Link href={link.link} key={link.title}>
           {link.title === "Notifications" ? (

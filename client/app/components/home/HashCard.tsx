@@ -80,7 +80,7 @@ export default function HashCard({
       variants={item}
       initial="hidden"
       animate="show"
-      className={`bg-white dark:bg-dark rounded-xl p-5 ${
+      className={`bg-white dark:bg-dark rounded-lg p-5 ${
         (page === "hash" || variant === "parent") && "pb-0"
       } ${variant === "child" && "pt-2"}`}
     >
@@ -167,7 +167,7 @@ export default function HashCard({
                       priority
                       className={`aspect-square ${
                         zoomOut ? "object-contain" : "object-cover"
-                      } rounded-xl bg-[#000a13]`}
+                      } rounded-lg bg-[#000a13]`}
                       onClick={() => setZoomOut((oldValue) => !oldValue)}
                     />
                   ) : hash.media[0].mediaType === "video" ? (
@@ -195,7 +195,7 @@ export default function HashCard({
                       alt={hash.media[0].alt}
                       fill
                       priority
-                      className="rounded-xl aspect-square bg-dark object-cover"
+                      className="rounded-lg aspect-square bg-dark object-cover"
                     />
                   </AspectRatio>
                 ) : hash.media[0].mediaType === "video" ? (
@@ -213,7 +213,7 @@ export default function HashCard({
                 {hash.media.slice(0, 3).map((media, index) => (
                   <div
                     key={media.id}
-                    className={`w-[150px] h-[150px] lg:w-[250px] lg:h-[250px] flex items-center justify-center bg-dark rounded-xl`}
+                    className={`w-[150px] h-[150px] lg:w-[250px] lg:h-[250px] flex items-center justify-center bg-dark rounded-lg`}
                   >
                     {media.mediaType === "image" ? (
                       <AspectRatio ratio={1 / 1}>
@@ -224,10 +224,10 @@ export default function HashCard({
                           priority
                           className={`${
                             index === 2 && "absolute z-0"
-                          } rounded-xl aspect-square bg-transparent object-cover`}
+                          } rounded-lg aspect-square bg-transparent object-cover`}
                         />
                         {hash.media.length > 3 && index === 2 && (
-                          <div className="absolute z-10 bg-accent2/20 w-[150px] h-[150px] lg:w-[250px] lg:h-[250px] rounded-xl flex items-center justify-center top-0">
+                          <div className="absolute z-10 bg-accent2/20 w-[150px] h-[150px] lg:w-[250px] lg:h-[250px] rounded-lg flex items-center justify-center top-0">
                             <h3 className="text-[20px] text-accent2 dark:text-accent1">
                               {`+ ${hash.media.length - 3}`}
                             </h3>
